@@ -486,7 +486,6 @@
         </a>
         <nav class="topnav" aria-label="Store">
           <a href="#videos">Credits</a>
-          <a href="#featured">Featured</a>
           <a href="#vault">Vault</a>
           <a href="#free-beats">Free Beats</a>
           <a href="#how">How it works</a>
@@ -505,7 +504,7 @@
           <img class="hero-logo" src="assets/crown-emblem.webp" alt="Kill Will Beats emblem — gold crown over a vinyl record" />
           <div class="hero-text">
             <h1>Kill <b>Will</b> Beats</h1>
-            <p class="hero-line">Beats for sale — hurry up and buy, first come, first served. Sold once and gone for good. This batch: $599 for WAV + MP3. Beats with trackouts carry their own price — more beats on the way.</p>
+            <p class="hero-line">Beats for sale — hurry up and buy, first come, first served. Sold once and gone for good.</p>
           </div>
           <div class="hero-cta">
             <a class="btn btn-red" href="#vault">Shop Beats</a>
@@ -575,66 +574,7 @@
           </div>
         </div>
       </section>
-      <!-- FEATURED BEAT : for sale, above Free Beats -->
-      <section id="featured" style="padding-top:30px;padding-bottom:4px">
-        <div class="wrap">
-          <div class="sec-head">
-            <img class="sec-emblem" src="assets/crown-emblem.webp" alt="" />
-            <div>
-              <h2>Featured <span class="gld">Beat</span></h2>
-              <p>For sale now — hurry up and buy, first come, first served. Sold once and gone for good. Today's pick is from the $599 WAV + MP3 batch — beats with trackouts carry their own price. One beat from the Vault holds this spot each day — a new random pick tomorrow. Press play and hear it in full.</p>
-            </div>
-            <span class="head-note" style="margin-left:auto">today's pick ↓</span>
-          </div>
-          <!-- FEATURED BEAT : daily random pick from the for-sale Vault beats, above Free Beats -->
-          <div class="player-card flat-card" id="featCard">
-            <div class="player-art">
-              <img id="featCover" src="assets/flatline-cover.jpg" alt="Flatline cover art — gold crown over a vinyl record with a red label, FLATLINE in bold white letters" />
-              <span class="sticker red feat-tag">Featured ★ For sale</span>
-              <button class="big-play" id="flatBigPlay" type="button" aria-label="Play Flatline">▶</button>
-              <span class="sticker price-tag" id="featPriceTag">$599</span>
-            </div>
-            <div class="player-main">
-              <div class="player-eyebrow">
-                <img src="assets/crown-emblem.webp" alt="" />
-                <p class="player-tagline">Featured beat — for sale now</p>
-              </div>
-              <h3 class="player-title" id="featTitle">Flatline</h3>
-              <div class="pills" id="featPills">
-                <span class="pill gold"><b>~129</b>&nbsp;BPM</span>
-                <span class="pill">Key&nbsp;<b>B♭ minor</b></span>
-                <span class="pill"><b>3:28</b></span>
-                <span class="pill">Prod. Kill Will</span>
-              </div>
-              <div class="feat-switch-row">
-                <button class="sec-btn" id="featShuffle" type="button">↻ Switch — random beat</button>
-                <span class="feat-switch-note" id="featSwitchNote">Today's pick from the Vault — a new random beat takes this spot tomorrow.</span>
-              </div>
-              <p class="autoplay-hint" id="featAutoplayHint" hidden><span class="sticker red">▶ Tap play — hear today's featured beat</span></p>
-              <div class="wave-box">
-                <div class="transport">
-                  <button class="t-btn main" id="flatPlay" type="button" aria-label="Play or pause Flatline">▶</button>
-                  <input class="flat-seek" id="flatSeek" type="range" min="0" max="208" step="0.1" value="0" aria-label="Seek through Flatline" />
-                  <span class="time-lab"><span id="flatCur">0:00</span> / <span id="flatDur">3:28</span></span>
-                </div>
-                <audio id="flatAudio" src="assets/flatline.mp3" preload="auto"></audio>
-              </div>
-              <div class="flat-deliver">
-                <span class="fd-row">You get: <b id="featDeliverFiles">MP3 + WAV master</b> — that's the full delivery.</span>
-                <span class="fd-no">No stems · No trackouts</span>
-                <span class="fd-fine" id="featDeliverFine">WAV converted from the MP3 master. If it's not listed here, it's not included.</span>
-              </div>
-              <div class="player-buy">
-                <div class="price-big"><span id="featPriceBig">$599</span><small>This beat · No leases</small></div>
-                <p class="you-get" style="margin:0">First come, first served — once it sells, it's pulled for good. <b>Agreement + split sheet included.</b></p>
-                <button class="btn btn-red flat-add" id="flatAdd" type="button" style="margin-left:auto" data-beat-id="flatline">Add to cart — $599</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- VAULT -->
+<!-- VAULT -->
       <section id="vault" class="dots-bg" style="padding-top:44px">
         <div class="wrap">
           <div class="sec-head">
@@ -654,7 +594,7 @@
                pinned to the bottom of the screen shows that track's
                cover, title and meta and carries prev / next and seek
                through the list. -->
-          <p class="list-intro">This batch — <b>$599</b> a beat, WAV + MP3, no stems, no trackouts. That's the baseline, not the ceiling: more beats are on the way, and beats with trackouts get their own price, right on their row. Use the search bubble to find a beat by name, BPM or key. Tap a row to hear it in full — the player bar at the bottom of the screen shows the beat that's playing, cover and all, and skips through the list. First come, first served — once a beat sells, it's pulled for good.</p>
+          <p class="list-intro">Use the search bubble to find a beat by name, BPM or key. Tap a row to hear it in full — the player bar at the bottom of the screen shows the beat that's playing, cover and all, and skips through the list. First come, first served — once a beat sells, it's pulled for good.</p>
           <div class="vault-search-wrap">
             <div class="search-bubble" role="search">
               <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M15.5 15.5 L21 21" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>
@@ -665,8 +605,6 @@
           </div>
           <div class="empty-note vault-empty" id="vaultEmpty" hidden>No beats match “<span id="vaultEmptyTerm"></span>” — try a name, a BPM like 129, or a key like F♯ minor.</div>
           <div class="track-list" id="trackList" aria-label="All 31 beats for sale"></div>
-          <p class="list-note">★ = today's featured pick — it stays right here in the list, buyable from its row.</p>
-
         </div>
       </section>
 
@@ -714,7 +652,7 @@
             <div class="drop-copy">
               <span class="sticker red rot-l">Beats for sale</span>
               <h3 class="display">The Vault.<br />Beats for <span class="gld">sale</span></h3>
-              <p>Hurry up and buy — first come, first served. Every paid beat here sells once, then it's pulled forever. No leases, no games — and every beat lists exactly what files you get. This first batch is WAV + MP3 at $599, no stems, no trackouts — beats with trackouts get their own price.</p>
+              <p>Hurry up and buy — first come, first served. Every paid beat here sells once, then it's pulled forever. No leases, no games — and every beat lists exactly what files you get.</p>
               <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px">
                 <span class="sticker rot-l">From $599</span>
                 <span class="sticker bone rot-r">No leases ✕</span>
@@ -835,10 +773,10 @@
           <div class="sec-head"><div><h2>Real <span class="gld">quick</span></h2></div></div>
           <div class="faq-list">
             <details><summary>Can I lease a beat?</summary><p>No. No leases, no tiers, no stream caps. Buy it outright or don't.</p></details>
-            <details><summary>What files do I get?</summary><p>Exactly what's listed on that beat's own card and row. This batch: WAV master + MP3, no stems, no trackouts. Beats with trackouts list their own files and their own price — same list in your order and agreement.</p></details>
+            <details><summary>What files do I get?</summary><p>Exactly what's listed on that beat's own card and row — same list in your order and agreement.</p></details>
             <details><summary>How does first come, first served work?</summary><p>Simple: whoever buys it first gets it. The second it sells, it's pulled from the store for good — never sold to anyone else. Your agreement is the proof.</p></details>
             <details><summary>Payment plans?</summary><p>No. Hurry up and buy — first come, first served, paid once in full. No payment options at checkout.</p></details>
-            <details><summary>Are beats available now?</summary><p>Yes — beats in the Vault are for sale now. This batch is $599 a beat for WAV + MP3, no stems, no trackouts — and more beats are coming, with trackout beats carrying their own price. First come, first served — once a beat sells, it's pulled from the store for good. Drop your email in the first-word signup on this page to get first word on what's in the Vault.</p></details>
+            <details><summary>Are beats available now?</summary><p>Yes — beats in the Vault are for sale now. First come, first served — once a beat sells, it's pulled from the store for good. Drop your email in the first-word signup on this page to get first word on what's in the Vault.</p></details>
             <details><summary>Publishing splits?</summary><p>Set per song on the split sheet that comes with your sale — filled in for your record in the documents.</p></details>
           </div>
         </div>
