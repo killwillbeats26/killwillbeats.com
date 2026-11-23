@@ -821,6 +821,47 @@
             </div>
             <span class="head-note" style="margin-left:auto">beats for sale ↓</span>
           </div>
+          <!-- FLATLINE : first paid beat -->
+          <div class="player-card flat-card">
+            <div class="player-art">
+              <img src="assets/flatline-cover.jpg" alt="Flatline cover art — gold crown over a vinyl record with a red label, FLATLINE in bold white letters" />
+              <span class="sticker red feat-tag">For sale ★ $599</span>
+              <button class="big-play" id="vflatBigPlay" type="button" aria-label="Play Flatline">▶</button>
+              <span class="sticker price-tag">$599</span>
+            </div>
+            <div class="player-main">
+              <div class="player-eyebrow">
+                <img src="assets/crown-emblem.webp" alt="" />
+                <p class="player-tagline">In the Vault — for sale</p>
+              </div>
+              <h3 class="player-title">Flatline</h3>
+              <div class="pills">
+                <span class="pill gold"><b>~129</b>&nbsp;BPM</span>
+                <span class="pill">Key&nbsp;<b>B♭ minor</b></span>
+                <span class="pill"><b>3:28</b></span>
+                <span class="pill">Prod. Kill Will</span>
+              </div>
+              <div class="wave-box">
+                <div class="transport">
+                  <button class="t-btn main" id="vflatPlay" type="button" aria-label="Play or pause Flatline">▶</button>
+                  <input class="flat-seek" id="vflatSeek" type="range" min="0" max="208" step="0.1" value="0" aria-label="Seek through Flatline" />
+                  <span class="time-lab"><span id="vflatCur">0:00</span> / <span id="vflatDur">3:28</span></span>
+                </div>
+                <audio id="vflatAudio" src="assets/flatline.mp3" preload="metadata"></audio>
+              </div>
+              <div class="flat-deliver">
+                <span class="fd-row">You get: <b>MP3 + WAV master</b> — that's the full delivery.</span>
+                <span class="fd-no">No stems · No trackouts</span>
+                <span class="fd-fine">WAV converted from the MP3 master. If it's not listed here, it's not included.</span>
+              </div>
+              <div class="player-buy">
+                <div class="price-big">$599<small>One price · No leases</small></div>
+                <p class="you-get" style="margin:0">First come, first served — once it sells, it's pulled for good. <b>Agreement + split sheet included.</b></p>
+                <button class="btn btn-red flat-add" id="vflatAdd" type="button" style="margin-left:auto">Add to cart — $599</button>
+              </div>
+            </div>
+          </div>
+
           <!-- DRIP CHECK : second paid beat -->
           <div class="player-card flat-card">
             <div class="player-art">
@@ -1225,7 +1266,7 @@
           var rm = document.createElement("button"); rm.type = "button"; rm.className = "ci-remove"; rm.textContent = "Remove";
           rm.addEventListener("click", function(){
             cart = cart.filter(function(x){ return x.id !== b.id; });
-            var btnMap = { flatline:null, dripcheck:"dripAdd", sunup:"sunAdd", doubledown:"dblAdd" };
+            var btnMap = { flatline:"vflatAdd", dripcheck:"dripAdd", sunup:"sunAdd", doubledown:"dblAdd" };
             var btnId = btnMap[b.id] || null;
             var addBtn = btnId ? document.getElementById(btnId) : null;
             if (addBtn){ addBtn.classList.remove("added"); addBtn.textContent = "Add to cart — $599"; }
@@ -1258,6 +1299,7 @@
           openCart();
         });
       }
+      bindAdd("vflatAdd", "flatline");
       bindAdd("dripAdd", "dripcheck");
       bindAdd("sunAdd", "sunup");
       bindAdd("dblAdd", "doubledown");
@@ -1299,7 +1341,7 @@
          another player flips its buttons back to Play automatically. */
       var ytPlayers = [];
       function pauseAllVaultExcept(except){
-        ["flatAudio","dripAudio","sunAudio","dblAudio"].forEach(function(id){
+        ["flatAudio","vflatAudio","dripAudio","sunAudio","dblAudio"].forEach(function(id){
           var a = document.getElementById(id);
           if (a && a !== except && !a.paused) a.pause();
         });
@@ -1366,10 +1408,11 @@
           audio.addEventListener("timeupdate", function(){ seek.value = audio.currentTime; cur.textContent = fmt(audio.currentTime); });
           seek.addEventListener("input", function(){ audio.currentTime = parseFloat(seek.value); cur.textContent = fmt(audio.currentTime); });
         }
-        setupPlayer("flat", ["dripAudio", "sunAudio", "dblAudio"]);
-        setupPlayer("drip", ["flatAudio", "sunAudio", "dblAudio"]);
-        setupPlayer("sun", ["flatAudio", "dripAudio", "dblAudio"]);
-        setupPlayer("dbl", ["flatAudio", "dripAudio", "sunAudio"]);
+        setupPlayer("flat", ["vflatAudio", "dripAudio", "sunAudio", "dblAudio"]);
+        setupPlayer("vflat", ["flatAudio", "dripAudio", "sunAudio", "dblAudio"]);
+        setupPlayer("drip", ["flatAudio", "vflatAudio", "sunAudio", "dblAudio"]);
+        setupPlayer("sun", ["flatAudio", "vflatAudio", "dripAudio", "dblAudio"]);
+        setupPlayer("dbl", ["flatAudio", "vflatAudio", "dripAudio", "sunAudio"]);
       })();
 
       /* ============ featured beat : daily random rotation through the for-sale beats ============
@@ -1497,7 +1540,7 @@
             if (!beat) return;
             if (!cart.some(function(x){ return x.id === beat.id; })){
               cart.push(beat);
-              var vaultBtnMap = { dripcheck:"dripAdd", sunup:"sunAdd", doubledown:"dblAdd" };
+              var vaultBtnMap = { flatline:"vflatAdd", dripcheck:"dripAdd", sunup:"sunAdd", doubledown:"dblAdd" };
               var vBtn = document.getElementById(vaultBtnMap[beat.id] || "");
               if (vBtn){ vBtn.classList.add("added"); vBtn.textContent = "In your cart ✓"; }
               syncFeaturedAddBtn();
