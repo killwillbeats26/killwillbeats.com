@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="description" content="Kill Will Beats — in the building. Buy it outright or don't. One price, full license, once it's sold it's gone." />
+    <meta name="description" content="Kill Will Beats — in the building. Buy it outright or don't. Hurry up and buy — first come, first served. Full license, once it's sold it's gone." />
     <meta name="color-scheme" content="light dark" />
     <link rel="icon" href="assets/crown-emblem.webp" />
     <title>KillWillBeats — Kill Will Beats in the Building</title>
@@ -11,7 +11,7 @@
     <meta property="og:site_name" content="KillWillBeats" />
     <meta property="og:url" content="https://killwillbeats.com/" />
     <meta property="og:title" content="Kill Will Beats — In the Building" />
-    <meta property="og:description" content="Kill Will Beats — in the building. Buy it outright or don't. One price, full license, once it's sold it's gone." />
+    <meta property="og:description" content="Kill Will Beats — in the building. Buy it outright or don't. Hurry up and buy — first come, first served. Full license, once it's sold it's gone." />
     <meta property="og:image" content="https://killwillbeats.com/assets/og-image.jpg" />
     <meta property="og:image:type" content="image/jpeg" />
     <meta property="og:image:width" content="1200" />
@@ -19,7 +19,7 @@
     <meta property="og:image:alt" content="Kill Will Beats — gold crown over a graffiti KILL WILL BEATS wordmark, IN THE BUILDING, with gold chains and stacks of cash on black" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Kill Will Beats — In the Building" />
-    <meta name="twitter:description" content="Kill Will Beats — in the building. Buy it outright or don't. One price, full license, once it's sold it's gone." />
+    <meta name="twitter:description" content="Kill Will Beats — in the building. Buy it outright or don't. Hurry up and buy — first come, first served. Full license, once it's sold it's gone." />
     <meta name="twitter:image" content="https://killwillbeats.com/assets/og-image.jpg" />
     <meta name="twitter:image:alt" content="Kill Will Beats — gold crown over a graffiti KILL WILL BEATS wordmark, IN THE BUILDING, with gold chains and stacks of cash on black" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -235,10 +235,12 @@
       .free-note{font-size:.86rem;color:var(--ink-dim);margin:0}
       .free-note b{color:var(--ink)}
       .free-foot{margin-top:auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding-top:6px}
-      .yt-link{font-weight:800;font-size:.86rem;text-decoration:none}
-      .yt-link:hover{text-decoration:underline}
       .dl-btn{display:inline-flex;align-items:center;gap:7px;background:var(--green-bright);color:#fff;border:2px solid #0a0a05;border-radius:6px;box-shadow:3px 3px 0 #0a0a05;font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;font-size:.84rem;padding:9px 15px;text-decoration:none;line-height:1}
       .dl-btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #0a0a05}
+
+      /* ---------- free beats : large grid (daily 10) ----------
+         Card styles live in the "free beats (YouTube)" block above:
+         .free-grid / .free-card / .video-wrap / .free-body. */
 
       /* ---------- placements : official videos ---------- */
       .placements-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
@@ -265,10 +267,12 @@
       .track-row audio{display:none}
       .track-row:hover{background:var(--panel2)}
       .track-row.active{background:var(--panel2);box-shadow:inset 4px 0 0 var(--gold)}
-      .row-thumb{position:relative;width:58px;height:58px;flex:none}
+      .row-thumb{width:58px;height:58px;flex:none}
       .row-thumb img{width:58px;height:58px;object-fit:cover;border-radius:6px;border:2px solid #0a0a05;background:#0a0b06}
-      .row-play{position:absolute;inset:0;margin:auto;width:36px;height:36px;min-height:36px;border-radius:50%;border:2px solid #0a0a05;background:rgba(224,49,30,.95);color:#fff;font-size:.82rem;display:grid;place-items:center;padding:0;box-shadow:2px 2px 0 rgba(0,0,0,.55)}
-      .row-play:active{transform:translate(1px,1px)}
+      /* play control sits BESIDE the cover, never on it — the cover art shows whole */
+      .row-play{flex:none;width:40px;height:40px;min-height:40px;border-radius:50%;border:2px solid #0a0a05;background:var(--red);color:#fff;font-size:.88rem;display:grid;place-items:center;padding:0;box-shadow:3px 3px 0 #0a0a05}
+      .row-play:active{transform:translate(1px,1px);box-shadow:1px 1px 0 #0a0a05}
+      .track-row.active .row-play{background:var(--gold);color:var(--gold-ink)}
       .row-main{flex:1 1 170px;min-width:0}
       .row-title-line{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
       .row-title{font-family:var(--display);text-transform:uppercase;font-size:1.08rem;line-height:1.05;margin:0;letter-spacing:.02em}
@@ -288,6 +292,7 @@
       @media (max-width:620px){
         .track-row{gap:10px;padding:9px 10px;flex-wrap:wrap}
         .row-thumb,.row-thumb img{width:50px;height:50px}
+        .row-play{width:36px;height:36px;min-height:36px}
         .row-meta{white-space:normal}
         .row-price{font-size:1.15rem}
         .row-add{padding:9px 12px;font-size:.8rem}
@@ -436,9 +441,41 @@
       .order-done h4{margin:0 0 8px;color:var(--green-bright)}
       .order-done p{font-size:.88rem;color:var(--ink-dim);margin:0 0 10px}
       .order-done a.btn{padding:10px 18px;min-height:2.6rem;font-size:.88rem}
+
+      /* ---------- static trap background : KILL WILL BEATS in the building ---------- */
+      .trap-bg{position:fixed;inset:0;z-index:-1;overflow:hidden;background:#060705}
+      .trap-bg img{width:100%;height:100%;object-fit:cover;object-position:center 22%;opacity:.5}
+      .trap-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,7,5,.55) 0%,rgba(6,7,5,.86) 34%,rgba(6,7,5,.93) 62%,rgba(6,7,5,.96) 100%)}
+      @media (prefers-color-scheme: light){
+        .trap-bg img{opacity:.22}
+        .trap-bg::after{background:linear-gradient(180deg,rgba(239,233,211,.72) 0%,rgba(239,233,211,.9) 40%,rgba(239,233,211,.95) 100%)}
+      }
+      .hero{position:relative;isolation:isolate;overflow:hidden}
+      .hero::before{content:"";position:absolute;inset:0;z-index:-2;background:url("assets/hero-trap-mural.webp") center 30%/cover no-repeat}
+      .hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(4,5,3,.93) 18%,rgba(4,5,3,.72) 55%,rgba(4,5,3,.45))}
+      .hero h1{text-shadow:4px 4px 0 rgba(0,0,0,.65)}
+      .hero-line{text-shadow:2px 2px 0 rgba(0,0,0,.7)}
+      .building-line{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px}
+      .building-line .bld{font-family:var(--display);text-transform:uppercase;letter-spacing:.14em;font-size:.8rem;color:var(--gold-bright);border:1.5px solid var(--gold);border-radius:4px;padding:5px 10px;background:rgba(5,6,3,.72)}
+      /* ---------- search bubble : sticky pill over the Vault list ---------- */
+      .vault-search-wrap{position:sticky;top:78px;z-index:45;margin:0 0 18px}
+      .search-bubble{display:flex;align-items:center;gap:11px;background:#0c0c07;color:#f2edd8;border:2.5px solid var(--gold);border-radius:999px;padding:7px 8px 7px 20px;box-shadow:6px 6px 0 rgba(0,0,0,.5)}
+      .search-bubble:focus-within{border-color:var(--gold-bright);box-shadow:6px 6px 0 rgba(0,0,0,.5),0 0 0 3px rgba(238,201,94,.35)}
+      .search-bubble svg{width:21px;height:21px;flex:none;color:var(--gold-bright)}
+      .search-bubble input{flex:1;min-width:0;border:0;background:transparent;color:#f2edd8;font-family:var(--font);font-size:1rem;font-weight:700;min-height:2.5rem}
+      .search-bubble input::placeholder{color:#8a876f}
+      .search-bubble input:focus{outline:none}
+      .search-count{flex:none;font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;font-size:.78rem;color:#171200;background:var(--gold);border-radius:999px;padding:6px 12px;white-space:nowrap}
+      .search-clear{flex:none;width:38px;height:38px;min-height:38px;border-radius:50%;border:2px solid #0a0a05;background:var(--red);color:#fff;font-size:.95rem;display:grid;place-items:center;padding:0}
+      .search-clear[hidden]{display:none}
+      .track-row.search-hidden{display:none}
+      .vault-empty{margin:0 0 18px}
+      .vault-empty[hidden]{display:none}
+      @media (max-width:620px){ .vault-search-wrap{top:70px} .search-count{display:none} .search-bubble{padding-left:15px} }
     </style>
   </head>
   <body>
+    <div class="trap-bg" aria-hidden="true"><img src="assets/og-image.jpg" alt="" /></div>
     <header class="topbar">
       <div class="wrap topbar-in">
         <img class="logo-badge" src="assets/crown-emblem.webp" alt="Kill Will crown and vinyl emblem logo" />
@@ -467,13 +504,22 @@
           <img class="hero-logo" src="assets/crown-emblem.webp" alt="Kill Will Beats emblem — gold crown over a vinyl record" />
           <div class="hero-text">
             <h1>Kill <b>Will</b> Beats</h1>
-            <p class="hero-line">Beats for sale — $599 each, sold once and gone for good.</p>
+            <div class="building-line"><span class="bld">★ Kill Will Beats — In The Building ★</span></div>
+            <p class="hero-line">Beats for sale — hurry up and buy, first come, first served. Sold once and gone for good. This batch: $599 for WAV + MP3. Beats with trackouts carry their own price — more beats on the way.</p>
           </div>
           <div class="hero-cta">
             <a class="btn btn-red" href="#vault">Shop Beats</a>
+            <button class="btn btn-gold" id="heroSearchBtn" type="button">Search Beats</button>
             <a class="btn btn-gold" href="#free-beats">Get a Free Beat</a>
           </div>
         </div>
+      </div>
+    </div>
+
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>Kill Will Beats in the building</span><span class="mq-star">★</span><span>Hurry up and buy</span><span class="mq-star">★</span><span>No leases</span><span class="mq-star">★</span><span>First come, first served</span><span class="mq-star">★</span>
+        <span>Kill Will Beats in the building</span><span class="mq-star">★</span><span>Hurry up and buy</span><span class="mq-star">★</span><span>No leases</span><span class="mq-star">★</span><span>First come, first served</span><span class="mq-star">★</span>
       </div>
     </div>
 
@@ -502,9 +548,6 @@
                   <span class="pill">#1 BET 106 &amp; Park</span>
                 </div>
                 <p class="free-note">Produced by <b>Kill Will</b>. The official music video, straight from YouTube.</p>
-                <div class="free-foot">
-                  <a class="yt-link" href="https://www.youtube.com/watch?v=ZoWsL3vXSLw" target="_blank" rel="noopener">Watch on YouTube ↗</a>
-                </div>
               </div>
             </article>
             <article class="free-card">
@@ -519,9 +562,6 @@
                   <span class="pill">Prod. Kill Will</span>
                 </div>
                 <p class="free-note">Produced by <b>Kill Will</b>. The live Tour Bus Performance Video, straight from YouTube.</p>
-                <div class="free-foot">
-                  <a class="yt-link" href="https://www.youtube.com/watch?v=Jt3K02lbuZ8" target="_blank" rel="noopener">Watch on YouTube ↗</a>
-                </div>
               </div>
             </article>
           </div>
@@ -534,7 +574,7 @@
             <img class="sec-emblem" src="assets/crown-emblem.webp" alt="" />
             <div>
               <h2>Featured <span class="gld">Beat</span></h2>
-              <p>For sale now — one price, $599, sold once and gone for good. One beat from the Vault holds this spot each day — a new random pick tomorrow. Press play and hear it in full.</p>
+              <p>For sale now — hurry up and buy, first come, first served. Sold once and gone for good. Today's pick is from the $599 WAV + MP3 batch — beats with trackouts carry their own price. One beat from the Vault holds this spot each day — a new random pick tomorrow. Press play and hear it in full.</p>
             </div>
             <span class="head-note" style="margin-left:auto">today's pick ↓</span>
           </div>
@@ -542,9 +582,9 @@
           <div class="player-card flat-card" id="featCard">
             <div class="player-art">
               <img id="featCover" src="assets/flatline-cover.jpg" alt="Flatline cover art — gold crown over a vinyl record with a red label, FLATLINE in bold white letters" />
-              <span class="sticker red feat-tag">Featured ★ For sale $599</span>
+              <span class="sticker red feat-tag">Featured ★ For sale</span>
               <button class="big-play" id="flatBigPlay" type="button" aria-label="Play Flatline">▶</button>
-              <span class="sticker price-tag">$599</span>
+              <span class="sticker price-tag" id="featPriceTag">$599</span>
             </div>
             <div class="player-main">
               <div class="player-eyebrow">
@@ -577,7 +617,7 @@
                 <span class="fd-fine" id="featDeliverFine">WAV converted from the MP3 master. If it's not listed here, it's not included.</span>
               </div>
               <div class="player-buy">
-                <div class="price-big">$599<small>One price · No leases</small></div>
+                <div class="price-big"><span id="featPriceBig">$599</span><small>This beat · No leases</small></div>
                 <p class="you-get" style="margin:0">First come, first served — once it sells, it's pulled for good. <b>Agreement + split sheet included.</b></p>
                 <button class="btn btn-red flat-add" id="flatAdd" type="button" style="margin-left:auto" data-beat-id="flatline">Add to cart — $599</button>
               </div>
@@ -599,26 +639,37 @@
           </div>
           <!-- THE LIST : all 31 beats for sale, compact rows.
                Rows are rendered from the BEATS catalog by the track-list
-               script below the featured-beat script: small cover thumb,
+               script below the featured-beat script: cover thumb shown
+               whole with the play button beside it (never on the art),
                title + BPM / key / length inline, price + add-to-cart on
-               the right. Click a row to play it; the persistent player
-               bar pinned to the bottom of the screen carries prev / next
-               and seek through the list. -->
-          <p class="list-intro">Every beat <b>$599</b> — WAV + MP3, no stems, no trackouts. Tap a row to hear it in full, skip through the list with the player bar at the bottom of the screen. First come, first served — once a beat sells, it's pulled for good.</p>
+               the right. Click a row to play it; the now-playing bar
+               pinned to the bottom of the screen shows that track's
+               cover, title and meta and carries prev / next and seek
+               through the list. -->
+          <p class="list-intro">This batch — <b>$599</b> a beat, WAV + MP3, no stems, no trackouts. That's the baseline, not the ceiling: more beats are on the way, and beats with trackouts get their own price, right on their row. Use the search bubble to find a beat by name, BPM or key. Tap a row to hear it in full — the player bar at the bottom of the screen shows the beat that's playing, cover and all, and skips through the list. First come, first served — once a beat sells, it's pulled for good.</p>
+          <div class="vault-search-wrap">
+            <div class="search-bubble" role="search">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M15.5 15.5 L21 21" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>
+              <input id="vaultSearch" type="search" placeholder="Search beats — name, BPM, key…" aria-label="Search beats in the Vault by name, BPM or key" autocomplete="off" />
+              <span class="search-count" id="vaultSearchCount">31 beats</span>
+              <button class="search-clear" id="vaultSearchClear" type="button" aria-label="Clear search" hidden>✕</button>
+            </div>
+          </div>
+          <div class="empty-note vault-empty" id="vaultEmpty" hidden>No beats match “<span id="vaultEmptyTerm"></span>” — try a name, a BPM like 129, or a key like F♯ minor.</div>
           <div class="track-list" id="trackList" aria-label="All 31 beats for sale"></div>
           <p class="list-note">★ = today's featured pick — it stays right here in the list, buyable from its row.</p>
 
         </div>
       </section>
 
-      <!-- FREE BEATS : top 10 by views on YouTube -->
+      <!-- FREE BEATS : daily random 10 from the full free catalog on YouTube -->
       <section id="free-beats" style="padding-top:44px;padding-bottom:8px">
         <div class="wrap">
           <div class="sec-head">
             <img class="sec-emblem" src="assets/crown-emblem.webp" alt="" />
             <div>
               <h2>Free <span class="gld">Beats</span></h2>
-              <p>Top 10 free beats by views on YouTube — press play and listen in full, or grab the MP3 download free. Free to use, not for sale.</p>
+              <p>A fresh 10 every day — picked at random each morning from all 97 free beats on the channel. Watch each beat right here in the grid, or grab the MP3 download free. Free to use, not for sale.</p>
             </div>
             <span class="head-note" style="margin-left:auto">free to use ↓</span>
           </div>
@@ -630,221 +681,19 @@
 
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px">
             <span class="sticker red rot-l">Free ✕ Not for sale</span>
-            <span class="sticker rot-r">Top 10 by views</span>
+            <span class="sticker rot-r">Daily 10 — fresh every morning</span>
             <span class="sticker bone rot-l">Straight from YouTube</span>
           </div>
 
-          <div class="free-grid">
-            <!-- 1 -->
-            <article class="free-card">
-              <div class="video-wrap">
-                <iframe id="ytPlayer1" src="https://www.youtube.com/embed/yR95e6Luy4o?enablejsapi=1" title="[FREE] Sauce Walka Type Beat — Drip and Splash" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-              </div>
-              <div class="free-body">
-                <div class="free-rank"><span class="rank-num">#1</span><span class="sticker" style="font-size:.72rem;padding:5px 9px">Free</span></div>
-                <h3 class="free-title">Sauce Walka Type Beat <span class="qt">“Drip and Splash”</span></h3>
-                <div class="free-meta">
-                  <span class="pill gold"><b data-view-count="yR95e6Luy4o">392</b>&nbsp;views</span>
-                  <span class="pill">3:18</span>
-                  <span class="pill">Sauce Walka type</span>
-                </div>
-                <p class="free-note">Most-viewed free beat on the channel. <b>Free to use — not for sale.</b></p>
-                <div class="free-foot">
-                  <a class="dl-btn" href="assets/free-drip-and-splash.mp3" download="Kill Will - Drip and Splash.mp3">⬇ Download MP3</a>
-                  <a class="yt-link" href="https://www.youtube.com/watch?v=yR95e6Luy4o" target="_blank" rel="noopener">Watch on YouTube ↗</a>
-                </div>
-              </div>
-            </article>
+          <!-- THE FREE GRID : today's 10 render here from the full
+               97-beat free catalog — a date-seeded random pick, the same
+               10 all day for everyone, a fresh 10 tomorrow. Each card is
+               a large grid card: big YouTube-thumbnail cover art with the
+               beat's YouTube embed, title with live views + length, and
+               a Download MP3 button. -->
+          <div class="free-grid" id="freeList" aria-label="Today's 10 free beats"></div>
 
-            <!-- 2 -->
-            <article class="free-card">
-              <div class="video-wrap">
-                <iframe id="ytPlayer2" src="https://www.youtube.com/embed/ANMuf5FmpZQ?enablejsapi=1" title="[FREE] Kill Will Type Beat — No Rap Cap" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-              </div>
-              <div class="free-body">
-                <div class="free-rank"><span class="rank-num">#2</span><span class="sticker" style="font-size:.72rem;padding:5px 9px">Free</span></div>
-                <h3 class="free-title">Kill Will Type Beat <span class="qt">“No Rap Cap”</span></h3>
-                <div class="free-meta">
-                  <span class="pill gold"><b data-view-count="ANMuf5FmpZQ">319</b>&nbsp;views</span>
-                  <span class="pill">2:46</span>
-                  <span class="pill">Kill Will type</span>
-                </div>
-                <p class="free-note"><b>Free to use — not for sale.</b></p>
-                <div class="free-foot">
-                  <a class="dl-btn" href="assets/free-no-rap-cap.mp3" download="Kill Will - No Rap Cap.mp3">⬇ Download MP3</a>
-                  <a class="yt-link" href="https://www.youtube.com/watch?v=ANMuf5FmpZQ" target="_blank" rel="noopener">Watch on YouTube ↗</a>
-                </div>
-              </div>
-            </article>
-
-            <!-- 3 -->
-            <article class="free-card">
-              <div class="video-wrap">
-                <iframe id="ytPlayer3" src="https://www.youtube.com/embed/1Oqrsk6Rvb4?enablejsapi=1" title="[FREE] Lil Wayne Type Beat — Space Ship" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-              </div>
-              <div class="free-body">
-                <div class="free-rank"><span class="rank-num">#3</span><span class="sticker" style="font-size:.72rem;padding:5px 9px">Free</span></div>
-                <h3 class="free-title">Lil Wayne Type Beat <span class="qt">“Space Ship”</span></h3>
-                <div class="free-meta">
-                  <span class="pill gold"><b data-view-count="1Oqrsk6Rvb4">151</b>&nbsp;views</span>
-                  <span class="pill">3:00</span>
-                  <span class="pill">Lil Wayne type</span>
-                </div>
-                <p class="free-note"><b>Free to use — not for sale.</b></p>
-                <div class="free-foot">
-                  <a class="dl-btn" href="assets/free-space-ship.mp3" download="Kill Will - Space Ship.mp3">⬇ Download MP3</a>
-                  <a class="yt-link" href="https://www.youtube.com/watch?v=1Oqrsk6Rvb4" target="_blank" rel="noopener">Watch on YouTube ↗</a>
-                </div>
-              </div>
-            </article>
-
-            <!-- 4 -->
-            <article class="free-card">
-              <div class="video-wrap">
-                <iframe id="ytPlayer4" src="https://www.youtube.com/embed/7DgEFP6XJ4M?enablejsapi=1" title="[FREE] Lil Wayne Type Beat — Self Made" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-              </div>
-              <div class="free-body">
-                <div class="free-rank"><span class="rank-num">#4</span><span class="sticker" style="font-size:.72rem;padding:5px 9px">Free</span></div>
-                <h3 class="free-title">Lil Wayne Type Beat <span class="qt">“Self Made”</span></h3>
-                <div class="free-meta">
-                  <span class="pill gold"><b data-view-count="7DgEFP6XJ4M">112</b>&nbsp;views</span>
-                  <span class="pill">Lil Wayne type</span>
-                </div>
-                <p class="free-note"><b>Free to use — not for sale.</b></p>
-                <div class="free-foot">
-                  <a class="dl-btn" href="assets/free-self-made.mp3" download="Kill Will - Self Made.mp3">⬇ Download MP3</a>
-                  <a class="yt-link" href="https://www.youtube.com/watch?v=7DgEFP6XJ4M" target="_blank" rel="noopener">Watch on YouTube ↗</a>
-                </div>
-              </div>
-            </article>
-
-            <!-- 5 -->
-            <article class="free-card">
-              <div class="video-wrap">
-                <iframe id="ytPlayer5" src="https://www.youtube.com/embed/Nj8lKdSxj14?enablejsapi=1" title="[FREE] Migos Type Beat — YRN" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-              </div>
-              <div class="free-body">
-                <div class="free-rank"><span class="rank-num">#5</span><span class="sticker" style="font-size:.72rem;padding:5px 9px">Free</span></div>
-                <h3 class="free-title">Migos Type Beat <span class="qt">“YRN”</span></h3>
-                <div class="free-meta">
-                  <span class="pill gold"><b data-view-count="Nj8lKdSxj14">91</b>&nbsp;views</span>
-                  <span class="pill">Migos type</span>
-                </div>
-                <p class="free-note"><b>Free to use — not for sale.</b></p>
-                <div class="free-foot">
-                  <a class="dl-btn" href="assets/free-yrn.mp3" download="Kill Will - YRN.mp3">⬇ Download MP3</a>
-                  <a class="yt-link" href="https://www.youtube.com/watch?v=Nj8lKdSxj14" target="_blank" rel="noopener">Watch on YouTube ↗</a>
-                </div>
-              </div>
-            </article>
-
-            <!-- 6 -->
-            <article class="free-card">
-              <div class="video-wrap">
-                <iframe id="ytPlayer6" src="https://www.youtube.com/embed/Pzt5oqQusZM?enablejsapi=1" title="[FREE] Kill Will Type Beat — New Money" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-              </div>
-              <div class="free-body">
-                <div class="free-rank"><span class="rank-num">#6</span><span class="sticker" style="font-size:.72rem;padding:5px 9px">Free</span></div>
-                <h3 class="free-title">Kill Will Type Beat <span class="qt">“New Money”</span></h3>
-                <div class="free-meta">
-                  <span class="pill gold"><b data-view-count="Pzt5oqQusZM">232</b>&nbsp;views</span>
-                  <span class="pill">2:43</span>
-                  <span class="pill">Kill Will type</span>
-                </div>
-                <p class="free-note"><b>Free to use — not for sale.</b></p>
-                <div class="free-foot">
-                  <a class="dl-btn" href="assets/free-new-money.mp3" download="Kill Will - New Money.mp3">⬇ Download MP3</a>
-                  <a class="yt-link" href="https://www.youtube.com/watch?v=Pzt5oqQusZM" target="_blank" rel="noopener">Watch on YouTube ↗</a>
-                </div>
-              </div>
-            </article>
-
-            <!-- 7 -->
-            <article class="free-card">
-              <div class="video-wrap">
-                <iframe id="ytPlayer7" src="https://www.youtube.com/embed/t2Lb7ymsG8Y?enablejsapi=1" title="[FREE] Kill Will Type Beat — Skull Gang" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-              </div>
-              <div class="free-body">
-                <div class="free-rank"><span class="rank-num">#7</span><span class="sticker" style="font-size:.72rem;padding:5px 9px">Free</span></div>
-                <h3 class="free-title">Kill Will Type Beat <span class="qt">“Skull Gang”</span></h3>
-                <div class="free-meta">
-                  <span class="pill gold"><b data-view-count="t2Lb7ymsG8Y">166</b>&nbsp;views</span>
-                  <span class="pill">3:13</span>
-                  <span class="pill">Kill Will type</span>
-                </div>
-                <p class="free-note"><b>Free to use — not for sale.</b></p>
-                <div class="free-foot">
-                  <a class="dl-btn" href="assets/free-skull-gang.mp3" download="Kill Will - Skull Gang.mp3">⬇ Download MP3</a>
-                  <a class="yt-link" href="https://www.youtube.com/watch?v=t2Lb7ymsG8Y" target="_blank" rel="noopener">Watch on YouTube ↗</a>
-                </div>
-              </div>
-            </article>
-
-            <!-- 8 -->
-            <article class="free-card">
-              <div class="video-wrap">
-                <iframe id="ytPlayer8" src="https://www.youtube.com/embed/8VUNkHSi4jI?enablejsapi=1" title="[FREE] Kill Will Type Beat — Heaven Sent" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-              </div>
-              <div class="free-body">
-                <div class="free-rank"><span class="rank-num">#8</span><span class="sticker" style="font-size:.72rem;padding:5px 9px">Free</span></div>
-                <h3 class="free-title">Kill Will Type Beat <span class="qt">“Heaven Sent”</span></h3>
-                <div class="free-meta">
-                  <span class="pill gold"><b data-view-count="8VUNkHSi4jI">161</b>&nbsp;views</span>
-                  <span class="pill">3:07</span>
-                  <span class="pill">Kill Will type</span>
-                </div>
-                <p class="free-note"><b>Free to use — not for sale.</b></p>
-                <div class="free-foot">
-                  <a class="dl-btn" href="assets/free-heaven-sent.mp3" download="Kill Will - Heaven Sent.mp3">⬇ Download MP3</a>
-                  <a class="yt-link" href="https://www.youtube.com/watch?v=8VUNkHSi4jI" target="_blank" rel="noopener">Watch on YouTube ↗</a>
-                </div>
-              </div>
-            </article>
-
-            <!-- 9 -->
-            <article class="free-card">
-              <div class="video-wrap">
-                <iframe id="ytPlayer9" src="https://www.youtube.com/embed/_BEK_M1ODH8?enablejsapi=1" title="[FREE] Kill Will Type Beat — Ocean View" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-              </div>
-              <div class="free-body">
-                <div class="free-rank"><span class="rank-num">#9</span><span class="sticker" style="font-size:.72rem;padding:5px 9px">Free</span></div>
-                <h3 class="free-title">Kill Will Type Beat <span class="qt">“Ocean View”</span></h3>
-                <div class="free-meta">
-                  <span class="pill gold"><b data-view-count="_BEK_M1ODH8">155</b>&nbsp;views</span>
-                  <span class="pill">3:13</span>
-                  <span class="pill">Kill Will type</span>
-                </div>
-                <p class="free-note"><b>Free to use — not for sale.</b></p>
-                <div class="free-foot">
-                  <a class="dl-btn" href="assets/free-ocean-view.mp3" download="Kill Will - Ocean View.mp3">⬇ Download MP3</a>
-                  <a class="yt-link" href="https://www.youtube.com/watch?v=_BEK_M1ODH8" target="_blank" rel="noopener">Watch on YouTube ↗</a>
-                </div>
-              </div>
-            </article>
-
-            <!-- 10 -->
-            <article class="free-card">
-              <div class="video-wrap">
-                <iframe id="ytPlayer10" src="https://www.youtube.com/embed/PNonZZ8nxSo?enablejsapi=1" title="[FREE] Kill Will Type Beat — Chase Bank" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-              </div>
-              <div class="free-body">
-                <div class="free-rank"><span class="rank-num">#10</span><span class="sticker" style="font-size:.72rem;padding:5px 9px">Free</span></div>
-                <h3 class="free-title">Kill Will Type Beat <span class="qt">“Chase Bank”</span></h3>
-                <div class="free-meta">
-                  <span class="pill gold"><b data-view-count="PNonZZ8nxSo">155</b>&nbsp;views</span>
-                  <span class="pill">2:52</span>
-                  <span class="pill">Kill Will type</span>
-                </div>
-                <p class="free-note"><b>Free to use — not for sale.</b></p>
-                <div class="free-foot">
-                  <a class="dl-btn" href="assets/free-chase-bank.mp3" download="Kill Will - Chase Bank.mp3">⬇ Download MP3</a>
-                  <a class="yt-link" href="https://www.youtube.com/watch?v=PNonZZ8nxSo" target="_blank" rel="noopener">Watch on YouTube ↗</a>
-                </div>
-              </div>
-            </article>
-          </div>
-
-          <p style="margin:20px 0 0;color:var(--ink-dim);font-weight:600;font-size:.92rem"><span id="viewsStatus">Views counted Nov 22, 2026.</span> Every free beat above comes with a free MP3 download — hit the green button on any card. Looking to buy? The paid beats in <a href="#vault">the Vault</a> above are one price, no leases — first come, first served, and placing an order opens an order email to Kill Will at <b>killwillmusic@gmail.com</b>.</p>
+          <p style="margin:20px 0 0;color:var(--ink-dim);font-weight:600;font-size:.92rem"><span id="viewsStatus">Views counted Nov 22, 2026.</span> Every free beat shown today comes with a free MP3 download — hit the green button on any card. A different random 10 from the full catalog shows up tomorrow. Looking to buy? The paid beats in <a href="#vault">the Vault</a> above are first come, first served, no leases — hurry up and buy, and placing an order opens an order email to Kill Will at <b>killwillmusic@gmail.com</b>.</p>
 
           <p class="cid-note"><b>Content ID note — free beats only:</b> The free beats on this site and on YouTube are registered with Content ID, so YouTube may show a claim on videos using them — that claim just means the ad money goes to Kill Will, your video stays up. Promo use is always welcome. <b>This does not apply to paid beats</b> — beats bought from <a href="#vault">the Vault</a> are not covered by this note and come with their own full license.</p>
         </div>
@@ -857,9 +706,9 @@
             <div class="drop-copy">
               <span class="sticker red rot-l">Beats for sale</span>
               <h3 class="display">The Vault.<br />Beats for <span class="gld">sale</span></h3>
-              <p>Every paid beat here is one price, sold once, then pulled forever. No leases, no tiers, no games — and every card lists exactly what files you get: WAV + MP3, no stems, no trackouts.</p>
+              <p>Hurry up and buy — first come, first served. Every paid beat here sells once, then it's pulled forever. No leases, no games — and every beat lists exactly what files you get. This first batch is WAV + MP3 at $599, no stems, no trackouts — beats with trackouts get their own price.</p>
               <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px">
-                <span class="sticker rot-l">$599</span>
+                <span class="sticker rot-l">From $599</span>
                 <span class="sticker bone rot-r">No leases ✕</span>
                 <span class="sticker black rot-l">First come, first served</span>
               </div>
@@ -900,7 +749,7 @@
             <div class="step">
               <span class="big-num">02</span>
               <svg class="step-icon" viewBox="0 0 52 52" aria-hidden="true"><rect x="4" y="12" width="44" height="28" rx="4" fill="#c9a227" stroke="#0a0a05" stroke-width="2.5" transform="rotate(-4 26 26)"/><text x="26" y="34" text-anchor="middle" font-family="Anton,sans-serif" font-size="19" fill="#171200">$1×</text></svg>
-              <h3>Pay once</h3><p>One price — $599. No tiers, no plans, no payment options.</p>
+              <h3>Pay once</h3><p>Hurry up and buy — first come, first served. The price on its row is the price. No leases, no plans, no payment options.</p>
             </div>
             <div class="step">
               <span class="big-num">03</span>
@@ -978,10 +827,10 @@
           <div class="sec-head"><div><h2>Real <span class="gld">quick</span></h2></div></div>
           <div class="faq-list">
             <details><summary>Can I lease a beat?</summary><p>No. No leases, no tiers, no stream caps. Buy it outright or don't.</p></details>
-            <details><summary>What files do I get?</summary><p>Exactly what's on the card. Vault beats deliver WAV + MP3 — no stems, no trackouts — same list in your order and agreement.</p></details>
+            <details><summary>What files do I get?</summary><p>Exactly what's listed on that beat's own card and row. This batch: WAV master + MP3, no stems, no trackouts. Beats with trackouts list their own files and their own price — same list in your order and agreement.</p></details>
             <details><summary>How does first come, first served work?</summary><p>Simple: whoever buys it first gets it. The second it sells, it's pulled from the store for good — never sold to anyone else. Your agreement is the proof.</p></details>
-            <details><summary>Payment plans?</summary><p>No. One price, paid once — no payment options at checkout.</p></details>
-            <details><summary>Are beats available now?</summary><p>Yes — beats in the Vault are for sale now at $599 each: WAV + MP3, no stems, no trackouts. First come, first served — once a beat sells, it's pulled from the store for good. Drop your email in the first-word signup on this page to get first word on what's in the Vault.</p></details>
+            <details><summary>Payment plans?</summary><p>No. Hurry up and buy — first come, first served, paid once in full. No payment options at checkout.</p></details>
+            <details><summary>Are beats available now?</summary><p>Yes — beats in the Vault are for sale now. This batch is $599 a beat for WAV + MP3, no stems, no trackouts — and more beats are coming, with trackout beats carrying their own price. First come, first served — once a beat sells, it's pulled from the store for good. Drop your email in the first-word signup on this page to get first word on what's in the Vault.</p></details>
             <details><summary>Publishing splits?</summary><p>Set per song on the split sheet that comes with your sale — filled in for your record in the documents.</p></details>
           </div>
         </div>
@@ -1030,7 +879,9 @@
       </div>
     </footer>
 
-    <!-- persistent player bar : prev / next + seek for the Vault track list -->
+    <!-- now-playing bar : pinned to the bottom, always shows the track
+         that is playing (or loaded) — its cover, title and meta follow
+         Vault rows, the Featured Beat card and the YouTube videos -->
     <div class="player-bar" id="playerBar" hidden>
       <img class="pb-cover" id="pbCover" src="assets/crown-emblem.webp" alt="" />
       <div class="pb-info">
@@ -1042,7 +893,7 @@
         <button class="pb-btn pb-main" id="pbPlay" type="button" aria-label="Play or pause the current beat">▶</button>
         <button class="pb-btn" id="pbNext" type="button" aria-label="Next beat"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.4 5H18v14h-2.6zM4.5 5v14L14 12z" fill="currentColor"/></svg></button>
       </div>
-      <div class="pb-seekwrap">
+      <div class="pb-seekwrap" id="pbSeekWrap">
         <span class="pb-time" id="pbCur">0:00</span>
         <input class="pb-seek" id="pbSeek" type="range" min="0" max="100" step="0.1" value="0" aria-label="Seek through the current beat" />
         <span class="pb-time" id="pbDur">0:00</span>
@@ -1069,7 +920,7 @@
           <label class="field">Email for delivery<input name="email" type="email" required autocomplete="email" placeholder="you@email.com" /></label>
           <label class="field">Artist name (for the agreement)<input name="artist" placeholder="Your artist name" /></label>
           <button class="checkout-btn" type="submit">Place order</button>
-          <p class="drawer-note">Placing an order opens your email with the full order addressed to Kill Will at killwillmusic@gmail.com and downloads your agreement — hit send in your email to notify him and place the order request. One price — no payment plans.</p>
+          <p class="drawer-note">Placing an order opens your email with the full order addressed to Kill Will at killwillmusic@gmail.com and downloads your agreement — hit send in your email to notify him and place the order request. Hurry up and buy — first come, first served. No payment plans.</p>
         </form>
         <div class="order-done" id="orderDone">
           <h4>Order drafted ✓</h4>
@@ -1082,7 +933,9 @@
 
     <script>
       /* ============ catalog ============
-         Every entry needs a title, one price ($599 / $999 / $1499 or custom),
+         Every entry needs a title, its OWN price. The current batch is
+         WAV + MP3 only at $599 — a baseline, not a universal price:
+         beats with trackouts / stems are priced per beat.
          the files it actually delivers, and real audio. Delivery mirrors
          files, every time: WAV-only beats list ["WAV master"]; full-file
          beats list ["MP3","WAV master","Stems / trackouts"]. No leases,
@@ -1104,10 +957,10 @@
           files:["WAV master","MP3"], noStems:true,
           deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master, 16-bit / 44.1kHz stereo, 43 MB.",
           audio:"assets/double-down.mp3", cover:"assets/double-down-cover.jpg" },
-        { id:"purge-night", title:"Purge Night", price:599, bpm:"~99 BPM", key:"G minor", len:"3:29",
+        { id:"purge-night", title:"Graveyard Shift", price:599, bpm:"~99 BPM", key:"G minor", len:"3:29",
           files:["WAV master","MP3"], noStems:true,
           deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
-          audio:"assets/purge-night.mp3", cover:"assets/purge-night-cover.jpg" },
+          audio:"assets/purge-night.mp3", cover:"assets/graveyard-shift-cover.jpg" },
         { id:"redline", title:"Redline", price:599, bpm:"~144 BPM", key:"G major", len:"2:58",
           files:["WAV master","MP3"], noStems:true,
           deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
@@ -1255,7 +1108,7 @@
             var btnMap = { flatline:"vflatAdd", dripcheck:"dripAdd", sunup:"sunAdd", doubledown:"dblAdd" };
             var btnId = btnMap[b.id] || null;
             var addBtn = btnId ? document.getElementById(btnId) : null;
-            if (addBtn){ addBtn.classList.remove("added"); addBtn.textContent = "Add to cart — $599"; }
+            if (addBtn){ addBtn.classList.remove("added"); addBtn.textContent = "Add to cart — " + money(b.price); }
             document.querySelectorAll('.vault-add[data-beat-id="' + b.id + '"]').forEach(function(gb){ gb.classList.remove("added"); gb.textContent = "Add to cart"; });
             if (typeof syncFeaturedAddBtn === "function") syncFeaturedAddBtn();
             renderCart();
@@ -1303,7 +1156,7 @@
         });
         lines.push("", "TOTAL: " + money(total), "", "Name: " + buyer, "Email for delivery: " + email);
         if (artist) lines.push("Artist name (for the agreement): " + artist);
-        lines.push("", "I understand: one price, no leases, no payment plans. The beat is mine once the sale is confirmed, and it's pulled from the store for good.");
+        lines.push("", "I understand: hurry up and buy — first come, first served. No leases, no payment plans. The beat is mine once the sale is confirmed, and it's pulled from the store for good.");
         /* Owner notification: this order email, addressed to
            killwillmusic@gmail.com, is the alert — the buyer sends it
            to place the order request. */
@@ -1338,15 +1191,27 @@
         });
       }
       window.onYouTubeIframeAPIReady = function(){
-        var frames = document.querySelectorAll(".video-wrap iframe");
+        /* Credits embeds only — the free-beats grid creates its players
+           at render and registers them itself (see the free-beats script),
+           so they must not be picked up here a second time. */
+        var frames = document.querySelectorAll(".placements-grid .video-wrap iframe");
         frames.forEach(function(frame){
           try {
+            var card = frame.closest ? frame.closest("article") : null;
+            var titleEl = card ? card.querySelector(".free-title") : null;
+            var vidTitle = titleEl ? titleEl.textContent.replace(/\s+/g, " ").trim() : "Official video";
             var player = new YT.Player(frame, {
               events: {
                 onStateChange: function(ev){
                   if (ev.data === YT.PlayerState.PLAYING){
                     pauseAllVaultExcept(null);
                     pauseAllYouTubeExcept(player);
+                    /* the bottom bar shows whatever is playing — this video included */
+                    if (typeof window.__barShowYouTube === "function"){
+                      window.__barShowYouTube({ player: player, title: vidTitle, meta: "Official video · YouTube", cover: "assets/crown-emblem.webp", priceLabel: "Video" });
+                    }
+                  } else if (ev.data === YT.PlayerState.PAUSED || ev.data === YT.PlayerState.ENDED){
+                    if (typeof window.__barYouTubeState === "function") window.__barYouTubeState(player, false);
                   }
                 }
               }
@@ -1444,7 +1309,7 @@
           pills:'<span class="pill gold"><b>~129</b>&nbsp;BPM</span><span class="pill">Half-time feel&nbsp;<b>86</b></span><span class="pill">Key&nbsp;<b>A major</b></span><span class="pill"><b>4:01</b></span><span class="pill">Prod. Kill Will</span>',
           deliverFiles:"WAV master + MP3",
           deliverFine:"Original WAV master — 16-bit / 44.1kHz stereo, 43 MB. If it's not listed here, it's not included." },
-        "purge-night": { seconds:209, coverAlt:"Purge Night cover art — dripping white bubble letters with red splatter, gold crown, chains and cash", pills:'<span class="pill gold"><b>~99</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>G minor</b></span><span class="pill"><b>3:29</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"Original WAV master. If it's not listed here, it's not included." },
+        "purge-night": { seconds:209, coverAlt:"Graveyard Shift cover art — bold bone-and-gold condensed block letters spelling GRAVEYARD SHIFT, gold crown, full moon, smoke, gold chains and cash stacks", pills:'<span class="pill gold"><b>~99</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>G minor</b></span><span class="pill"><b>3:29</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"Original WAV master. If it's not listed here, it's not included." },
         "redline": { seconds:178, coverAlt:"Redline cover art — distressed white block letters with a red slash, gold crown, chains and cash", pills:'<span class="pill gold"><b>~144</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>G major</b></span><span class="pill"><b>2:58</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"Original WAV master. If it's not listed here, it's not included." },
         "blackout": { seconds:220, coverAlt:"Blackout cover art — white lightning-scratch letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>~144</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>F minor</b></span><span class="pill"><b>3:40</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"Original WAV master. If it's not listed here, it's not included." },
         "overtime": { seconds:257, coverAlt:"Overtime cover art — heavy white varsity block letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>~118</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>D♯ minor</b></span><span class="pill"><b>4:17</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"Original WAV master. If it's not listed here, it's not included." },
@@ -1483,7 +1348,8 @@
         if (!btn) return;
         var inCart = cart.some(function(x){ return x.id === currentFeaturedId; });
         btn.classList.toggle("added", inCart);
-        btn.textContent = inCart ? "In your cart ✓" : "Add to cart — $599";
+        var fb = featuredBeat();
+        btn.textContent = inCart ? "In your cart ✓" : "Add to cart — " + (fb ? money(fb.price) : "");
       }
       function setFeaturedBeat(id){
         var beat = null;
@@ -1501,6 +1367,10 @@
         if (title) title.textContent = beat.title;
         var pills = document.getElementById("featPills");
         if (pills) pills.innerHTML = extra.pills;
+        var priceBig = document.getElementById("featPriceBig");
+        if (priceBig) priceBig.textContent = money(beat.price);
+        var priceTag = document.getElementById("featPriceTag");
+        if (priceTag) priceTag.textContent = money(beat.price);
         var files = document.getElementById("featDeliverFiles");
         if (files) files.textContent = extra.deliverFiles;
         var fine = document.getElementById("featDeliverFine");
@@ -1525,6 +1395,7 @@
         if (note) note.textContent = "Now featuring: " + beat.title + " — today's pick from the " + BEATS.length + " beats for sale. A new random beat takes this spot tomorrow.";
         syncFeaturedAddBtn();
         if (typeof window.markFeaturedRow === "function") window.markFeaturedRow(id);
+        if (typeof window.__barFollowFeatured === "function") window.__barFollowFeatured(id);
         if (card) setTimeout(function(){ card.classList.remove("feat-fading"); }, 200);
       }
       function randomFeaturedId(excludeId){
@@ -1621,21 +1492,26 @@
         }, 30000);
       })();
 
-      /* ============ vault track list : compact rows + persistent player ============
+      /* ============ vault track list : compact rows + now-playing bar ============
          All 31 for-sale beats render as compact rows from the BEATS
-         catalog: small cover thumb on the left, title with BPM / key /
-         length inline, price + add-to-cart on the right. Clicking a row
-         plays it in full; the playing row opens its own seek bar, and
-         the persistent player bar pinned to the bottom of the screen
-         carries prev / next, seek and add-to-cart for whichever beat is
-         loaded, auto-advancing through the list when a beat ends. Same
-         one-song-at-a-time rule as the rest of the page: starting a row
-         pauses every other audio element and every YouTube embed, and
-         anything else starting pauses the row (every button re-syncs
-         off the audio element's own play / pause / ended events). The
-         daily featured pick keeps its row in this list — buyable like
-         every other row — and its row wears the ★ badge, which follows
-         the pick when the Featured slot changes. */
+         catalog: cover thumb shown whole on the left with the play
+         button beside it (never on top of the art), title with BPM /
+         key / length inline, price + add-to-cart on the right.
+         Clicking a row plays it in full; the playing row opens its
+         own seek bar, and the now-playing bar pinned to the bottom of
+         the screen always shows the track that is playing — cover,
+         title and meta — whether it was started from a row, the
+         Featured Beat card, or a YouTube video (Credits / Free Beats,
+         via __barShowYouTube) — with prev / next, seek and
+         add-to-cart for the Vault beats and auto-advance through the
+         list when a beat ends. Same one-song-at-a-time rule as the
+         rest of the page: starting a row pauses every other audio
+         element and every YouTube embed, and anything else starting
+         pauses the row (every button re-syncs off the audio element's
+         own play / pause / ended events). The daily featured pick
+         keeps its row in this list — buyable like every other row —
+         and its row wears the ★ badge, which follows the pick when
+         the Featured slot changes. */
       (function(){
         function fmt(s){ if (!isFinite(s)) return "0:00"; s = Math.max(0, Math.floor(s)); return Math.floor(s/60) + ":" + ("0" + (s%60)).slice(-2); }
         function lenToSecs(len){ var p = (len || "").split(":"); if (p.length !== 2) return 0; return (parseInt(p[0], 10) || 0) * 60 + (parseInt(p[1], 10) || 0); }
@@ -1650,6 +1526,7 @@
         var pbPrev = document.getElementById("pbPrev");
         var pbNext = document.getElementById("pbNext");
         var pbSeek = document.getElementById("pbSeek");
+        var pbSeekWrap = document.getElementById("pbSeekWrap");
         var pbCur = document.getElementById("pbCur");
         var pbDur = document.getElementById("pbDur");
         var pbPrice = document.getElementById("pbPrice");
@@ -1658,6 +1535,11 @@
         var order = [];
         var currentId = null;
         var extId = null;
+        /* when a YouTube video (Credits / Free Beats) is the thing
+           playing, the bottom bar shows THAT track instead of a Vault
+           beat: ytNow holds its player + play state, and every Vault
+           source taking over clears it again in setCurrent. */
+        var ytNow = null;
         function beatById(id){ var f = null; BEATS.forEach(function(b){ if (b.id === id) f = b; }); return f; }
 
         BEATS.forEach(function(beat){
@@ -1668,8 +1550,8 @@
           row.className = "track-row";
           row.setAttribute("data-beat-id", beat.id);
           row.innerHTML =
-            '<div class="row-thumb"><img src="' + beat.cover + '" alt="' + (extra.coverAlt || (beat.title + " cover art")) + '" loading="lazy" />' +
-            '<button class="row-play" type="button" aria-label="Play ' + beat.title + '">▶</button></div>' +
+            '<div class="row-thumb"><img src="' + beat.cover + '" alt="' + (extra.coverAlt || (beat.title + " cover art")) + '" loading="lazy" /></div>' +
+            '<button class="row-play" type="button" aria-label="Play ' + beat.title + '">▶</button>' +
             '<div class="row-main"><div class="row-title-line"><h3 class="row-title">' + beat.title + '</h3>' +
             '<span class="row-feat" hidden>★ Featured today</span></div>' +
             '<p class="row-meta">' + beat.bpm + ' · Key ' + beat.key + ' · ' + beat.len + ' · WAV + MP3</p>' +
@@ -1694,7 +1576,7 @@
           function syncBtn(){
             var label = rec.audio.paused ? "▶" : "❚❚";
             rec.playBtn.textContent = label;
-            if (currentId === beat.id) pbPlay.textContent = label;
+            if (currentId === beat.id && !ytNow) pbPlay.textContent = label;
           }
           rec.playBtn.addEventListener("click", function(e){ e.stopPropagation(); toggleRow(beat.id); });
           row.addEventListener("click", function(e){
@@ -1707,6 +1589,15 @@
             syncBtn();
             pauseAllVaultExcept(rec.audio);
             pauseAllYouTubeExcept(null);
+            /* if this row just paused the featured beat (it plays from
+               the Featured card's player, not its row audio), reset the
+               featured row's icon to play right here — don't rely solely
+               on the featured pause event reaching __featSync. */
+            if (beat.id !== currentFeaturedId){
+              var featRow = rows[currentFeaturedId];
+              var featAudio = document.getElementById("flatAudio");
+              if (featRow && featAudio && featAudio.paused) featRow.playBtn.textContent = "▶";
+            }
           });
           rec.audio.addEventListener("pause", syncBtn);
           rec.audio.addEventListener("ended", function(){ syncBtn(); step(1); });
@@ -1751,6 +1642,11 @@
           var rec = rows[id];
           if (!rec) return;
           currentId = id;
+          /* a Vault beat is now the bar's track: drop any YouTube
+             now-playing state and restore the buy + seek controls */
+          ytNow = null;
+          if (pbAdd) pbAdd.style.display = "";
+          if (pbSeekWrap) pbSeekWrap.style.display = "";
           order.forEach(function(oid){ rows[oid].row.classList.toggle("active", oid === id); });
           if (!bar) return;
           pbCover.src = rec.beat.cover;
@@ -1799,10 +1695,19 @@
           playAudio(rec.audio);
         }
         if (bar){
-          pbPlay.addEventListener("click", function(){ if (currentId) toggleRow(currentId); });
+          pbPlay.addEventListener("click", function(){
+            /* when the bar is showing a YouTube track, its play button
+               drives that video's player, not a Vault beat */
+            if (ytNow && ytNow.player){
+              try { if (ytNow.playing) ytNow.player.pauseVideo(); else ytNow.player.playVideo(); } catch(e){}
+              return;
+            }
+            if (currentId) toggleRow(currentId);
+          });
           pbPrev.addEventListener("click", function(){ step(-1); });
           pbNext.addEventListener("click", function(){ step(1); });
           pbSeek.addEventListener("input", function(){
+            if (ytNow) return;
             if (currentId === currentFeaturedId){
               var fa = document.getElementById("flatAudio");
               if (fa){ fa.currentTime = parseFloat(pbSeek.value); return; }
@@ -1811,6 +1716,7 @@
             if (rec) rec.audio.currentTime = parseFloat(pbSeek.value);
           });
           pbAdd.addEventListener("click", function(){
+            if (ytNow) return;
             var beat = beatById(currentId);
             if (!beat) return;
             if (!cart.some(function(x){ return x.id === beat.id; })){
@@ -1835,15 +1741,24 @@
           var rec = rows[id];
           if (!rec) return;
           if (playing){
-            if (extId !== id || currentId !== id) setCurrent(id);
+            if (ytNow || extId !== id || currentId !== id) setCurrent(id);
             extId = id;
             rec.playBtn.textContent = "❚❚";
             if (pbPlay) pbPlay.textContent = "❚❚";
-          } else if (extId){
-            var old = rows[extId];
-            if (old) old.playBtn.textContent = "▶";
-            if (currentId === extId && pbPlay) pbPlay.textContent = "▶";
-            extId = null;
+          } else {
+            /* featured audio is not playing: its Vault row must show the
+               play icon again, unconditionally — gating this on extId
+               missed the case where another row's play handler cleared
+               extId before the featured pause event arrived, leaving the
+               featured row stuck on the pause icon. */
+            if (rec) rec.playBtn.textContent = "▶";
+            if (extId){
+              var old = rows[extId];
+              if (old) old.playBtn.textContent = "▶";
+              if (currentId === extId && pbPlay && !ytNow) pbPlay.textContent = "▶";
+              extId = null;
+            }
+            if (currentId === id && pbPlay && !ytNow) pbPlay.textContent = "▶";
           }
           if (typeof t === "number" && isFinite(t)){
             rec.seek.value = t;
@@ -1857,6 +1772,47 @@
         };
         window.__listStepFromFeatured = function(){ step(1); };
 
+        /* now-playing bar : YouTube tracks. When a Credits or Free
+           Beats video starts, the bar switches to that track — its
+           cover, title and meta — and the bar's play button pauses /
+           resumes the video itself. Seek and Add to Cart belong to
+           the Vault beats, so they hide while a video is the bar's
+           track; the next Vault beat to play restores them through
+           setCurrent. */
+        window.__barShowYouTube = function(info){
+          if (!bar || !info) return;
+          ytNow = { player: info.player || null, playing: true };
+          order.forEach(function(oid){ rows[oid].row.classList.remove("active"); });
+          pbCover.src = info.cover || "assets/crown-emblem.webp";
+          pbCover.alt = "";
+          pbTitle.textContent = info.title || "Now playing";
+          pbMeta.textContent = info.meta || "YouTube";
+          pbPrice.textContent = info.priceLabel || "Video";
+          if (pbAdd) pbAdd.style.display = "none";
+          if (pbSeekWrap) pbSeekWrap.style.display = "none";
+          pbPlay.textContent = "❚❚";
+          showBar();
+        };
+        window.__barYouTubeState = function(player, playing){
+          if (!ytNow) return;
+          if (player && ytNow.player && player !== ytNow.player) return;
+          ytNow.playing = !!playing;
+          if (pbPlay) pbPlay.textContent = playing ? "❚❚" : "▶";
+        };
+
+        /* now-playing bar : follow the Featured slot. When the
+           featured beat changes (shuffle / midnight rollover), the bar
+           loads the new pick — unless a Vault row is mid-play, in
+           which case the playing row keeps the bar. */
+        window.__barFollowFeatured = function(id){
+          if (!rows[id]) return;
+          var rowPlaying = order.some(function(oid){ return oid !== id && !rows[oid].audio.paused; });
+          if (rowPlaying) return;
+          setCurrent(id);
+          var fa = document.getElementById("flatAudio");
+          if (fa && pbPlay) pbPlay.textContent = fa.paused ? "▶" : "❚❚";
+        };
+
         /* the featured pick keeps its row: badge whichever row holds
            the Featured slot today, and re-badge when the pick changes */
         window.markFeaturedRow = function(id){
@@ -1868,6 +1824,50 @@
           });
         };
         if (typeof currentFeaturedId !== "undefined") window.markFeaturedRow(currentFeaturedId);
+
+        /* search bubble: live-filter the Vault rows by title, BPM, key,
+           length or files (so "trackouts" / "stems" find those beats when
+           they land). The bubble sticks above the list while scrolling. */
+        (function(){
+          var input = document.getElementById("vaultSearch");
+          if (!input) return;
+          var count = document.getElementById("vaultSearchCount");
+          var clearBtn = document.getElementById("vaultSearchClear");
+          var empty = document.getElementById("vaultEmpty");
+          var emptyTerm = document.getElementById("vaultEmptyTerm");
+          function applySearch(){
+            var q = input.value.trim().toLowerCase();
+            var shown = 0;
+            order.forEach(function(id){
+              var rec = rows[id];
+              if (!rec) return;
+              var b = rec.beat;
+              var hay = (b.title + " " + b.bpm + " " + b.key + " " + b.len + " " + b.files.join(" ") + (b.noStems ? " no stems no trackouts" : " stems trackouts")).toLowerCase();
+              var hit = !q || hay.indexOf(q) !== -1;
+              rec.row.classList.toggle("search-hidden", !hit);
+              if (hit) shown++;
+            });
+            if (count) count.textContent = q ? shown + (shown === 1 ? " match" : " matches") : order.length + " beats";
+            if (clearBtn) clearBtn.hidden = !q;
+            if (empty){ empty.hidden = shown !== 0; if (emptyTerm) emptyTerm.textContent = input.value.trim(); }
+          }
+          input.addEventListener("input", applySearch);
+          if (clearBtn) clearBtn.addEventListener("click", function(){ input.value = ""; applySearch(); input.focus(); });
+          var heroBtn = document.getElementById("heroSearchBtn");
+          if (heroBtn) heroBtn.addEventListener("click", function(){
+            var vault = document.getElementById("vault");
+            if (vault) vault.scrollIntoView({ behavior:"smooth", block:"start" });
+            setTimeout(function(){ try { input.focus({ preventScroll:true }); } catch(e){ input.focus(); } }, 450);
+          });
+        })();
+
+        /* the bar starts on today's featured beat — the track the
+           page loads and tries to autoplay — so it always names a real
+           track instead of sitting on a placeholder, and its play
+           button starts that beat when autoplay was blocked. If the
+           featured audio is already playing, __featSync corrects the
+           bar's play icon on its next timeupdate. */
+        if (typeof currentFeaturedId !== "undefined" && rows[currentFeaturedId]) setCurrent(currentFeaturedId);
       })();
 
       /* ============ cart drawer ============ */
@@ -1919,7 +1919,7 @@
         L.push("   buyer receives the full license under this agreement for the beat above.");
         L.push("3. DELIVERY MIRRORS THE CARD. The buyer receives exactly the files listed");
         L.push("   for the beat at purchase — WAV master + MP3, no stems, no trackouts.");
-        L.push("4. ONE PRICE. The price above is the full price. There are no payment");
+        L.push("4. PRICE. The price above is the full price for this beat. There are no");
         L.push("   plans or payment options attached to this sale.");
         L.push("");
         L.push("SPLIT SHEET");
@@ -1949,15 +1949,153 @@
       });
     </script>
     <script>
-      /* ============ live view counts from YouTube ============
-         On load, fetch current view counts for all 10 free beats in ONE
-         request to the YouTube Data API v3 (videos.list, part=statistics).
-         The hardcoded numbers in the markup are the fallback: they stay
-         until live data arrives, and they stay for any video the API
-         doesn't return a count for — a count is never left blank. */
+      /* ============ free beats : daily random 10 in a large grid ============
+         The full free catalog (97 beats, baked in below from the Nov 23
+         catalog) feeds a date-seeded shuffle — the same pattern as the
+         daily featured pick above. Every visitor gets the same 10 all
+         day (seeded by the local calendar date), a fresh 10 tomorrow,
+         and yesterday's exact set is never repeated. Cards render in
+         the large grid style: big YouTube-thumbnail cover art with the
+         beat's YouTube embed right in the card, title with views +
+         length, and a Download MP3 button on every card (MP3s live
+         on the free-beats host, one file per beat slug). Each embed
+         joins the page-wide one-song-at-a-time rule: when a free beat
+         starts playing it pauses all Vault audio, the featured beat
+         and every other YouTube embed, and anything else starting
+         pauses it right back. If the page stays open past midnight,
+         the grid rolls over to the new day's 10 once nothing is playing. */
       (function(){
+        var FREE_BEATS = [{"t": "Drip and Splash", "a": "Sauce Walka", "id": "yR95e6Luy4o", "d": "3:18", "v": 392, "s": "drip-and-splash"}, {"t": "Self Made", "a": "Lil Wayne", "id": "7DgEFP6XJ4M", "d": "3:21", "v": 112, "s": "self-made"}, {"t": "Space Ship", "a": "Lil Wayne", "id": "1Oqrsk6Rvb4", "d": "3:00", "v": 151, "s": "space-ship"}, {"t": "The Mayor", "a": "Young Dolph", "id": "jcmHDwlADYQ", "d": "3:09", "v": 60, "s": "the-mayor"}, {"t": "YRN", "a": "Migos", "id": "Nj8lKdSxj14", "d": "2:50", "v": 91, "s": "yrn"}, {"t": "Street Cred", "a": "21 Savage", "id": "0xFR_daxpvA", "d": "3:19", "v": 54, "s": "street-cred"}, {"t": "808 Mafia", "a": "Southside", "id": "X_P0qVyzU_A", "d": "2:51", "v": 89, "s": "808-mafia"}, {"t": "Kill Confirmed", "a": "Lil Durk", "id": "wAiqFaDy6QY", "d": "2:49", "v": 70, "s": "kill-confirmed"}, {"t": "Major Paper", "a": "Young Dolph", "id": "bIaeYpkO9-M", "d": "3:06", "v": 66, "s": "major-paper"}, {"t": "Huncho", "a": "Quavo", "id": "Kfg4vyzBdL8", "d": "2:49", "v": 78, "s": "huncho"}, {"t": "Drought", "a": "Lil Wayne", "id": "M4HuBXGTlx8", "d": "3:05", "v": 135, "s": "drought"}, {"t": "Free Bands", "a": "Future", "id": "3nz2QoOLIRo", "d": "2:59", "v": 55, "s": "free-bands"}, {"t": "Wave", "a": "Max B French Montana", "id": "IZGx_uffKPM", "d": "4:27", "v": 52, "s": "wave"}, {"t": "Gumbo", "a": "Moneybagg Yo", "id": "QYU2VsBLfws", "d": "2:59", "v": 102, "s": "gumbo"}, {"t": "Paid if Full", "a": "Sada Baby", "id": "j0yJxm5ad_g", "d": "2:25", "v": 38, "s": "paid-if-full"}, {"t": "High Standard", "a": "Future Southside", "id": "8O6cVbP50t0", "d": "3:01", "v": 36, "s": "high-standard"}, {"t": "Expensive", "a": "Young Dolph Key Glock", "id": "PvYTvAWXSMM", "d": "2:50", "v": 30, "s": "expensive"}, {"t": "Memphis", "a": "Young Dolph Key Glock", "id": "Yeg6efcFk04", "d": "3:17", "v": 55, "s": "memphis"}, {"t": "Celine", "a": "Lil Baby", "id": "CLus1n8BjH0", "d": "2:57", "v": 27, "s": "celine"}, {"t": "Pyrotechnic", "a": "21 Savage", "id": "7Y_N32sEyEk", "d": "3:02", "v": 53, "s": "pyrotechnic"}, {"t": "Street Dream", "a": "Young Jeezy", "id": "QMhRnP_stYI", "d": "2:54", "v": 73, "s": "street-dream"}, {"t": "Stacks", "a": "Gucci Mane Zaytoven", "id": "ogbZxGEgVBI", "d": "3:29", "v": 68, "s": "stacks"}, {"t": "Kush and Lean", "a": "Lil Wayne", "id": "surYUyXPzlE", "d": "3:27", "v": 93, "s": "kush-and-lean"}, {"t": "Fast Money", "a": "Meek Mill", "id": "rSkS0GnOd3I", "d": "2:10", "v": 47, "s": "fast-money"}, {"t": "Hell Raiser", "a": "Lil Wayne", "id": "ErFhUz71w84", "d": "3:12", "v": 119, "s": "hell-raiser"}, {"t": "Too Playa", "a": "Zaytoven", "id": "voMipqfMlhw", "d": "2:52", "v": 89, "s": "too-playa"}, {"t": "Super Up", "a": "Lil Durk", "id": "OXLe581yTs0", "d": "2:28", "v": 62, "s": "super-up"}, {"t": "Zoned Out", "a": "Juice Wrld", "id": "65wQtwfhAgA", "d": "3:15", "v": 88, "s": "zoned-out"}, {"t": "Dead Presidents", "a": "EST Gee", "id": "bR7wuiVad7I", "d": "2:50", "v": 106, "s": "dead-presidents"}, {"t": "17.5", "a": "Jeezy", "id": "_eu6Au-AY8A", "d": "3:10", "v": 61, "s": "17-5"}, {"t": "Forever Street", "a": "Young Scooter Future", "id": "uwGW7TRIcfw", "d": "3:03", "v": 57, "s": "forever-street"}, {"t": "Plugged In", "a": "Southside Metro", "id": "NlQXhkbAqis", "d": "2:59", "v": 37, "s": "plugged-in"}, {"t": "Keep Goin", "a": "Zaytoven Future", "id": "8us5Ys0ZvZ0", "d": "2:50", "v": 76, "s": "keep-goin"}, {"t": "Dreams", "a": "Juice Wrld", "id": "GDjb05ko5Y8", "d": "3:02", "v": 28, "s": "dreams"}, {"t": "No Rap Cap", "a": "Kill Will", "id": "ANMuf5FmpZQ", "d": "2:46", "v": 319, "s": "no-rap-cap"}, {"t": "Trap Lord", "a": "Kill Will Gucci Mane", "id": "XsW5AJD0gyI", "d": "3:13", "v": 66, "s": "trap-lord"}, {"t": "Level 1 Million", "a": "Kill Will Future", "id": "oUeaTkbAMJA", "d": "3:13", "v": 27, "s": "level-1-million"}, {"t": "Most Valuable Player", "a": "Kill Will", "id": "J89xdmr42g0", "d": "3:16", "v": 46, "s": "most-valuable-player"}, {"t": "Lil Uzi Rich", "a": "Kill Will", "id": "8oG3LUyi358", "d": "2:57", "v": 71, "s": "lil-uzi-rich"}, {"t": "Money Convos", "a": "Kill Will", "id": "SJAPzt6Q6rE", "d": "4:01", "v": 63, "s": "money-convos"}, {"t": "Project Baby", "a": "Kill Will", "id": "MVflyOJVcNc", "d": "3:02", "v": 85, "s": "project-baby"}, {"t": "Money Junkie", "a": "Kill Will", "id": "n53B_lyjY1Q", "d": "2:57", "v": 78, "s": "money-junkie"}, {"t": "Lonesome", "a": "Kill Will", "id": "aOLJWphr7Bc", "d": "3:02", "v": 119, "s": "lonesome"}, {"t": "Flame", "a": "Kill Will", "id": "_7Tvv4a_baQ", "d": "3:48", "v": 117, "s": "flame"}, {"t": "Kill Bill", "a": "Kodak Black", "id": "MjvoVilO8D0", "d": "3:05", "v": 47, "s": "kill-bill"}, {"t": "Kingpin", "a": "Kill Will", "id": "DXup5x6N280", "d": "3:40", "v": 92, "s": "kingpin"}, {"t": "Franklins", "a": "Kill Will", "id": "MQ3OJ8REJc8", "d": "2:57", "v": 66, "s": "franklins"}, {"t": "Paid in Full", "a": "Kill Will", "id": "ryytC5h_PQU", "d": "3:01", "v": 73, "s": "paid-in-full"}, {"t": "The Alchemist", "a": "Kill Will", "id": "2U0z5-l9snw", "d": "3:30", "v": 83, "s": "the-alchemist"}, {"t": "More Bands", "a": "Kill Will", "id": "wb3WK35nvKw", "d": "3:23", "v": 80, "s": "more-bands"}, {"t": "Young Money", "a": "Kill Will", "id": "YVBXmJxUjr8", "d": "2:44", "v": 38, "s": "young-money"}, {"t": "Get Rich Quick", "a": "Kill Will", "id": "DTbQxBqx3eI", "d": "2:41", "v": 66, "s": "get-rich-quick"}, {"t": "Success", "a": "Kill Will", "id": "VDmRrF8BQoA", "d": "3:10", "v": 33, "s": "success"}, {"t": "Smooth Sailing", "a": "Kill Will", "id": "2fRVtLWDW3I", "d": "3:46", "v": 34, "s": "smooth-sailing"}, {"t": "Gold Bottles", "a": "Kill Will", "id": "O0MGU4XRh8o", "d": "2:37", "v": 44, "s": "gold-bottles"}, {"t": "Miami Nights", "a": "Kill Will", "id": "zLy5Bnca9ZI", "d": "3:13", "v": 64, "s": "miami-nights"}, {"t": "Streets of Rage", "a": "Kill Will", "id": "qz8zVmS0Tck", "d": "2:55", "v": 74, "s": "streets-of-rage"}, {"t": "Made in Italy", "a": "Kill Will", "id": "mUllJajyzcM", "d": "3:29", "v": 86, "s": "made-in-italy"}, {"t": "Air Mags on Feet", "a": "Kill Will", "id": "6Y-abw6pDAo", "d": "3:08", "v": 41, "s": "air-mags-on-feet"}, {"t": "Space Cadet", "a": "Kill Will", "id": "mlQS0LG563w", "d": "3:08", "v": 43, "s": "space-cadet"}, {"t": "Nike Box Full", "a": "Kill Will", "id": "6H3fCNmXEGo", "d": "3:29", "v": 62, "s": "nike-box-full"}, {"t": "Gucci Gang", "a": "Kill Will", "id": "xPeK5GYE6pY", "d": "3:33", "v": 54, "s": "gucci-gang"}, {"t": "Baddie", "a": "Kill Will", "id": "mygfrEpEMSU", "d": "2:33", "v": 77, "s": "baddie"}, {"t": "Hard 2 Knock", "a": "Kill Will", "id": "ABbkOvxmW2Q", "d": "3:29", "v": 49, "s": "hard-2-knock"}, {"t": "Draped in Dior", "a": "Kill Will", "id": "k8BagrPShfs", "d": "2:11", "v": 22, "s": "draped-in-dior"}, {"t": "Big Face Roley", "a": "Kill Will", "id": "nxntDySGMeQ", "d": "2:50", "v": 25, "s": "big-face-roley"}, {"t": "Charged Up", "a": "Kill Will", "id": "R-7AxFfgPYE", "d": "3:00", "v": 53, "s": "charged-up"}, {"t": "Bag Chaser", "a": "Kill Will", "id": "gPgCgA1McOY", "d": "3:28", "v": 33, "s": "bag-chaser"}, {"t": "Valentino", "a": "Kill Will", "id": "Mns6NU1-ops", "d": "3:00", "v": 68, "s": "valentino"}, {"t": "She in Love", "a": "Kill Will", "id": "kSH9cTctP9E", "d": "3:00", "v": 19, "s": "she-in-love"}, {"t": "Forty Ball", "a": "Kill Will", "id": "UhBGIAWfU64", "d": "3:00", "v": 36, "s": "forty-ball"}, {"t": "Narcos", "a": "Kill Will", "id": "YS3zblVsM80", "d": "3:11", "v": 29, "s": "narcos"}, {"t": "Flying Private", "a": "Kill Will", "id": "EYjEs2qFaO8", "d": "3:33", "v": 36, "s": "flying-private"}, {"t": "Boobie Trap", "a": "Kill Will", "id": "CUUk1uShZXc", "d": "2:07", "v": 33, "s": "boobie-trap"}, {"t": "Designer Duffle Bags", "a": "Kill Will", "id": "j_TV7ijZc_M", "d": "3:13", "v": 40, "s": "designer-duffle-bags"}, {"t": "Luxury Everything", "a": "Kill Will", "id": "dr3hudzTXcg", "d": "3:13", "v": 51, "s": "luxury-everything"}, {"t": "Muscle", "a": "Kill Will", "id": "2qnQ805Rp_0", "d": "2:17", "v": 44, "s": "muscle"}, {"t": "CREAM", "a": "Kill Will", "id": "btI1U5cBCbE", "d": "2:55", "v": 38, "s": "cream"}, {"t": "Ocean View", "a": "Kill Will", "id": "_BEK_M1ODH8", "d": "3:13", "v": 155, "s": "ocean-view"}, {"t": "Blizzard Alert", "a": "Kill Will", "id": "N1m4bKi35H0", "d": "3:45", "v": 29, "s": "blizzard-alert"}, {"t": "Skull Gang", "a": "Kill Will", "id": "t2Lb7ymsG8Y", "d": "3:13", "v": 166, "s": "skull-gang"}, {"t": "Foreign Exotic", "a": "Kill Will", "id": "nptNvMrk9Pw", "d": "3:23", "v": 52, "s": "foreign-exotic"}, {"t": "Phone Striking", "a": "Kill Will", "id": "hSAtELQqVQ4", "d": "2:55", "v": 76, "s": "phone-striking"}, {"t": "Money Bags", "a": "Kill Will", "id": "BuhQqOXexv0", "d": "2:52", "v": 55, "s": "money-bags"}, {"t": "Afrobeat Island Vibe", "a": "Kill Will", "id": "l53ic92Idmc", "d": "2:06", "v": 90, "s": "afrobeat-island-vibe"}, {"t": "Coupe Dreams", "a": "Kill Will", "id": "rxXwte2DtyM", "d": "3:46", "v": 122, "s": "coupe-dreams"}, {"t": "Rich Gang", "a": "Kill Will", "id": "2ONl_5fIU40", "d": "3:45", "v": 132, "s": "rich-gang"}, {"t": "Blue Money", "a": "Kill Will", "id": "MQ5W2nNW8Ao", "d": "2:30", "v": 137, "s": "blue-money"}, {"t": "Lamb Chop", "a": "Kill Will", "id": "Nch6QpLzAl4", "d": "2:57", "v": 126, "s": "lamb-chop"}, {"t": "President Trump", "a": "Kill Will", "id": "WkUSRQCKLW4", "d": "2:57", "v": 144, "s": "president-trump"}, {"t": "Racks Stacked Up", "a": "Kill Will", "id": "v_fsyWNsZz8", "d": "3:12", "v": 129, "s": "racks-stacked-up"}, {"t": "Laundry Money", "a": "Kill Will", "id": "OCXpd5dSZgQ", "d": "3:03", "v": 95, "s": "laundry-money"}, {"t": "Money Counter", "a": "Kill Will", "id": "lRVToPVXd_A", "d": "3:02", "v": 104, "s": "money-counter"}, {"t": "Ambition", "a": "Kill Will", "id": "5KgUQ1QfsmQ", "d": "3:05", "v": 140, "s": "ambition"}, {"t": "Chase Bank", "a": "Kill Will", "id": "PNonZZ8nxSo", "d": "2:52", "v": 155, "s": "chase-bank"}, {"t": "Heaven Sent", "a": "Kill Will", "id": "8VUNkHSi4jI", "d": "3:07", "v": 161, "s": "heaven-sent"}, {"t": "New Money", "a": "Kill Will", "id": "Pzt5oqQusZM", "d": "2:43", "v": 232, "s": "new-money"}];
+        var DL_BASE = "https://killwillbeats26.github.io/killwillbeats-free-beats/mp3/";
+        var list = document.getElementById("freeList");
+        if (!list) return;
+        function dayKey(d){ return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+        function hashStr(s){ var h = 2166136261; for (var i = 0; i < s.length; i++){ h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+        function mulberry32(seed){ return function(){ seed |= 0; seed = (seed + 0x6D2B79F5) | 0; var t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+        function permFor(d){
+          var rand = mulberry32(hashStr("kwb-free-" + dayKey(d)));
+          var idx = FREE_BEATS.map(function(_, i){ return i; });
+          for (var i = idx.length - 1; i > 0; i--){ var j = Math.floor(rand() * (i + 1)); var tmp = idx[i]; idx[i] = idx[j]; idx[j] = tmp; }
+          return idx;
+        }
+        function setKey(arr){ return arr.slice().sort(function(a, b){ return a - b; }).join(","); }
+        function dailyPicks(forDate){
+          var perm = permFor(forDate);
+          var picks = perm.slice(0, 10);
+          var y = new Date(forDate.getFullYear(), forDate.getMonth(), forDate.getDate() - 1);
+          if (setKey(picks) === setKey(permFor(y).slice(0, 10))) picks = perm.slice(10, 20);
+          return picks;
+        }
+        var freePlaying = false;
+        function registerPlayer(iframe, beat){
+          var tries = 0;
+          (function attempt(){
+            if (window.YT && YT.Player){
+              try {
+                var player = new YT.Player(iframe, { events: { onStateChange: function(ev){
+                  if (ev.data === YT.PlayerState.PLAYING){
+                    freePlaying = true;
+                    pauseAllVaultExcept(null);
+                    pauseAllYouTubeExcept(player);
+                    /* the bottom bar shows whatever is playing — this free beat included */
+                    if (typeof window.__barShowYouTube === "function"){
+                      window.__barShowYouTube({ player: player, title: beat.a + " Type Beat \u201C" + beat.t + "\u201D", meta: "Free beat · " + beat.d + " · YouTube", cover: "assets/free-thumbs/" + beat.s + ".jpg", priceLabel: "Free" });
+                    }
+                  } else if (ev.data === YT.PlayerState.PAUSED || ev.data === YT.PlayerState.ENDED){
+                    freePlaying = false;
+                    if (typeof window.__barYouTubeState === "function") window.__barYouTubeState(player, false);
+                  }
+                } } });
+                ytPlayers.push(player);
+              } catch(e){}
+              return;
+            }
+            if (++tries < 40) setTimeout(attempt, 300);
+          })();
+        }
+        function forceDownload(a, beat){
+          var url = DL_BASE + beat.s + ".mp3";
+          var label = a.textContent;
+          a.textContent = "Preparing\u2026";
+          fetch(url)
+            .then(function(res){ if (!res.ok) throw new Error("download " + res.status); return res.blob(); })
+            .then(function(blob){
+              var objUrl = URL.createObjectURL(blob);
+              var tmp = document.createElement("a");
+              tmp.href = objUrl;
+              tmp.download = "Kill Will - " + beat.t + ".mp3";
+              document.body.appendChild(tmp);
+              tmp.click();
+              setTimeout(function(){ URL.revokeObjectURL(objUrl); tmp.remove(); }, 400);
+              a.textContent = label;
+            })
+            .catch(function(){ a.textContent = label; window.open(url, "_blank", "noopener"); });
+        }
+        function render(){
+          freePlaying = false;
+          list.innerHTML = "";
+          dailyPicks(new Date()).forEach(function(idx, n){
+            var beat = FREE_BEATS[idx];
+            var card = document.createElement("article");
+            card.className = "free-card";
+            card.innerHTML =
+              '<div class="video-wrap">' +
+                '<iframe src="https://www.youtube.com/embed/' + beat.id + '?enablejsapi=1" title="[FREE] ' + beat.a + ' Type Beat \u2014 ' + beat.t + '" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>' +
+              '</div>' +
+              '<div class="free-body">' +
+                '<div class="free-rank"><span class="rank-num">#' + (n + 1) + '</span><span class="sticker" style="font-size:.72rem;padding:5px 9px">Free</span></div>' +
+                '<h3 class="free-title">' + beat.a + ' Type Beat <span class="qt">\u201C' + beat.t + '\u201D</span></h3>' +
+                '<div class="free-meta">' +
+                  '<span class="pill gold"><b data-view-count="' + beat.id + '">' + beat.v.toLocaleString("en-US") + '</b>&nbsp;views</span>' +
+                  '<span class="pill">' + beat.d + '</span>' +
+                  '<span class="pill">' + beat.a + ' type</span>' +
+                '</div>' +
+                '<p class="free-note"><b>Free to use \u2014 not for sale.</b> Promo use only, credit Kill Will.</p>' +
+                '<div class="free-foot">' +
+                  '<a class="dl-btn free-dl" href="' + DL_BASE + beat.s + '.mp3" download="Kill Will - ' + beat.t + '.mp3">\u2B07 Download MP3</a>' +
+                '</div>' +
+              '</div>';
+            var iframe = card.querySelector("iframe");
+            if (iframe) registerPlayer(iframe, beat);
+            var dl = card.querySelector(".free-dl");
+            dl.addEventListener("click", function(e){
+              e.preventDefault();
+              forceDownload(dl, beat);
+            });
+            list.appendChild(card);
+          });
+        }
+        render();
+        var curDay = dayKey(new Date());
+        setInterval(function(){
+          var k = dayKey(new Date());
+          if (k === curDay) return;
+          if (freePlaying) return;
+          curDay = k;
+          render();
+          if (typeof window.refreshViewCounts === "function") window.refreshViewCounts();
+        }, 30000);
+      })();
+    </script>
+    <script>
+      /* ============ live view counts from YouTube ============
+         Fetch current view counts for whichever free beats are shown
+         today (the [data-view-count] elements the free-beats list just
+         rendered) in ONE request to the YouTube Data API v3
+         (videos.list, part=statistics). The catalog numbers baked into
+         the rows are the fallback: they stay until live data arrives,
+         and they stay for any video the API doesn't return a count
+         for — a count is never left blank. Exposed as
+         window.refreshViewCounts so the free-beats list can re-run it
+         after its midnight rollover renders a fresh 10. */
+      window.refreshViewCounts = function(){
         var API_KEY = "AIzaSyDojAkXxUuURtdljoGSJdojsie6aOtxEAc";
-        var VIDEO_IDS = ["yR95e6Luy4o","ANMuf5FmpZQ","1Oqrsk6Rvb4","7DgEFP6XJ4M","Nj8lKdSxj14","Pzt5oqQusZM","t2Lb7ymsG8Y","8VUNkHSi4jI","_BEK_M1ODH8","PNonZZ8nxSo"];
+        var VIDEO_IDS = [];
+        document.querySelectorAll("[data-view-count]").forEach(function(el){
+          var id = el.getAttribute("data-view-count");
+          if (id && VIDEO_IDS.indexOf(id) === -1) VIDEO_IDS.push(id);
+        });
+        if (!VIDEO_IDS.length) return;
         var url = "https://www.googleapis.com/youtube/v3/videos?part=statistics&id=" + VIDEO_IDS.join(",") + "&key=" + API_KEY;
         fetch(url)
           .then(function(res){ if (!res.ok) throw new Error("YouTube API " + res.status); return res.json(); })
@@ -1981,8 +2119,9 @@
               if (status) status.textContent = "Live views from YouTube.";
             }
           })
-          .catch(function(){ /* keep the hardcoded fallback counts */ });
-      })();
+          .catch(function(){ /* keep the catalog fallback counts */ });
+      };
+      window.refreshViewCounts();
     </script>
   </body>
 </html>
