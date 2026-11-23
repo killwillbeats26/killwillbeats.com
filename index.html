@@ -29,7 +29,7 @@
     <style>
       :root{
         color-scheme:dark;
-        --bg:#060705; --bg2:#0b0c09; --panel:#101109; --panel2:#17180f;
+        --bg:#060705; --bg2:#0b0c09; --panel:rgba(14,15,8,.72); --panel2:rgba(22,23,14,.8);
         --line:#2c2d1e; --line-soft:#1e1f14;
         --ink:#f2edd8; --ink-dim:#bdb99f; --ink-faint:#8a876f;
         --green:#123c24; --green-deep:#0a1f12; --green-bright:#35a05c;
@@ -45,7 +45,12 @@
       *{box-sizing:border-box}
       html{scroll-behavior:smooth;background:#060705;color-scheme:dark}
       @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{animation:none!important;transition:none!important} }
-      body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+      /* body background stays TRANSPARENT on purpose: an opaque body
+         background paints OVER the fixed mural layer (body::before,
+         z-index:-2) and buries it — that is why the page rendered plain
+         black even though the mural was in the code. The dark fallback
+         color lives on html (the canvas), behind the mural. */
+      body{margin:0;background:transparent;color:var(--ink);font-family:var(--font);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
       img{max-width:100%;display:block}
       a{color:var(--gold-bright)}
       button,[role="button"],select,summary,input:not([type="checkbox"],[type="radio"]){min-height:2.25rem}
@@ -95,7 +100,7 @@
 
       /* player inside hero */
       .player-zone{margin-top:26px}
-      .player-card{background:rgba(8,9,5,.92);border:2px solid var(--gold);border-radius:10px;box-shadow:8px 8px 0 rgba(0,0,0,.6);overflow:hidden;display:grid;grid-template-columns:320px 1fr;color:#f2edd8;backdrop-filter:blur(4px)}
+      .player-card{background:rgba(8,9,5,.76);border:2px solid var(--gold);border-radius:10px;box-shadow:8px 8px 0 rgba(0,0,0,.6);overflow:hidden;display:grid;grid-template-columns:320px 1fr;color:#f2edd8;backdrop-filter:blur(4px)}
       .player-art{position:relative;aspect-ratio:1/1;align-self:start;background:#0a0b06}
       .player-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#0a0b06}
       .player-art .big-play{position:absolute;inset:0;margin:auto;width:92px;height:92px;border-radius:50%;border:3px solid #0a0a05;background:var(--red);color:#fff;font-size:1.8rem;display:grid;place-items:center;box-shadow:5px 5px 0 rgba(0,0,0,.65)}
@@ -210,6 +215,12 @@
       .promo-note p b{color:var(--ink)}
       .cid-note{margin:14px 0 0;padding:14px 16px;border:1.5px dashed var(--line);border-radius:8px;color:var(--ink-dim);font-size:.9rem;font-weight:600;line-height:1.55;background:var(--panel)}
       .cid-note b{color:var(--ink)}
+      /* free beats, trimmed: the promo terms and Content ID note run as
+         one line of fine print each instead of full-size panels */
+      .promo-note.slim{padding:11px 15px;margin-bottom:20px}
+      .promo-note.slim p{font-size:.82rem;line-height:1.5}
+      .cid-note.slim{font-size:.78rem;padding:10px 13px}
+      .free-fine{font-size:.78rem;color:var(--ink-faint);font-weight:600;margin:16px 0 0;line-height:1.5}
 
       /* ---------- free beats (YouTube) ---------- */
       .free-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:22px}
@@ -264,6 +275,13 @@
       /* ---------- vault : compact track list ---------- */
       .list-intro{color:var(--ink-dim);font-weight:600;margin:0 0 18px;max-width:64ch}
       .list-intro b{color:var(--ink)}
+      /* FOR SALE is the Vault's headline — bigger than the section name.
+         Everything explanatory in the Vault drops to fine print below it. */
+      .forsale-banner{font-family:var(--display);text-transform:uppercase;line-height:.88;letter-spacing:.01em;font-size:clamp(4.2rem,12.5vw,8.5rem);margin:2px 0 10px;color:var(--gold-bright);text-shadow:6px 6px 0 rgba(0,0,0,.65)}
+      .forsale-banner .out{color:transparent;-webkit-text-stroke:2.5px var(--gold-bright)}
+      .forsale-banner .red{color:var(--red);-webkit-text-stroke:0}
+      .vault-fine{font-size:.78rem!important;color:var(--ink-faint)!important;font-weight:600!important;line-height:1.5;max-width:72ch}
+      .vault-fine b{color:var(--ink-dim)}
       .list-note{font-family:var(--marker);color:var(--red);font-size:1rem;margin:14px 0 0;transform:rotate(-.6deg);transform-origin:left}
       .track-list{display:flex;flex-direction:column;background:var(--panel);border:2px solid var(--line);border-radius:10px;overflow:hidden;box-shadow:6px 6px 0 rgba(0,0,0,.28)}
       .track-row{display:flex;align-items:center;gap:14px;padding:10px 14px;border-bottom:1.5px solid var(--line-soft);cursor:pointer}
@@ -370,7 +388,7 @@
       /* ---------- papers : ID card ---------- */
       .papers-grid{display:grid;grid-template-columns:.92fr 1.08fr;gap:26px;align-items:center}
       @media (max-width:860px){ .papers-grid{grid-template-columns:1fr} }
-      .id-card{background:#0c0c07;color:#f2edd8;border:2px solid var(--gold);border-radius:10px;box-shadow:7px 7px 0 rgba(0,0,0,.4);padding:20px;transform:rotate(-1deg)}
+      .id-card{background:rgba(12,12,7,.88);color:#f2edd8;border:2px solid var(--gold);border-radius:10px;box-shadow:7px 7px 0 rgba(0,0,0,.4);padding:20px;transform:rotate(-1deg)}
       .id-card .id-head{display:flex;gap:14px;align-items:center;border-bottom:1.5px dashed #3a3b26;padding-bottom:14px;margin-bottom:6px}
       .id-card .id-head img{width:76px;height:76px;border-radius:50%;border:2px solid var(--gold);object-fit:contain;padding:4px;background:#000}
       .id-card .id-head b{font-family:var(--display);text-transform:uppercase;font-size:1.25rem;letter-spacing:.04em;display:block;line-height:1.1}
@@ -400,7 +418,7 @@
       .cta-in p{margin:0;color:#e6e0c6;font-weight:600}
 
       /* ---------- footer ---------- */
-      footer{border-top:3px solid var(--gold);background:#070704;color:#8a876f;padding:36px 0 48px;overflow:hidden}
+      footer{border-top:3px solid var(--gold);background:rgba(7,7,4,.6);color:#8a876f;padding:36px 0 48px;overflow:hidden}
       .foot-emblem{width:110px;height:110px;border-radius:50%;border:2px solid var(--gold);object-fit:contain;padding:5px;background:#000}
       .foot-giant{font-family:var(--display);text-transform:uppercase;font-size:clamp(2.2rem,7.5vw,5.2rem);line-height:.92;color:#f2edd8;margin:18px 0 6px}
       .foot-giant .out{color:transparent;-webkit-text-stroke:2px #f2edd8}
@@ -446,17 +464,28 @@
       .order-done p{font-size:.88rem;color:var(--ink-dim);margin:0 0 10px}
       .order-done a.btn{padding:10px 18px;min-height:2.6rem;font-size:.88rem}
 
-      /* ONE background only: the trap mural photo itself. No second dark
-         layer stacked over it — just a light scrim behind the words so
-         the text stays readable while the photo actually shows, on
-         desktop and on phones alike. */
-      .hero{position:relative;isolation:isolate;overflow:hidden;background:#0a0b06}
-      .hero::before{content:"";position:absolute;inset:0;z-index:-1;background:url("assets/hero-trap-mural.webp") center 32%/cover no-repeat;filter:brightness(1.14) saturate(1.06)}
-      .hero::after{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(90deg,rgba(4,5,3,.62) 0%,rgba(4,5,3,.34) 52%,rgba(4,5,3,.10) 82%,rgba(4,5,3,0) 100%);pointer-events:none}
+      /* ONE background for the WHOLE page: the trap mural photo, fixed
+         behind everything from hero to footer, so the trap look is on
+         display down the full page — not just in the hero, and not a
+         plain black page behind the sections. The hero no longer
+         carries its own copy of the photo (that was the "background
+         over a background" doubling); it only keeps a light scrim so
+         its words stay readable over the same one photo. The mural
+         runs BRIGHT and the wash over it stays THIN — crown, speakers,
+         drum machine and graffiti greens/golds are meant to be seen,
+         not buried — and the big panels are translucent (see --panel)
+         so the mural bleeds through the cards and the Vault list too,
+         not just the gaps between sections. */
+      body::before{content:"";position:fixed;inset:0;z-index:-2;background:url("assets/hero-trap-mural.webp") center 30%/cover no-repeat;filter:brightness(1.5) saturate(1.28) contrast(1.05)}
+      body::after{content:"";position:fixed;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(4,5,3,.1) 0%,rgba(4,5,3,.04) 38%,rgba(4,5,3,.12) 72%,rgba(4,5,3,.2) 100%);pointer-events:none}
+      .sec-head h2,.sec-head p,.list-intro{text-shadow:2px 2px 0 rgba(0,0,0,.8)}
+      .hero{position:relative;isolation:isolate;overflow:hidden;background:transparent}
+      .hero::after{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(90deg,rgba(4,5,3,.22) 0%,rgba(4,5,3,.06) 52%,rgba(4,5,3,0) 82%,rgba(4,5,3,0) 100%);pointer-events:none}
       .hero-in{position:relative;z-index:1}
       @media (max-width:640px){
-        .hero::before{background-position:center 26%;filter:brightness(1.22) saturate(1.08)}
-        .hero::after{background:linear-gradient(180deg,rgba(4,5,3,.40) 0%,rgba(4,5,3,.18) 55%,rgba(4,5,3,.48) 100%)}
+        body::before{background-position:center 24%;filter:brightness(1.58) saturate(1.3) contrast(1.05)}
+        body::after{background:linear-gradient(180deg,rgba(4,5,3,.14) 0%,rgba(4,5,3,.07) 45%,rgba(4,5,3,.22) 100%)}
+        .hero::after{background:linear-gradient(180deg,rgba(4,5,3,.12) 0%,rgba(4,5,3,.02) 55%,rgba(4,5,3,.14) 100%)}
       }
       .hero h1{text-shadow:4px 4px 0 rgba(0,0,0,.65)}
       .hero-line{text-shadow:2px 2px 0 rgba(0,0,0,.75)}
@@ -575,16 +604,67 @@
         </div>
       </section>
 <!-- VAULT -->
+      <!-- FEATURED BEAT : the player card is back — daily pick from the
+           Vault, full player, delivery and buy row. No section headline
+           above it (removed on request): the card speaks for itself,
+           straight after Credits and before the Vault list. All ids
+           below are wired by the featured-beat scripts: flatAudio /
+           flatPlay / flatBigPlay / flatSeek drive playback, and
+           setFeaturedBeat fills cover, title, pills, prices and
+           delivery from the day's pick. -->
+      <section id="featured" style="padding-top:34px;padding-bottom:6px">
+        <div class="wrap">
+          <div class="player-card flat-card" id="featCard">
+            <div class="player-art">
+              <img id="featCover" src="assets/flatline-cover.jpg" alt="Flatline cover art — gold crown over a vinyl record with a red label, FLATLINE in bold white letters" />
+              <span class="sticker feat-tag">Featured ★ For sale</span>
+              <button class="big-play" id="flatBigPlay" type="button" aria-label="Play Flatline">▶</button>
+              <span class="sticker red price-tag" id="featPriceTag">$599</span>
+            </div>
+            <div class="player-main">
+              <div class="player-eyebrow">
+                <img src="assets/crown-emblem.webp" alt="" />
+                <p class="player-tagline">Featured beat — for sale now</p>
+              </div>
+              <h3 class="player-title" id="featTitle">Flatline</h3>
+              <div class="pills" id="featPills"><span class="pill gold"><b>~129</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>B♭ minor</b></span><span class="pill"><b>3:28</b></span><span class="pill">Prod. Kill Will</span></div>
+              <div class="feat-switch-row">
+                <button class="sec-btn" id="featShuffle" type="button">↻ Switch — random beat</button>
+                <span class="feat-switch-note" id="featSwitchNote">Now featuring: Flatline — today's pick from the 31 beats for sale. A new random beat takes this spot tomorrow.</span>
+              </div>
+              <p class="autoplay-hint" id="featAutoplayHint" hidden>▶ Tap play — hear today's featured beat</p>
+              <div class="transport">
+                <button class="t-btn main" id="flatPlay" type="button" aria-label="Play or pause Flatline">▶</button>
+                <input class="flat-seek" id="flatSeek" type="range" min="0" max="208" step="0.1" value="0" aria-label="Seek through Flatline" />
+                <span class="time-lab"><span id="flatCur">0:00</span> / <span id="flatDur">3:28</span></span>
+              </div>
+              <div class="flat-deliver">
+                <span class="fd-row">You get: <b id="featDeliverFiles">MP3 + WAV master</b> — that's the full delivery.</span>
+                <span class="fd-no">No stems · No trackouts</span>
+                <span class="fd-fine" id="featDeliverFine">WAV converted from the MP3 master. If it's not listed here, it's not included.</span>
+              </div>
+              <div class="player-buy">
+                <span class="price-big" id="featPriceBig">$599<small>This beat · No leases</small></span>
+                <span class="you-get">First come, first served — once it sells, it's pulled for good. <b>Agreement + split sheet included.</b></span>
+                <button class="btn btn-gold flat-add" id="flatAdd" type="button" data-beat-id="flatline">Add to cart — $599</button>
+              </div>
+            </div>
+            <audio id="flatAudio" src="assets/flatline.mp3" preload="none" style="display:none"></audio>
+          </div>
+        </div>
+      </section>
+
+<!-- VAULT -->
       <section id="vault" class="dots-bg" style="padding-top:44px">
         <div class="wrap">
-          <div class="sec-head">
+          <div class="sec-head" style="margin-bottom:14px">
             <img class="sec-emblem" src="assets/crown-emblem.webp" alt="" />
             <div>
               <h2>The <span class="out">Vault</span></h2>
-              <p>Art first. Price on the sticker. First come, first served — grab it before somebody else does.</p>
             </div>
-            <span class="head-note" style="margin-left:auto">beats for sale ↓</span>
+            <span class="head-note" style="margin-left:auto">first come, first served ↓</span>
           </div>
+          <div class="forsale-banner" aria-label="Beats for sale">For <span class="red">Sale</span></div>
           <!-- THE LIST : all 31 beats for sale, compact rows.
                Rows are rendered from the BEATS catalog by the track-list
                script below the featured-beat script: cover thumb shown
@@ -594,7 +674,7 @@
                pinned to the bottom of the screen shows that track's
                cover, title and meta and carries prev / next and seek
                through the list. -->
-          <p class="list-intro">Use the search bubble to find a beat by name, BPM or key. Tap a row to hear it in full — the player bar at the bottom of the screen shows the beat that's playing, cover and all, and skips through the list. First come, first served — once a beat sells, it's pulled for good.</p>
+          <p class="list-intro vault-fine">Search by name, BPM or key. Tap a row to play it in full. <b>First come, first served — once a beat sells, it's pulled for good.</b></p>
           <div class="vault-search-wrap">
             <div class="search-bubble" role="search">
               <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M15.5 15.5 L21 21" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>
@@ -611,24 +691,17 @@
       <!-- FREE BEATS : daily random 10 from the full free catalog on YouTube -->
       <section id="free-beats" style="padding-top:44px;padding-bottom:8px">
         <div class="wrap">
-          <div class="sec-head">
+          <div class="sec-head" style="margin-bottom:16px">
             <img class="sec-emblem" src="assets/crown-emblem.webp" alt="" />
             <div>
               <h2>Free <span class="gld">Beats</span></h2>
-              <p>A fresh 10 every day — picked at random each morning from all 97 free beats on the channel. Watch each beat right here in the grid, or grab the MP3 download free. Free to use, not for sale.</p>
+              <p>A fresh 10 every day. Free to use — not for sale.</p>
             </div>
             <span class="head-note" style="margin-left:auto">free to use ↓</span>
           </div>
 
-          <div class="promo-note" role="note" aria-label="Free for promo use license">
-            <p class="promo-title">Free for promo use</p>
-            <p><b>FREE FOR PROMO USE</b> — Use these beats in your YouTube videos, mixtapes, freestyles and social content. Non-commercial use only — credit Kill Will. No strikes, no takedowns for promo use. Want to release a song commercially or sell it? That needs a paid license — check <a href="#vault">the Vault</a>.</p>
-          </div>
-
-          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px">
-            <span class="sticker red rot-l">Free ✕ Not for sale</span>
-            <span class="sticker rot-r">Daily 10 — fresh every morning</span>
-            <span class="sticker bone rot-l">Straight from YouTube</span>
+          <div class="promo-note slim" role="note" aria-label="Free for promo use license">
+            <p><b>Free for promo use</b> — YouTube videos, mixtapes, freestyles and social content. Non-commercial only, credit Kill Will. No strikes, no takedowns for promo use. Commercial release needs a paid license — see <a href="#vault">the Vault</a>.</p>
           </div>
 
           <!-- THE FREE GRID : today's 10 render here from the full
@@ -639,9 +712,9 @@
                a Download MP3 button. -->
           <div class="free-grid" id="freeList" aria-label="Today's 10 free beats"></div>
 
-          <p style="margin:20px 0 0;color:var(--ink-dim);font-weight:600;font-size:.92rem"><span id="viewsStatus">Views counted Nov 22, 2026.</span> Every free beat shown today comes with a free MP3 download — hit the green button on any card. A different random 10 from the full catalog shows up tomorrow. Looking to buy? The paid beats in <a href="#vault">the Vault</a> above are first come, first served, no leases — hurry up and buy, and placing an order opens an order email to Kill Will at <b>killwillmusic@gmail.com</b>.</p>
+          <p class="free-fine"><span id="viewsStatus">Views counted Nov 22, 2026.</span> Free MP3 on every card — hit the green button. A different random 10 shows up tomorrow.</p>
 
-          <p class="cid-note"><b>Content ID note — free beats only:</b> The free beats on this site and on YouTube are registered with Content ID, so YouTube may show a claim on videos using them — that claim just means the ad money goes to Kill Will, your video stays up. Promo use is always welcome. <b>This does not apply to paid beats</b> — beats bought from <a href="#vault">the Vault</a> are not covered by this note and come with their own full license.</p>
+          <p class="cid-note slim"><b>Content ID note — free beats only:</b> YouTube may show a claim on videos using these beats — the ad money goes to Kill Will, your video stays up. <b>Paid beats aren't covered by this note</b> — Vault beats come with their own full license.</p>
         </div>
       </section>
 
@@ -2023,9 +2096,7 @@
                 '<div class="free-meta">' +
                   '<span class="pill gold"><b data-view-count="' + beat.id + '">' + beat.v.toLocaleString("en-US") + '</b>&nbsp;views</span>' +
                   '<span class="pill">' + beat.d + '</span>' +
-                  '<span class="pill">' + beat.a + ' type</span>' +
                 '</div>' +
-                '<p class="free-note"><b>Free to use \u2014 not for sale.</b> Promo use only, credit Kill Will.</p>' +
                 '<div class="free-foot">' +
                   '<a class="dl-btn free-dl" href="' + DL_BASE + beat.s + '.mp3" download="Kill Will - ' + beat.t + '.mp3">\u2B07 Download MP3</a>' +
                 '</div>' +
