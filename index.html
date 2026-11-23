@@ -296,7 +296,7 @@
       .empty-note{border:2px dashed var(--line);border-radius:8px;padding:30px;text-align:center;color:var(--ink-dim);font-weight:700}
       .sold-line{margin-top:18px;font-family:var(--marker);font-size:1.05rem;color:var(--red);display:none}
 
-      /* ---------- featured : random rotation ---------- */
+      /* ---------- featured : daily random rotation ---------- */
       .feat-switch-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
       .feat-switch-note{font-size:.8rem;color:#bdb99f;font-weight:700}
       .player-card .player-art img,.player-card .player-title{transition:opacity .18s ease}
@@ -520,11 +520,11 @@
             <img class="sec-emblem" src="assets/crown-emblem.webp" alt="" />
             <div>
               <h2>Featured <span class="gld">Beat</span></h2>
-              <p>For sale now — one price, $599, sold once and gone for good. This spot rotates randomly through every beat for sale in the Vault. Press play and hear it in full.</p>
+              <p>For sale now — one price, $599, sold once and gone for good. One beat from the Vault holds this spot each day — a new random pick tomorrow. Press play and hear it in full.</p>
             </div>
-            <span class="head-note" style="margin-left:auto">random pick ↓</span>
+            <span class="head-note" style="margin-left:auto">today's pick ↓</span>
           </div>
-          <!-- FEATURED BEAT : random pick from the for-sale Vault beats, above Free Beats -->
+          <!-- FEATURED BEAT : daily random pick from the for-sale Vault beats, above Free Beats -->
           <div class="player-card flat-card" id="featCard">
             <div class="player-art">
               <img id="featCover" src="assets/flatline-cover.jpg" alt="Flatline cover art — gold crown over a vinyl record with a red label, FLATLINE in bold white letters" />
@@ -546,7 +546,7 @@
               </div>
               <div class="feat-switch-row">
                 <button class="sec-btn" id="featShuffle" type="button">↻ Switch — random beat</button>
-                <span class="feat-switch-note" id="featSwitchNote">Random pick from the Vault — switches on its own while nothing's playing.</span>
+                <span class="feat-switch-note" id="featSwitchNote">Today's pick from the Vault — a new random beat takes this spot tomorrow.</span>
               </div>
               <div class="wave-box">
                 <div class="transport">
@@ -1372,15 +1372,16 @@
         setupPlayer("dbl", ["flatAudio", "dripAudio", "sunAudio"]);
       })();
 
-      /* ============ featured beat : random rotation through the for-sale beats ============
-         The Featured slot at the top is not locked to one beat. On load it
-         picks one of the for-sale Vault beats (BEATS) at random; the
-         Shuffle button jumps to a different random one; and while the
-         featured player sits idle (nothing playing, position at the start)
-         it switches to another random beat every 20 seconds. Playback,
-         seek and Add to Cart always follow whichever beat is featured —
-         the featured Add button adds that beat, and the Vault card for the
-         same beat stays in sync. */
+      /* ============ featured beat : daily random rotation through the for-sale beats ============
+         The Featured slot holds one beat per day. The pick is seeded by
+         the calendar date (local time), so every visitor sees the same
+         beat all day and a new random beat takes the spot tomorrow —
+         reloading the page no longer changes it. The Shuffle button still
+         jumps to a different random beat on demand. If the page stays open
+         past midnight, it rolls over to the new day's pick once the player
+         is idle. Playback, seek and Add to Cart always follow whichever
+         beat is featured — the featured Add button adds that beat, and
+         the Vault card for the same beat stays in sync. */
       var FEAT_EXTRA = {
         flatline: { seconds:208,
           coverAlt:"Flatline cover art — gold crown over a vinyl record with a red label, FLATLINE in bold white letters",
@@ -1453,7 +1454,7 @@
         var addBtn = document.getElementById("flatAdd");
         if (addBtn) addBtn.setAttribute("data-beat-id", id);
         var note = document.getElementById("featSwitchNote");
-        if (note) note.textContent = "Now featuring: " + beat.title + " — random pick from the " + BEATS.length + " beats for sale. Switches on its own while nothing's playing.";
+        if (note) note.textContent = "Now featuring: " + beat.title + " — today's pick from the " + BEATS.length + " beats for sale. A new random beat takes this spot tomorrow.";
         syncFeaturedAddBtn();
         if (card) setTimeout(function(){ card.classList.remove("feat-fading"); }, 200);
       }
@@ -1461,6 +1462,32 @@
         var pool = BEATS.filter(function(b){ return b.id !== excludeId; });
         if (!pool.length) pool = BEATS;
         return pool[Math.floor(Math.random() * pool.length)].id;
+      }
+      /* Date-seeded pick: same beat all day (local date), new random
+         beat tomorrow. Hashing the YYYY-MM-DD string keeps the choice
+         stable across reloads without any storage. Yesterday's pick is
+         excluded so the spot always changes overnight. */
+      function dailyFeaturedId(forDate){
+        var d = forDate || new Date();
+        function dayKey(dt){
+          return dt.getFullYear() + "-" + String(dt.getMonth() + 1).padStart(2, "0") + "-" + String(dt.getDate()).padStart(2, "0");
+        }
+        function dayIndex(dt){
+          var key = dayKey(dt);
+          var h = 0;
+          for (var i = 0; i < key.length; i++){ h = ((h << 5) - h + key.charCodeAt(i)) | 0; }
+          return Math.abs(h) % BEATS.length;
+        }
+        var idx = dayIndex(d);
+        var yesterday = new Date(d.getFullYear(), d.getMonth(), d.getDate() - 1);
+        if (BEATS.length > 1 && dayIndex(yesterday) === idx){
+          idx = (idx + 1) % BEATS.length;
+        }
+        return BEATS[idx].id;
+      }
+      function currentDayKey(){
+        var d = new Date();
+        return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
       }
       (function(){
         var addBtn = document.getElementById("flatAdd");
@@ -1485,17 +1512,20 @@
             setFeaturedBeat(randomFeaturedId(currentFeaturedId));
           });
         }
-        /* random beat on every page load */
-        setFeaturedBeat(randomFeaturedId(null));
-        /* idle auto-switch: only when the featured player isn't mid-listen */
+        /* daily pick: same featured beat all day, new random beat tomorrow */
+        var featDayKey = currentDayKey();
+        setFeaturedBeat(dailyFeaturedId());
+        /* midnight rollover: if the page is still open when the day
+           turns, move to the new day's pick once the player is idle */
         setInterval(function(){
-          if (document.hidden) return;
+          var key = currentDayKey();
+          if (key === featDayKey) return;
           var audio = document.getElementById("flatAudio");
-          if (!audio) return;
-          if (!audio.paused) return;
-          if (audio.currentTime > 0.5 && !audio.ended) return;
-          setFeaturedBeat(randomFeaturedId(currentFeaturedId));
-        }, 20000);
+          if (audio && !audio.paused) return;
+          if (audio && audio.currentTime > 0.5 && !audio.ended) return;
+          featDayKey = key;
+          setFeaturedBeat(dailyFeaturedId());
+        }, 30000);
       })();
 
       /* ============ cart drawer ============ */
