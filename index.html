@@ -479,8 +479,16 @@
       .field{display:grid;gap:6px;font-size:.85rem;font-weight:700}
       .field input{background:var(--panel);border:2px solid var(--line);border-radius:8px;color:var(--ink);padding:11px 13px;font-family:var(--font);font-size:.95rem;width:100%}
       .field input:focus{outline:none;border-color:var(--gold)}
-      .checkout-btn{background:var(--red);color:#fff;border:2px solid #0a0a05;border-radius:6px;box-shadow:4px 4px 0 #0a0a05;font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;font-size:1.05rem;padding:15px;width:100%}
+      .checkout-btn{background:var(--red);color:#fff;border:2px solid #0a0a05;border-radius:6px;box-shadow:4px 4px 0 #0a0a05;font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;font-size:1.05rem;padding:15px;width:100%;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;text-align:center;min-height:3.2rem}
       .checkout-btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 #0a0a05}
+      .checkout-btn.secondary{background:var(--gold);color:var(--gold-ink)}
+      .ci-pay{display:inline-flex;align-items:center;justify-content:center;margin-top:10px;background:var(--red);color:#fff;border:2px solid #0a0a05;border-radius:6px;box-shadow:3px 3px 0 #0a0a05;font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;font-size:.84rem;padding:9px 14px;text-decoration:none;line-height:1}
+      .ci-pay:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #0a0a05}
+      .ci-pay.paid{background:var(--green-bright)}
+      .ci-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+      .cart-hold-note{border:1.5px dashed var(--red);border-radius:8px;padding:10px 13px;background:rgba(224,49,30,.08);color:var(--ink);font-size:.86rem;font-weight:700;line-height:1.5;margin:0}
+      .cart-progress{border:1.5px solid var(--green-bright);border-radius:8px;padding:10px 13px;background:var(--green-deep);color:var(--ink);font-size:.9rem;font-weight:800;line-height:1.5;margin:0}
+      .cart-progress[hidden]{display:none}
       .drawer-note{font-size:.8rem;color:var(--ink-faint)}
       .order-done{border:2px solid var(--green-bright);border-radius:8px;padding:16px;background:var(--panel);display:none}
       .order-done h4{margin:0 0 8px;color:var(--green-bright)}
@@ -793,7 +801,7 @@
             <div class="step">
               <span class="big-num">01</span>
               <svg class="step-icon" viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="24" fill="#e0311e" stroke="#0a0a05" stroke-width="2.5"/><path d="M21 17 L37 26 L21 35 Z" fill="#fff"/></svg>
-              <h3>Press play</h3><p>Every beat plays in full — no short clips. Jump sections, switch the key.</p>
+              <h3>Press play</h3><p>Every beat plays in full — no short clips. Jump to any section.</p>
             </div>
             <div class="step">
               <span class="big-num">02</span>
@@ -803,7 +811,7 @@
             <div class="step">
               <span class="big-num">03</span>
               <svg class="step-icon" viewBox="0 0 52 52" aria-hidden="true"><path d="M26 4 C30 14 40 18 40 30 a14 14 0 1 1 -28 0 C12 18 22 14 26 4Z" fill="#e0311e" stroke="#0a0a05" stroke-width="2.5"/><path d="M26 22 C28 27 32 29 32 35 a6 6 0 1 1 -12 0 C20 29 24 27 26 22Z" fill="#eec95e"/></svg>
-              <h3>First come, first served</h3><p>First buyer gets it. Once it sells, it's pulled forever — nobody else can buy it. Files on the card + signed papers are yours.</p>
+              <h3>First come, first served</h3><p>First buyer gets it. Once it sells, it's pulled forever — nobody else can buy it. Files on the card are yours.</p>
             </div>
           </div>
         </div>
@@ -851,7 +859,7 @@
                 <span class="sticker black rot-l">First come, first served</span>
               </div>
               <button class="btn btn-gold" id="dlAgreement" type="button">Download agreement + split sheet</button>
-              <p class="fineprint">Standard form, not legal advice — worth a lawyer's once-over before a major release. Full publishing details are in the documents, not on this page.</p>
+              <p class="fineprint">Standard form, not legal advice — worth a lawyer's once-over before a major release.</p>
             </div>
             <div class="id-card">
               <div class="id-head">
@@ -860,7 +868,7 @@
                 <span class="sticker" style="margin-left:auto">Docs ✓</span>
               </div>
               <div class="doc-row"><span>Agreement</span><b>Included with every sale</b></div>
-              <div class="doc-row"><span>Split sheet</span><b>Included — filled per song</b></div>
+              <div class="doc-row"><span>Split sheet</span><b>Included</b></div>
               <div class="doc-row"><span>Files you get</span><b>Exactly as listed on the beat card</b></div>
               <div class="doc-row"><span>Availability</span><b>First come, first served</b></div>
               <div class="doc-row"><span>After it sells</span><b>Pulled from the store for good</b></div>
@@ -964,20 +972,13 @@
       <div class="drawer-body">
         <div id="cartItems"></div>
         <p class="drawer-note" id="cartEmpty">Your cart is empty. First come, first served — every beat sells once, then it's gone for good.</p>
+        <p class="cart-hold-note">Adding to cart doesn't hold a beat — the first buyer to pay takes it.</p>
         <div class="cart-total" id="cartTotalRow" style="display:none"><span>Total</span><span id="cartTotal">$0</span></div>
         <div class="cart-ap" id="cartApRow" style="display:none"><span id="cartApText"></span></div>
-        <form id="orderForm" style="display:none;flex-direction:column;gap:12px">
-          <label class="field">Your name<input name="buyer" required autocomplete="name" placeholder="Full name" /></label>
-          <label class="field">Email for delivery<input name="email" type="email" required autocomplete="email" placeholder="you@email.com" /></label>
-          <label class="field">Artist name (for the agreement)<input name="artist" placeholder="Your artist name" /></label>
-          <button class="checkout-btn" type="submit">Place order</button>
-          <p class="drawer-note">Placing an order opens your email with the full order addressed to Kill Will at killwillmusic@gmail.com and downloads your agreement — hit send in your email to notify him and place the order request. Hurry up and buy — first come, first served. Pay in full or over time with Afterpay.</p>
-        </form>
-        <div class="order-done" id="orderDone">
-          <h4>Order drafted ✓</h4>
-          <p id="orderDoneText"></p>
-          <a class="btn btn-gold" id="orderMailBtn" href="mailto:killwillmusic@gmail.com">Open the order email</a>
-          <p class="drawer-note" style="margin-top:10px" id="orderDoneNote">If the email doesn't open, your agreement download has the full order details on it.</p>
+        <div id="cartCheckout" style="display:none;flex-direction:column;gap:12px">
+          <div id="cartCheckoutActions" style="display:flex;flex-direction:column;gap:10px"></div>
+          <p class="cart-progress" id="cartCheckoutProgress" hidden></p>
+          <p class="drawer-note">Checkout opens Stripe — Stripe collects your email and payment details itself. Pay in full or over time with Afterpay where Stripe offers it.</p>
         </div>
       </div>
     </aside>
@@ -993,152 +994,180 @@
          no tiers. Afterpay options are figured per beat from its own
          price — see apOption below. */
       var BEATS = [
-        { id:"flatline", title:"Flatline", price:599, bpm:"~129 BPM", key:"B♭ minor", len:"3:28",
+        { id:"flatline", title:"Flatline", price:599, stripeUrl:"https://buy.stripe.com/8x214ncMadUr7nq2SwfrW00", bpm:"~129 BPM", key:"B♭ minor", len:"3:28",
           files:["MP3","WAV master"], noStems:true,
           deliverNote:"MP3 + WAV master only — no stems, no trackouts. WAV converted from the MP3 master.",
           audio:"assets/flatline.mp3", cover:"assets/flatline-cover.jpg" },
-        { id:"dripcheck", title:"Drip Check", price:599, bpm:"~150 BPM", key:"A major", len:"2:50",
+        { id:"dripcheck", title:"Drip Check", price:599, stripeUrl:"https://buy.stripe.com/cNi7sL27w03BfTWdxafrW01", bpm:"~150 BPM", key:"A major", len:"2:50",
           files:["WAV master","MP3"], noStems:true,
           deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master, 16-bit / 44.1kHz stereo.",
           audio:"assets/drip-check.mp3", cover:"assets/drip-check-cover.jpg" },
-        { id:"sunup", title:"Sun Up", price:599, bpm:"~144 BPM", key:"A minor", len:"3:40",
+        { id:"sunup", title:"Sun Up", price:599, stripeUrl:"https://buy.stripe.com/8x29ATaE23fNbDGct6frW02", bpm:"~144 BPM", key:"A minor", len:"3:40",
           files:["WAV master","MP3"], noStems:true,
           deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master, 16-bit / 44.1kHz stereo, 38 MB.",
           audio:"assets/sun-up.mp3", cover:"assets/sun-up-cover.jpg" },
-        { id:"doubledown", title:"Double Down", price:599, bpm:"~129 BPM (half-time feel 65)", key:"A major", len:"4:01",
+        { id:"doubledown", title:"Double Down", price:599, stripeUrl:"https://buy.stripe.com/bJeeVd5jIg2z37aeBefrW03", bpm:"~129 BPM (half-time feel 65)", key:"A major", len:"4:01",
           files:["WAV master","MP3"], noStems:true,
           deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master, 16-bit / 44.1kHz stereo, 43 MB.",
           audio:"assets/double-down.mp3", cover:"assets/double-down-cover.jpg" },
-        { id:"purge-night", title:"Graveyard Shift", price:599, bpm:"~150 BPM", key:"G minor", len:"3:29",
+        { id:"purge-night", title:"Graveyard Shift", price:599, stripeUrl:"https://buy.stripe.com/fZubJ1aE26rZ7nq64IfrW0c", bpm:"~150 BPM", key:"G minor", len:"3:29",
           files:["WAV master","MP3"], noStems:true,
           deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
           audio:"assets/purge-night.mp3", cover:"assets/graveyard-shift-cover.jpg" },
-        { id:"redline", title:"Redline", price:599, bpm:"~144 BPM", key:"G major", len:"2:58",
+        { id:"redline", title:"Redline", price:599, stripeUrl:"https://buy.stripe.com/dRm9AT6nM4jR37adxafrW09", bpm:"~144 BPM", key:"G major", len:"2:58",
           files:["WAV master","MP3"], noStems:true,
           deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
           audio:"assets/redline.mp3", cover:"assets/redline-cover.jpg" },
-        { id:"blackout", title:"Blackout", price:599, bpm:"~144 BPM", key:"F minor", len:"3:40",
+        { id:"blackout", title:"Blackout", price:599, stripeUrl:"https://buy.stripe.com/7sY9ATeUi7w3fTW64IfrW08", bpm:"~144 BPM", key:"F minor", len:"3:40",
           files:["WAV master","MP3"], noStems:true,
           deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
           audio:"assets/blackout.mp3", cover:"assets/blackout-cover.jpg" },
-        { id:"overtime", title:"Overtime", price:599, bpm:"~120 BPM", key:"D♯ minor", len:"4:17",
+        { id:"overtime", title:"Overtime", price:599, stripeUrl:"https://buy.stripe.com/cNieVd9zY5nV6jmgJmfrW0b", bpm:"~120 BPM", key:"D♯ minor", len:"4:17",
           files:["WAV master","MP3"], noStems:true,
           deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
           audio:"assets/overtime.mp3", cover:"assets/overtime-cover.jpg" },
-        { id:"flooded", title:"Flooded", price:599, bpm:"~150 BPM", key:"D minor", len:"3:55",
+        { id:"flooded", title:"Flooded", price:599, stripeUrl:"https://buy.stripe.com/3cIeVddQe5nVdLOeBefrW05", bpm:"~150 BPM", key:"D minor", len:"3:55",
           files:["WAV master","MP3"], noStems:true,
           deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
           audio:"assets/flooded.mp3", cover:"assets/flooded-cover.jpg" },
-        { id:"zaza", title:"Zaza", price:599, bpm:"~123 BPM", key:"F♯ minor", len:"3:26",
+        { id:"zaza", title:"Zaza", price:599, stripeUrl:"https://buy.stripe.com/eVq3cvaE2bMj7nq9gUfrW0a", bpm:"~123 BPM", key:"F♯ minor", len:"3:26",
           files:["WAV master","MP3"], noStems:true,
           deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
           audio:"assets/zaza.mp3", cover:"assets/zaza-cover.jpg" },
-        { id:"day-one", title:"Day One", price:599, bpm:"~150 BPM", key:"F major", len:"2:50",
+        { id:"day-one", title:"Day One", price:599, stripeUrl:"https://buy.stripe.com/7sY8wPcMa9Eb6jmgJmfrW06", bpm:"~150 BPM", key:"F major", len:"2:50",
           files:["WAV master","MP3"], noStems:true,
           deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
           audio:"assets/day-one.mp3", cover:"assets/day-one-cover.jpg" },
-        { id:"heavy-drip", title:"Heavy Drip", price:599, bpm:"~136 BPM", key:"F♯ minor", len:"3:05",
+        { id:"heavy-drip", title:"Heavy Drip", price:599, stripeUrl:"https://buy.stripe.com/4gMeVd27w5nVcHK50EfrW04", bpm:"~136 BPM", key:"F♯ minor", len:"3:05",
           files:["WAV master","MP3"], noStems:true,
           deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
           audio:"assets/heavy-drip.mp3", cover:"assets/heavy-drip-cover.jpg" },
-        { id:"big-plays", title:"Big Plays", price:599, bpm:"~123 BPM", key:"F♯ major", len:"3:11",
+        { id:"big-plays", title:"Big Plays", price:599, stripeUrl:"https://buy.stripe.com/6oU7sL3bA2bJdLOeBefrW07", bpm:"~123 BPM", key:"F♯ major", len:"3:11",
           files:["WAV master","MP3"], noStems:true,
           deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
           audio:"assets/big-plays.mp3", cover:"assets/big-plays-cover.jpg" },
-        { id:"street-lights", title:"Street Lights", price:599, bpm:"~129 BPM", key:"B minor", len:"3:16",
+        { id:"street-lights", title:"Street Lights", price:599, stripeUrl:"https://buy.stripe.com/cNi4gz5jIeYvdLOct6frW0e", bpm:"~129 BPM", key:"B minor", len:"3:16",
           files:["WAV master","MP3"], noStems:true,
           deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
           audio:"assets/street-lights.mp3", cover:"assets/street-lights-cover.jpg" },
-        { id:"new-wave", title:"New Wave", price:599, bpm:"~129 BPM", key:"C♯ minor", len:"3:31",
+        { id:"new-wave", title:"New Wave", price:599, stripeUrl:"https://buy.stripe.com/aFa4gz3bAg2z37a50EfrW0g", bpm:"~129 BPM", key:"C♯ minor", len:"3:31",
           files:["WAV master","MP3"], noStems:true,
           deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
           audio:"assets/new-wave.mp3", cover:"assets/new-wave-cover.jpg" },
-        { id:"after-midnight", title:"After Midnight", price:599, bpm:"~120 BPM", key:"F♯ minor", len:"3:29",
+        { id:"after-midnight", title:"After Midnight", price:599, stripeUrl:"https://buy.stripe.com/eVqfZhdQe17FbDGfFifrW0f", bpm:"~120 BPM", key:"F♯ minor", len:"3:29",
           files:["WAV master","MP3"], noStems:true,
           deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
           audio:"assets/after-midnight.mp3", cover:"assets/after-midnight-cover.jpg" },
-        { id:"new-era", title:"New Era", price:599, bpm:"~136 BPM", key:"D♯ major", len:"3:02",
+        { id:"new-era", title:"New Era", price:599, stripeUrl:"https://buy.stripe.com/8x2eVdh2q03BazC9gUfrW0i", bpm:"~136 BPM", key:"D♯ major", len:"3:02",
           files:["WAV master","MP3"], noStems:true,
           deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
           audio:"assets/new-era.mp3", cover:"assets/new-era-cover.jpg" },
-        { id:"double-cup", title:"Double Cup", price:599, bpm:"~136 BPM", key:"C♯ major", len:"3:07",
+        { id:"double-cup", title:"Double Cup", price:599, stripeUrl:"https://buy.stripe.com/4gMaEXh2q5nVazC50EfrW0l", bpm:"~136 BPM", key:"C♯ major", len:"3:07",
           files:["WAV master","MP3"], noStems:true,
           deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
           audio:"assets/double-cup.mp3", cover:"assets/double-cup-cover.jpg" },
-        { id:"drip-god", title:"Drip God", price:599, bpm:"~129 BPM", key:"F♯ minor", len:"3:14",
+        { id:"drip-god", title:"Drip God", price:599, stripeUrl:"https://buy.stripe.com/5kQ5kDeUi17FazC50EfrW0k", bpm:"~129 BPM", key:"F♯ minor", len:"3:14",
           files:["WAV master","MP3"], noStems:true,
           deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
           audio:"assets/drip-god.mp3", cover:"assets/drip-god-cover.jpg" },
-        { id:"trap-house", title:"Trap House", price:599, bpm:"~144 BPM", key:"A minor", len:"2:44",
+        { id:"trap-house", title:"Trap House", price:599, stripeUrl:"https://buy.stripe.com/00wcN5bI62bJfTW2SwfrW0h", bpm:"~144 BPM", key:"A minor", len:"2:44",
           files:["WAV master","MP3"], noStems:true,
           deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
           audio:"assets/trap-house.mp3", cover:"assets/trap-house-cover.jpg" },
-        { id:"nightmare", title:"Nightmare", price:599, bpm:"~150 BPM", key:"G minor", len:"2:50",
+        { id:"nightmare", title:"Nightmare", price:599, stripeUrl:"https://buy.stripe.com/14AfZh8vU17F37aakYfrW0d", bpm:"~150 BPM", key:"G minor", len:"2:50",
           files:["WAV master","MP3"], noStems:true,
           deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
           audio:"assets/nightmare.mp3", cover:"assets/nightmare-cover.jpg" },
-        { id:"frostbite", title:"Frostbite", price:599, bpm:"~144 BPM", key:"C♯ major", len:"2:59",
+        { id:"frostbite", title:"Frostbite", price:599, stripeUrl:"https://buy.stripe.com/fZu14n9zY7w3fTWbp2frW0j", bpm:"~144 BPM", key:"C♯ major", len:"2:59",
           files:["WAV master","MP3"], noStems:true,
           deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
           audio:"assets/frostbite.mp3", cover:"assets/frostbite-cover.jpg" },
-        { id:"short-fuse", title:"Short Fuse", price:599, bpm:"~200 BPM", key:"D minor", len:"2:07",
+        { id:"short-fuse", title:"Short Fuse", price:599, stripeUrl:"https://buy.stripe.com/fZu00j9zYdUr2363WAfrW0u", bpm:"~200 BPM", key:"D minor", len:"2:07",
           files:["WAV master","MP3"], noStems:true,
           deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
           audio:"assets/short-fuse.mp3", cover:"assets/short-fuse-cover.jpg" },
-        { id:"last-call", title:"Last Call", price:599, bpm:"~192 BPM", key:"A minor", len:"2:12",
+        { id:"last-call", title:"Last Call", price:599, stripeUrl:"https://buy.stripe.com/5kQbJ1h2q03B23664IfrW0o", bpm:"~192 BPM", key:"A minor", len:"2:12",
           files:["WAV master","MP3"], noStems:true,
           deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
           audio:"assets/last-call.mp3", cover:"assets/last-call-cover.jpg" },
-        { id:"night-vision", title:"Night Vision", price:599, bpm:"~129 BPM", key:"D minor", len:"3:09",
+        { id:"night-vision", title:"Night Vision", price:599, stripeUrl:"https://buy.stripe.com/4gMbJ18vU9EbcHKeBefrW0m", bpm:"~129 BPM", key:"D minor", len:"3:09",
           files:["WAV master","MP3"], noStems:true,
           deliverNote:"WAV master + MP3 only — no stems, no trackouts. WAV converted from the MP3 master.",
           audio:"assets/night-vision.mp3", cover:"assets/night-vision-cover.jpg" },
-        { id:"sixth-sense", title:"Sixth Sense", price:599, bpm:"~129 BPM", key:"F minor", len:"3:13",
+        { id:"sixth-sense", title:"Sixth Sense", price:599, stripeUrl:"https://buy.stripe.com/eVq9ATeUi4jR4be2SwfrW0n", bpm:"~129 BPM", key:"F minor", len:"3:13",
           files:["WAV master","MP3"], noStems:true,
           deliverNote:"WAV master + MP3 only — no stems, no trackouts. WAV converted from the MP3 master.",
           audio:"assets/sixth-sense.mp3", cover:"assets/sixth-sense-cover.jpg" },
-        { id:"next-up", title:"Next Up", price:599, bpm:"~129 BPM", key:"D minor", len:"3:14",
+        { id:"next-up", title:"Next Up", price:599, stripeUrl:"https://buy.stripe.com/4gMaEX5jI6rZ37a8cQfrW0t", bpm:"~129 BPM", key:"D minor", len:"3:14",
           files:["WAV master","MP3"], noStems:true,
           deliverNote:"WAV master + MP3 only — no stems, no trackouts. WAV converted from the MP3 master.",
           audio:"assets/next-up.mp3", cover:"assets/next-up-cover.jpg" },
-        { id:"triple-threat", title:"Triple Threat", price:599, bpm:"~123 BPM", key:"C♯ major", len:"3:28",
+        { id:"triple-threat", title:"Triple Threat", price:599, stripeUrl:"https://buy.stripe.com/7sY00jfYm17F5fi50EfrW0q", bpm:"~123 BPM", key:"C♯ major", len:"3:28",
           files:["WAV master","MP3"], noStems:true,
           deliverNote:"WAV master + MP3 only — no stems, no trackouts. WAV converted from the MP3 master.",
           audio:"assets/triple-threat.mp3", cover:"assets/triple-threat-cover.jpg" },
-        { id:"rare-breed", title:"Rare Breed", price:599, bpm:"~129 BPM", key:"D♯ minor", len:"3:32",
+        { id:"rare-breed", title:"Rare Breed", price:599, stripeUrl:"https://buy.stripe.com/8x2aEX13sg2z5fict6frW0p", bpm:"~129 BPM", key:"D♯ minor", len:"3:32",
           files:["WAV master","MP3"], noStems:true,
           deliverNote:"WAV master + MP3 only — no stems, no trackouts. WAV converted from the MP3 master.",
           audio:"assets/rare-breed.mp3", cover:"assets/rare-breed-cover.jpg" },
-        { id:"getaway", title:"Getaway", price:599, bpm:"~129 BPM", key:"F♯ major", len:"3:15",
+        { id:"getaway", title:"Getaway", price:599, stripeUrl:"https://buy.stripe.com/5kQ7sLbI6bMj2362SwfrW0s", bpm:"~129 BPM", key:"F♯ major", len:"3:15",
           files:["WAV master","MP3"], noStems:true,
           deliverNote:"WAV master + MP3 only — no stems, no trackouts. WAV converted from the MP3 master.",
           audio:"assets/getaway.mp3", cover:"assets/getaway-cover.jpg" },
-        { id:"lucky-eleven", title:"Lucky Eleven", price:599, bpm:"~136 BPM", key:"E minor", len:"3:21",
+        { id:"lucky-eleven", title:"Lucky Eleven", price:599, stripeUrl:"https://buy.stripe.com/bJebJ18vU03BdLO0KofrW0r", bpm:"~136 BPM", key:"E minor", len:"3:21",
           files:["WAV master","MP3"], noStems:true,
           deliverNote:"WAV master + MP3 only — no stems, no trackouts. WAV converted from the MP3 master.",
           audio:"assets/lucky-eleven.mp3", cover:"assets/lucky-eleven-cover.jpg" }
       ];
 
-      /* ============ owner notification — orders ============
-         Orders notify the owner at killwillmusic@gmail.com through the
-         buyer-initiated order email itself: placing an order drafts a
-         full order email addressed to that inbox (see the orderForm
-         handler below) and the buyer hits send to deliver it. That is
-         an order request/draft, not a completed payment — no payment
-         is taken on this page yet. This static page has no server, so
-         it cannot silently email the owner on a free-beat download:
-         silent download alerts need a server-backed endpoint or an
-         email relay in the owner's own account. No download or buyer
-         data is posted to any third-party relay from this page. */
+      /* ============ payments ============
+         Payment is taken on Stripe via each beat's own Payment Link
+         (see the cart code below) — Stripe is the checkout and the
+         payment record. This static page has no server, so it cannot
+         silently email the owner on a free-beat download: silent
+         download alerts need a server-backed endpoint or an email
+         relay in the owner's own account. No download or buyer data
+         is posted to any third-party relay from this page. */
 
-      /* ============ cart ============ */
+      /* ============ cart ============
+         Checkout is Stripe Payment Links — one link per beat, each
+         beat's own stripeUrl in the catalog above. No name/email form
+         on this page: Stripe collects the buyer's email and payment
+         details itself. The cart persists in localStorage so it
+         survives the trip to Stripe and back. */
+      var CART_KEY = "kwb_cart_ids_v1";
+      var PAID_KEY = "kwb_checkout_paid_ids_v1";
+      var PENDING_KEY = "kwb_checkout_pending_id_v1";
       var cart = [];
+      var paidIds = [];
+      var checkoutPendingId = null;
+      try {
+        var savedPaid = JSON.parse(localStorage.getItem(PAID_KEY) || "[]");
+        if (Array.isArray(savedPaid)) paidIds = savedPaid.filter(function(x){ return typeof x === "string"; });
+        checkoutPendingId = localStorage.getItem(PENDING_KEY) || null;
+        var savedIds = JSON.parse(localStorage.getItem(CART_KEY) || "[]");
+        if (Array.isArray(savedIds)) {
+          savedIds.forEach(function(id){
+            BEATS.forEach(function(b){ if (b.id === id && !cart.some(function(x){ return x.id === id; })) cart.push(b); });
+          });
+        }
+      } catch(e){ cart = []; paidIds = []; checkoutPendingId = null; }
+      function saveCartState(){
+        try {
+          localStorage.setItem(CART_KEY, JSON.stringify(cart.map(function(b){ return b.id; })));
+          localStorage.setItem(PAID_KEY, JSON.stringify(paidIds));
+          if (checkoutPendingId) localStorage.setItem(PENDING_KEY, checkoutPendingId);
+          else localStorage.removeItem(PENDING_KEY);
+        } catch(e){}
+      }
       var cartCount = document.getElementById("cartCount");
       var cartItems = document.getElementById("cartItems");
       var cartEmpty = document.getElementById("cartEmpty");
       var cartTotalRow = document.getElementById("cartTotalRow");
       var cartTotal = document.getElementById("cartTotal");
-      var orderForm = document.getElementById("orderForm");
+      var cartCheckout = document.getElementById("cartCheckout");
+      var cartCheckoutActions = document.getElementById("cartCheckoutActions");
+      var cartCheckoutProgress = document.getElementById("cartCheckoutProgress");
       function money(n){ return "$" + n.toLocaleString("en-US"); }
       /* Afterpay, figured from the beat's OWN price every time —
          never a hardcoded split. Pay in 4 (interest-free) only works
@@ -1163,10 +1192,33 @@
           ? "or 4 interest-free payments of " + o.amt + " with Afterpay"
           : "or monthly installments with Afterpay — 6 or 12 months (interest applies)";
       }
+      function beatByIdCart(id){ var f = null; BEATS.forEach(function(b){ if (b.id === id) f = b; }); return f; }
+      function nextUnpaidBeat(){
+        var f = null;
+        cart.forEach(function(b){ if (!f && paidIds.indexOf(b.id) === -1) f = b; });
+        return f;
+      }
+      function openStripeFor(beat){
+        if (!beat || !beat.stripeUrl) return;
+        checkoutPendingId = beat.id;
+        saveCartState();
+        window.open(beat.stripeUrl, "_blank", "noopener");
+        renderCart();
+      }
+      function markPendingPaid(){
+        if (checkoutPendingId && paidIds.indexOf(checkoutPendingId) === -1) paidIds.push(checkoutPendingId);
+        checkoutPendingId = null;
+        saveCartState();
+        var next = nextUnpaidBeat();
+        if (next) openStripeFor(next);
+        else renderCart();
+      }
       function renderCart(){
+        saveCartState();
         cartCount.textContent = cart.length;
         cartItems.innerHTML = "";
         var total = 0;
+        var multi = cart.length > 1;
         cart.forEach(function(b){
           total += b.price;
           var item = document.createElement("div"); item.className = "cart-item";
@@ -1177,25 +1229,98 @@
           var meta = document.createElement("p");
           meta.textContent = b.bpm + " · " + b.key + " · " + b.len + " — you get: " + b.files.join(" + ") + (b.noStems ? ". No stems, no trackouts." : ".") + " Exclusive sale — first come, first served. Agreement + split sheet included.";
           item.appendChild(meta);
+          var actions = document.createElement("div"); actions.className = "ci-actions";
           var rm = document.createElement("button"); rm.type = "button"; rm.className = "ci-remove"; rm.textContent = "Remove";
           rm.addEventListener("click", function(){
             cart = cart.filter(function(x){ return x.id !== b.id; });
-            var btnMap = { flatline:"vflatAdd", dripcheck:"dripAdd", sunup:"sunAdd", doubledown:"dblAdd" };
-            var btnId = btnMap[b.id] || null;
-            var addBtn = btnId ? document.getElementById(btnId) : null;
-            if (addBtn){ addBtn.classList.remove("added"); addBtn.textContent = "Add to cart — " + money(b.price); }
+            paidIds = paidIds.filter(function(x){ return x !== b.id; });
+            if (checkoutPendingId === b.id) checkoutPendingId = null;
             document.querySelectorAll('.vault-add[data-beat-id="' + b.id + '"]').forEach(function(gb){ gb.classList.remove("added"); gb.textContent = "Add to cart"; });
             if (typeof syncFeaturedAddBtn === "function") syncFeaturedAddBtn();
             renderCart();
           });
-          item.appendChild(rm);
+          actions.appendChild(rm);
+          if (multi && b.stripeUrl){
+            var isPaid = paidIds.indexOf(b.id) !== -1;
+            var pay = document.createElement("a");
+            pay.className = "ci-pay" + (isPaid ? " paid" : "");
+            pay.href = b.stripeUrl; pay.target = "_blank"; pay.rel = "noopener";
+            pay.textContent = isPaid ? "Paid ✓ — Stripe" : "Pay " + money(b.price) + " — Stripe";
+            pay.addEventListener("click", function(){ checkoutPendingId = b.id; saveCartState(); setTimeout(renderCart, 0); });
+            actions.appendChild(pay);
+          }
+          item.appendChild(actions);
           cartItems.appendChild(item);
         });
         var has = cart.length > 0;
         cartEmpty.style.display = has ? "none" : "block";
         cartTotalRow.style.display = has ? "flex" : "none";
-        orderForm.style.display = has ? "flex" : "none";
+        if (cartCheckout) cartCheckout.style.display = has ? "flex" : "none";
         cartTotal.textContent = money(total);
+        /* checkout actions: single beat = one Stripe button for that
+           beat's own price + link; 2+ beats = Checkout all walk-through */
+        if (cartCheckoutActions){
+          cartCheckoutActions.innerHTML = "";
+          if (has && cart.length === 1){
+            var only = cart[0];
+            if (only.stripeUrl){
+              var singleBtn = document.createElement("a");
+              singleBtn.className = "checkout-btn";
+              singleBtn.href = only.stripeUrl; singleBtn.target = "_blank"; singleBtn.rel = "noopener";
+              singleBtn.textContent = "Checkout with Stripe — " + money(only.price);
+              singleBtn.addEventListener("click", function(){ checkoutPendingId = only.id; saveCartState(); setTimeout(renderCart, 0); });
+              cartCheckoutActions.appendChild(singleBtn);
+              if (checkoutPendingId === only.id && paidIds.indexOf(only.id) === -1){
+                var doneBtn = document.createElement("button");
+                doneBtn.type = "button"; doneBtn.className = "checkout-btn secondary";
+                doneBtn.textContent = "I paid on Stripe ✓";
+                doneBtn.addEventListener("click", markPendingPaid);
+                cartCheckoutActions.appendChild(doneBtn);
+              }
+            }
+          } else if (has && multi){
+            var paidInCart = cart.filter(function(b){ return paidIds.indexOf(b.id) !== -1; }).length;
+            var allBtn = document.createElement("button");
+            allBtn.type = "button"; allBtn.className = "checkout-btn";
+            allBtn.textContent = paidInCart >= cart.length ? "All beats paid ✓" : "Checkout all — " + money(total);
+            allBtn.addEventListener("click", function(){
+              var next = nextUnpaidBeat();
+              if (next) openStripeFor(next);
+            });
+            cartCheckoutActions.appendChild(allBtn);
+            if (checkoutPendingId && paidIds.indexOf(checkoutPendingId) === -1){
+              var pendingBeat = beatByIdCart(checkoutPendingId);
+              var markBtn = document.createElement("button");
+              markBtn.type = "button"; markBtn.className = "checkout-btn secondary";
+              markBtn.textContent = "I paid for " + (pendingBeat ? pendingBeat.title : "that beat") + " — next";
+              markBtn.addEventListener("click", markPendingPaid);
+              cartCheckoutActions.appendChild(markBtn);
+            }
+          }
+        }
+        if (cartCheckoutProgress){
+          if (has && multi){
+            var paidCount = cart.filter(function(b){ return paidIds.indexOf(b.id) !== -1; }).length;
+            var pending = checkoutPendingId ? beatByIdCart(checkoutPendingId) : null;
+            cartCheckoutProgress.hidden = false;
+            if (paidCount >= cart.length){
+              cartCheckoutProgress.textContent = paidCount + " of " + cart.length + " paid — all beats checked out on Stripe.";
+            } else if (pending){
+              cartCheckoutProgress.textContent = paidCount + " of " + cart.length + " paid — paying for " + pending.title + " on Stripe now. Finish there, come back here, then tap “I paid for " + pending.title + " — next.”";
+            } else {
+              cartCheckoutProgress.textContent = paidCount + " of " + cart.length + " paid — tap Checkout all and pay for each beat on Stripe in turn, or use a beat's own Pay button above.";
+            }
+          } else if (has && cart.length === 1 && paidIds.indexOf(cart[0].id) !== -1){
+            cartCheckoutProgress.hidden = false;
+            cartCheckoutProgress.textContent = "1 of 1 paid — " + cart[0].title + " checked out on Stripe.";
+          } else if (has && cart.length === 1 && checkoutPendingId === cart[0].id){
+            cartCheckoutProgress.hidden = false;
+            cartCheckoutProgress.textContent = "Paying for " + cart[0].title + " on Stripe — finish there, then come back and tap “I paid on Stripe.”";
+          } else {
+            cartCheckoutProgress.hidden = true;
+            cartCheckoutProgress.textContent = "";
+          }
+        }
         var apRow = document.getElementById("cartApRow");
         var apText = document.getElementById("cartApText");
         if (apRow && apText){
@@ -1209,6 +1334,13 @@
             apRow.style.display = "none";
           }
         }
+        /* keep every Add button in sync with the restored / current cart */
+        document.querySelectorAll('.vault-add[data-beat-id]').forEach(function(gb){
+          var inCart = cart.some(function(x){ return x.id === gb.getAttribute("data-beat-id"); });
+          gb.classList.toggle("added", inCart);
+          if (gb.classList.contains("row-add") || gb.closest(".track-row")) gb.textContent = inCart ? "In your cart ✓" : "Add to cart";
+        });
+        if (typeof syncFeaturedAddBtn === "function") syncFeaturedAddBtn();
         if (typeof window.syncPlayerBarAdd === "function") window.syncPlayerBarAdd();
       }
       function bindAdd(btnId, beatId){
@@ -1228,37 +1360,9 @@
           openCart();
         });
       }
-      orderForm.addEventListener("submit", function(e){
-        e.preventDefault();
-        if (!cart.length) return;
-        var fd = new FormData(this);
-        var buyer = (fd.get("buyer") || "").toString();
-        var email = (fd.get("email") || "").toString();
-        var artist = (fd.get("artist") || "").toString();
-        var lines = ["Order from killwillbeats.com — first come, first served", ""];
-        var total = 0;
-        cart.forEach(function(b){
-          total += b.price;
-          lines.push("BEAT: " + b.title + " — " + money(b.price));
-          lines.push("Files I get: " + b.files.join(" + ") + (b.noStems ? " — no stems, no trackouts" : ""));
-        });
-        lines.push("", "TOTAL: " + money(total), "", "Name: " + buyer, "Email for delivery: " + email);
-        if (artist) lines.push("Artist name (for the agreement): " + artist);
-        lines.push("", "I understand: hurry up and buy — first come, first served. No leases. I'll pay in full or over time with Afterpay. The beat is mine once the sale is confirmed, and it's pulled from the store for good.");
-        /* Owner notification: this order email, addressed to
-           killwillmusic@gmail.com, is the alert — the buyer sends it
-           to place the order request. */
-        var mail = "mailto:killwillmusic@gmail.com?subject=" + encodeURIComponent("Order request — " + cart.map(function(b){ return b.title; }).join(", ") + " — KillWillBeats") + "&body=" + encodeURIComponent(lines.join("\n"));
-        document.getElementById("orderMailBtn").href = mail;
-        var first = cart[0];
-        download("killwill-producer-agreement-and-split-sheet.txt",
-          agreementText(first.title, money(first.price), first.files.join(" + ") + (first.noStems ? " — no stems, no trackouts" : "")));
-        document.getElementById("orderDoneText").textContent =
-          "Your order request for " + cart.map(function(b){ return b.title; }).join(", ") + " (" + money(total) + ") is addressed from " + email + " to Kill Will at killwillmusic@gmail.com. Open the email and hit send to notify Kill Will and lock it in — first come, first served. Your agreement + split sheet just downloaded.";
-        var done = document.getElementById("orderDone");
-        done.style.display = "block";
-        done.scrollIntoView({ behavior:"smooth", block:"nearest" });
-      });
+      /* restore-on-load sync: vault rows are built later in this page,
+         so re-render once after they exist to light up their buttons */
+      setTimeout(function(){ renderCart(); }, 0);
 
       /* ============ one track at a time : vault audio + YouTube ============
          The page only ever plays ONE song. Starting any Vault beat pauses
