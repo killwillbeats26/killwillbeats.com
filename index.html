@@ -73,7 +73,7 @@
       /* ---------- top bar ---------- */
       .topbar{position:sticky;top:0;z-index:60;background:#070704;border-bottom:3px solid var(--gold)}
       .topbar-in{display:flex;align-items:center;gap:12px;padding:8px 0}
-      .logo-badge{width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);flex:none;background:#000}
+      .logo-badge{width:52px;height:52px;border-radius:50%;object-fit:contain;padding:3px;border:2px solid var(--gold);flex:none;background:#000}
       .brand-lockup{display:flex;flex-direction:column;text-decoration:none;line-height:.95}
       .wordmark{font-family:var(--display);font-size:1.55rem;letter-spacing:.04em;color:#f2edd8;text-transform:uppercase;white-space:nowrap}
       .wordmark b{color:var(--gold-bright);font-weight:400}
@@ -110,15 +110,15 @@
       /* player inside hero */
       .player-zone{margin-top:26px}
       .player-card{background:rgba(8,9,5,.92);border:2px solid var(--gold);border-radius:10px;box-shadow:8px 8px 0 rgba(0,0,0,.6);overflow:hidden;display:grid;grid-template-columns:320px 1fr;color:#f2edd8;backdrop-filter:blur(4px)}
-      .player-art{position:relative;min-height:320px}
-      .player-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+      .player-art{position:relative;aspect-ratio:1/1;align-self:start;background:#0a0b06}
+      .player-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#0a0b06}
       .player-art .big-play{position:absolute;inset:0;margin:auto;width:92px;height:92px;border-radius:50%;border:3px solid #0a0a05;background:var(--red);color:#fff;font-size:1.8rem;display:grid;place-items:center;box-shadow:5px 5px 0 rgba(0,0,0,.65)}
       .player-art .big-play:active{transform:translate(2px,2px)}
       .player-art .feat-tag{position:absolute;top:12px;left:12px;z-index:2}
       .player-art .price-tag{position:absolute;bottom:12px;right:12px;z-index:2}
       .player-main{padding:20px 22px 18px;display:flex;flex-direction:column;gap:12px}
       .player-eyebrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-      .player-eyebrow img{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--gold);object-fit:cover;background:#000}
+      .player-eyebrow img{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--gold);object-fit:contain;padding:2px;background:#000}
       .player-tagline{font-family:var(--marker);font-size:.95rem;color:var(--gold-bright);margin:0}
       .player-title{font-family:var(--display);font-size:clamp(1.9rem,4vw,2.6rem);line-height:1;margin:0;text-transform:uppercase}
       .pills{display:flex;flex-wrap:wrap;gap:7px}
@@ -153,7 +153,7 @@
       .btn-gold:hover{background:var(--gold-bright)}
       .btn-red{background:var(--red);color:#fff}
       .btn-ghost{background:rgba(5,6,3,.55);color:#f2edd8;border-color:rgba(242,237,216,.55);box-shadow:4px 4px 0 rgba(0,0,0,.5)}
-      @media (max-width:880px){ .player-card{grid-template-columns:1fr} .player-art{min-height:230px} .player-main{padding:16px} .hero-emblem{width:84px} }
+      @media (max-width:880px){ .player-card{grid-template-columns:1fr} .player-main{padding:16px} .hero-emblem{width:84px} }
       /* phone hero: tighten the stack so the Shop Beats / free-beat CTAs clear the fixed mini player bar */
       @media (max-width:880px){
         .hero-in{padding:14px 0 20px}
@@ -176,8 +176,8 @@
 
       /* ---------- cover wall ---------- */
       .wall{display:grid;grid-template-columns:repeat(2,1fr);gap:0;border-bottom:3px solid #0a0a05}
-      .wall figure{margin:0;position:relative;overflow:hidden;aspect-ratio:1/1}
-      .wall img{width:100%;height:100%;object-fit:cover}
+      .wall figure{margin:0;position:relative;overflow:hidden;aspect-ratio:3/2;background:#0c0c07}
+      .wall img{width:100%;height:100%;object-fit:contain;background:#0c0c07}
       .wall figcaption{position:absolute;left:8px;bottom:8px;background:#0c0c07;color:var(--gold-bright);font-family:var(--display);text-transform:uppercase;font-size:.72rem;letter-spacing:.08em;padding:5px 9px;border:1.5px solid var(--gold);border-radius:4px}
       .wall figure.tall{grid-row:span 1}
       @media (max-width:880px){ .wall{grid-template-columns:repeat(2,1fr)} }
@@ -222,7 +222,7 @@
       /* ---------- sections ---------- */
       section{padding:52px 0}
       .sec-head{display:flex;align-items:flex-end;gap:18px;flex-wrap:wrap;margin-bottom:26px}
-      .sec-head .sec-emblem{width:74px;height:74px;border-radius:50%;border:2px solid var(--gold);object-fit:cover;background:#000;flex:none}
+      .sec-head .sec-emblem{width:74px;height:74px;border-radius:50%;border:2px solid var(--gold);object-fit:contain;padding:4px;background:#000;flex:none}
       .sec-head h2{font-family:var(--display);font-size:clamp(2.4rem,6vw,4rem);line-height:.95;margin:0;text-transform:uppercase}
       .sec-head h2 .out{color:transparent;-webkit-text-stroke:2px var(--ink)}
       .sec-head h2 .gld{color:var(--gold-bright)}
@@ -259,6 +259,11 @@
       .dl-btn{display:inline-flex;align-items:center;gap:7px;background:var(--green-bright);color:#fff;border:2px solid #0a0a05;border-radius:6px;box-shadow:3px 3px 0 #0a0a05;font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;font-size:.84rem;padding:9px 15px;text-decoration:none;line-height:1}
       .dl-btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #0a0a05}
 
+      /* ---------- placements : official videos ---------- */
+      .placements-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+      @media (max-width:760px){ .placements-grid{grid-template-columns:1fr} }
+      .placements-grid .free-card:first-child{grid-column:auto}
+
       /* ---------- vault ---------- */
       .dots-bg{background-image:radial-gradient(color-mix(in srgb,var(--ink) 13%,transparent) 1.2px,transparent 1.3px);background-size:22px 22px}
       .vault-tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:24px}
@@ -273,7 +278,7 @@
       .beat-card{background:var(--panel);border:2px solid var(--line);border-radius:8px;overflow:hidden;display:flex;flex-direction:column;box-shadow:5px 5px 0 rgba(0,0,0,.28)}
       .beat-card:nth-child(odd){transform:rotate(-.5deg)} .beat-card:nth-child(even){transform:rotate(.4deg)}
       .beat-art{position:relative;aspect-ratio:1/1;overflow:hidden}
-      .beat-art img{width:100%;height:100%;object-fit:cover}
+      .beat-art img{width:100%;height:100%;object-fit:contain;background:#0a0b06}
       .beat-art .mini-play{position:absolute;right:12px;bottom:12px;width:58px;height:58px;border-radius:50%;border:2.5px solid #0a0a05;background:var(--red);color:#fff;font-size:1.2rem;display:grid;place-items:center;box-shadow:3px 3px 0 rgba(0,0,0,.6)}
       .beat-art .mini-play:active{transform:translate(2px,2px)}
       .beat-art .flag-sticker{position:absolute;top:12px;left:12px;z-index:2}
@@ -329,7 +334,7 @@
       @media (max-width:860px){ .papers-grid{grid-template-columns:1fr} }
       .id-card{background:#0c0c07;color:#f2edd8;border:2px solid var(--gold);border-radius:10px;box-shadow:7px 7px 0 rgba(0,0,0,.4);padding:20px;transform:rotate(-1deg)}
       .id-card .id-head{display:flex;gap:14px;align-items:center;border-bottom:1.5px dashed #3a3b26;padding-bottom:14px;margin-bottom:6px}
-      .id-card .id-head img{width:76px;height:76px;border-radius:50%;border:2px solid var(--gold);object-fit:cover;background:#000}
+      .id-card .id-head img{width:76px;height:76px;border-radius:50%;border:2px solid var(--gold);object-fit:contain;padding:4px;background:#000}
       .id-card .id-head b{font-family:var(--display);text-transform:uppercase;font-size:1.25rem;letter-spacing:.04em;display:block;line-height:1.1}
       .id-card .id-head span{font-family:var(--marker);color:var(--gold-bright);font-size:.9rem}
       .doc-row{display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-top:1px solid #232414;font-size:.92rem}
@@ -358,7 +363,7 @@
 
       /* ---------- footer ---------- */
       footer{border-top:3px solid var(--gold);background:#070704;color:#8a876f;padding:36px 0 48px;overflow:hidden}
-      .foot-emblem{width:110px;height:110px;border-radius:50%;border:2px solid var(--gold);object-fit:cover;background:#000}
+      .foot-emblem{width:110px;height:110px;border-radius:50%;border:2px solid var(--gold);object-fit:contain;padding:5px;background:#000}
       .foot-giant{font-family:var(--display);text-transform:uppercase;font-size:clamp(2.2rem,7.5vw,5.2rem);line-height:.92;color:#f2edd8;margin:18px 0 6px}
       .foot-giant .out{color:transparent;-webkit-text-stroke:2px #f2edd8}
       .foot-giant .gld{color:var(--gold-bright)}
@@ -413,10 +418,12 @@
           <span class="brand-tag">★ in the building ★</span>
         </a>
         <nav class="topnav" aria-label="Store">
+          <a href="#featured">Featured</a>
           <a href="#free-beats">Free Beats</a>
           <a href="#vault">Vault</a>
           <a href="#how">How it works</a>
           <a href="#proof">Proof</a>
+          <a href="#videos">Videos</a>
           <a href="#papers">Papers</a>
           <a href="#faq">FAQ</a>
         </nav>
@@ -446,7 +453,7 @@
             </div>
             <div class="hero-cta">
               <a class="btn btn-red" href="#vault">The Vault</a>
-              <a class="btn btn-ghost" href="#vault">Get first word ★</a>
+              <a class="btn btn-ghost" href="#first-word">Get first word ★</a>
             </div>
           </div>
         </div>
@@ -468,6 +475,92 @@
     </div>
 
     <main>
+      <!-- FIRST WORD : email registration, moved to the top -->
+      <section id="first-word" style="padding-top:36px;padding-bottom:4px">
+        <div class="wrap">
+          <div class="drop-panel">
+            <div class="drop-copy">
+              <span class="sticker red rot-l">Beats for sale</span>
+              <h3 class="display">The Vault.<br />Beats for <span class="gld">sale</span></h3>
+              <p>Every paid beat here is one price, sold once, then pulled forever. No leases, no tiers, no games — and every card lists exactly what files you get: WAV + MP3, no stems, no trackouts.</p>
+              <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px">
+                <span class="sticker rot-l">$599</span>
+                <span class="sticker bone rot-r">No leases ✕</span>
+                <span class="sticker black rot-l">First come, first served</span>
+              </div>
+            </div>
+            <div>
+              <form id="notifyForm" class="free-form">
+                <p class="notify-title">Get first word on beats in the Vault — straight to your inbox.</p>
+                <label class="field">Your email<input name="email" type="email" required autocomplete="email" placeholder="you@email.com" /></label>
+                <label class="field">Artist name (optional)<input name="artist" autocomplete="name" placeholder="Your artist name" /></label>
+                <button class="btn btn-red" type="submit" style="width:100%;justify-content:center">Get first word</button>
+                <p class="drawer-note">Tapping the button opens your email app with the request ready to go — hit send there and you're on the first-word list.</p>
+              </form>
+              <div class="free-done" id="notifyDone" style="display:none;margin-top:14px">
+                <h4>Request ready ✓</h4>
+                <p id="notifyDoneText"></p>
+                <a class="btn btn-gold" id="notifyMailBtn" href="mailto:killwillmusic@gmail.com">Open the request email</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FEATURED BEAT : for sale, above Free Beats -->
+      <section id="featured" style="padding-top:30px;padding-bottom:4px">
+        <div class="wrap">
+          <div class="sec-head">
+            <img class="sec-emblem" src="assets/crown-emblem.webp" alt="" />
+            <div>
+              <h2>Featured <span class="gld">Beat</span></h2>
+              <p>For sale now — one price, $599, sold once and gone for good. Press play and hear it in full.</p>
+            </div>
+            <span class="head-note" style="margin-left:auto">for sale ↓</span>
+          </div>
+          <!-- FEATURED BEAT : Flatline, moved to the top above Free Beats -->
+          <div class="player-card flat-card">
+            <div class="player-art">
+              <img src="assets/flatline-cover.jpg" alt="Flatline cover art — gold crown over a vinyl record with a red label, FLATLINE in bold white letters" />
+              <span class="sticker red feat-tag">Featured ★ For sale $599</span>
+              <button class="big-play" id="flatBigPlay" type="button" aria-label="Play Flatline">▶</button>
+              <span class="sticker price-tag">$599</span>
+            </div>
+            <div class="player-main">
+              <div class="player-eyebrow">
+                <img src="assets/crown-emblem.webp" alt="" />
+                <p class="player-tagline">Featured beat — for sale now</p>
+              </div>
+              <h3 class="player-title">Flatline</h3>
+              <div class="pills">
+                <span class="pill gold"><b>~129</b>&nbsp;BPM</span>
+                <span class="pill">Key&nbsp;<b>B♭ minor</b></span>
+                <span class="pill"><b>3:28</b></span>
+                <span class="pill">Prod. Kill Will</span>
+              </div>
+              <div class="wave-box">
+                <div class="transport">
+                  <button class="t-btn main" id="flatPlay" type="button" aria-label="Play or pause Flatline">▶</button>
+                  <input class="flat-seek" id="flatSeek" type="range" min="0" max="208" step="0.1" value="0" aria-label="Seek through Flatline" />
+                  <span class="time-lab"><span id="flatCur">0:00</span> / <span id="flatDur">3:28</span></span>
+                </div>
+                <audio id="flatAudio" src="assets/flatline.mp3" preload="metadata"></audio>
+              </div>
+              <div class="flat-deliver">
+                <span class="fd-row">You get: <b>MP3 + WAV master</b> — that's the full delivery.</span>
+                <span class="fd-no">No stems · No trackouts</span>
+                <span class="fd-fine">WAV converted from the MP3 master. If it's not listed here, it's not included.</span>
+              </div>
+              <div class="player-buy">
+                <div class="price-big">$599<small>One price · No leases</small></div>
+                <p class="you-get" style="margin:0">First come, first served — once it sells, it's pulled for good. <b>Agreement + split sheet included.</b></p>
+                <button class="btn btn-red flat-add" id="flatAdd" type="button" style="margin-left:auto">Add to cart — $599</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- FREE BEATS : top 10 by views on YouTube -->
       <section id="free-beats" style="padding-top:44px;padding-bottom:8px">
         <div class="wrap">
@@ -718,47 +811,6 @@
             </div>
             <span class="head-note" style="margin-left:auto">beats for sale ↓</span>
           </div>
-          <!-- FLATLINE : first real paid beat -->
-          <div class="player-card flat-card">
-            <div class="player-art">
-              <img src="assets/flatline-cover.jpg" alt="Flatline cover art — gold crown over a vinyl record with a red label, FLATLINE in bold white letters" />
-              <span class="sticker red feat-tag">For sale ★ $599</span>
-              <button class="big-play" id="flatBigPlay" type="button" aria-label="Play Flatline">▶</button>
-              <span class="sticker price-tag">$599</span>
-            </div>
-            <div class="player-main">
-              <div class="player-eyebrow">
-                <img src="assets/crown-emblem.webp" alt="" />
-                <p class="player-tagline">In the Vault — for sale</p>
-              </div>
-              <h3 class="player-title">Flatline</h3>
-              <div class="pills">
-                <span class="pill gold"><b>~129</b>&nbsp;BPM</span>
-                <span class="pill">Key&nbsp;<b>B♭ minor</b></span>
-                <span class="pill"><b>3:28</b></span>
-                <span class="pill">Prod. Kill Will</span>
-              </div>
-              <div class="wave-box">
-                <div class="transport">
-                  <button class="t-btn main" id="flatPlay" type="button" aria-label="Play or pause Flatline">▶</button>
-                  <input class="flat-seek" id="flatSeek" type="range" min="0" max="208" step="0.1" value="0" aria-label="Seek through Flatline" />
-                  <span class="time-lab"><span id="flatCur">0:00</span> / <span id="flatDur">3:28</span></span>
-                </div>
-                <audio id="flatAudio" src="assets/flatline.mp3" preload="metadata"></audio>
-              </div>
-              <div class="flat-deliver">
-                <span class="fd-row">You get: <b>MP3 + WAV master</b> — that's the full delivery.</span>
-                <span class="fd-no">No stems · No trackouts</span>
-                <span class="fd-fine">WAV converted from the MP3 master. If it's not listed here, it's not included.</span>
-              </div>
-              <div class="player-buy">
-                <div class="price-big">$599<small>One price · No leases</small></div>
-                <p class="you-get" style="margin:0">First come, first served — once it sells, it's pulled for good. <b>Agreement + split sheet included.</b></p>
-                <button class="btn btn-red flat-add" id="flatAdd" type="button" style="margin-left:auto">Add to cart — $599</button>
-              </div>
-            </div>
-          </div>
-
           <!-- DRIP CHECK : second paid beat -->
           <div class="player-card flat-card">
             <div class="player-art">
@@ -883,32 +935,7 @@
             </div>
           </div>
 
-          <div class="drop-panel">
-            <div class="drop-copy">
-              <span class="sticker red rot-l">Beats for sale</span>
-              <h3 class="display">The Vault.<br />Beats for <span class="gld">sale</span></h3>
-              <p>Every paid beat here is one price, sold once, then pulled forever. No leases, no tiers, no games — and every card lists exactly what files you get: WAV + MP3, no stems, no trackouts.</p>
-              <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px">
-                <span class="sticker rot-l">$599</span>
-                <span class="sticker bone rot-r">No leases ✕</span>
-                <span class="sticker black rot-l">First come, first served</span>
-              </div>
-            </div>
-            <div>
-              <form id="notifyForm" class="free-form">
-                <p class="notify-title">Get first word on beats in the Vault — straight to your inbox.</p>
-                <label class="field">Your email<input name="email" type="email" required autocomplete="email" placeholder="you@email.com" /></label>
-                <label class="field">Artist name (optional)<input name="artist" autocomplete="name" placeholder="Your artist name" /></label>
-                <button class="btn btn-red" type="submit" style="width:100%;justify-content:center">Get first word</button>
-                <p class="drawer-note">Tapping the button opens your email app with the request ready to go — hit send there and you're on the first-word list.</p>
-              </form>
-              <div class="free-done" id="notifyDone" style="display:none;margin-top:14px">
-                <h4>Request ready ✓</h4>
-                <p id="notifyDoneText"></p>
-                <a class="btn btn-gold" id="notifyMailBtn" href="mailto:killwillmusic@gmail.com">Open the request email</a>
-              </div>
-            </div>
-          </div>
+
         </div>
       </section>
 
@@ -965,6 +992,56 @@
         </div>
       </section>
 
+      <!-- VIDEOS : official placements — Fire Flame Remix & Slow Grind -->
+      <section id="videos" style="padding-top:6px">
+        <div class="wrap">
+          <div class="sec-head">
+            <img class="sec-emblem" src="assets/crown-emblem.webp" alt="" />
+            <div>
+              <h2>The <span class="gld">Videos</span></h2>
+              <p>Produced by Kill Will — watch the official videos for the records that put him in the building.</p>
+            </div>
+            <span class="head-note" style="margin-left:auto">watch ↓</span>
+          </div>
+          <div class="placements-grid">
+            <article class="free-card">
+              <div class="video-wrap">
+                <iframe id="ytPlayer11" src="https://www.youtube.com/embed/ZoWsL3vXSLw?enablejsapi=1" title="Birdman — Fire Flame (Remix) (Official Music Video) ft. Lil Wayne" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+              </div>
+              <div class="free-body">
+                <div class="free-rank"><span class="sticker red" style="font-size:.72rem;padding:5px 9px">Official video</span></div>
+                <h3 class="free-title">Birdman ft. Lil Wayne <span class="qt">“Fire Flame (Remix)”</span></h3>
+                <div class="free-meta">
+                  <span class="pill gold">#14 Billboard Hot Rap Songs</span>
+                  <span class="pill">#1 BET 106 &amp; Park</span>
+                </div>
+                <p class="free-note">Produced by <b>Kill Will</b>. The official music video, straight from YouTube.</p>
+                <div class="free-foot">
+                  <a class="yt-link" href="https://www.youtube.com/watch?v=ZoWsL3vXSLw" target="_blank" rel="noopener">Watch on YouTube ↗</a>
+                </div>
+              </div>
+            </article>
+            <article class="free-card">
+              <div class="video-wrap">
+                <iframe id="ytPlayer12" src="https://www.youtube.com/embed/HCtnlJWNeLI?enablejsapi=1" title="Young Jeezy — Slow Grind (The Real Is Back)" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+              </div>
+              <div class="free-body">
+                <div class="free-rank"><span class="sticker red" style="font-size:.72rem;padding:5px 9px">Official video</span></div>
+                <h3 class="free-title">Young Jeezy <span class="qt">“Slow Grind”</span></h3>
+                <div class="free-meta">
+                  <span class="pill gold">The Real Is Back</span>
+                  <span class="pill">Prod. Kill Will</span>
+                </div>
+                <p class="free-note">Produced by <b>Kill Will</b>. The official video, straight from YouTube.</p>
+                <div class="free-foot">
+                  <a class="yt-link" href="https://www.youtube.com/watch?v=HCtnlJWNeLI" target="_blank" rel="noopener">Watch on YouTube ↗</a>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
       <!-- PAPERS -->
       <section class="papers" id="papers" style="padding-top:6px">
         <div class="wrap">
@@ -1010,7 +1087,7 @@
             <details><summary>What files do I get?</summary><p>Exactly what's on the card. Vault beats deliver WAV + MP3 — no stems, no trackouts — same list in your order and agreement.</p></details>
             <details><summary>How does first come, first served work?</summary><p>Simple: whoever buys it first gets it. The second it sells, it's pulled from the store for good — never sold to anyone else. Your agreement is the proof.</p></details>
             <details><summary>Payment plans?</summary><p>No. One price, paid once — no payment options at checkout.</p></details>
-            <details><summary>Are beats available now?</summary><p>Yes — beats in the Vault are for sale now at $599 each: WAV + MP3, no stems, no trackouts. First come, first served — once a beat sells, it's pulled from the store for good. Drop your email in the Vault section up top to get first word on what's in the Vault.</p></details>
+            <details><summary>Are beats available now?</summary><p>Yes — beats in the Vault are for sale now at $599 each: WAV + MP3, no stems, no trackouts. First come, first served — once a beat sells, it's pulled from the store for good. Drop your email at the top of the page to get first word on what's in the Vault.</p></details>
             <details><summary>Publishing splits?</summary><p>Set per song on the split sheet that comes with your sale — filled in for your record in the documents.</p></details>
           </div>
         </div>
