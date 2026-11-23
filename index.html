@@ -274,27 +274,43 @@
       .chip{border:2px solid var(--line);background:var(--panel);color:var(--ink-dim);border-radius:6px;font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;font-size:.85rem;padding:9px 17px}
       .chip.on{background:var(--gold);border-color:#0a0a05;color:var(--gold-ink);box-shadow:3px 3px 0 #0a0a05}
       .sel{background:var(--panel);border:2px solid var(--line);color:var(--ink);border-radius:6px;font-family:var(--font);font-weight:700;font-size:.85rem;padding:9px 14px;min-height:2.6rem}
-      .beat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:22px}
-      .beat-card{background:var(--panel);border:2px solid var(--line);border-radius:8px;overflow:hidden;display:flex;flex-direction:column;box-shadow:5px 5px 0 rgba(0,0,0,.28)}
-      .beat-card:nth-child(odd){transform:rotate(-.5deg)} .beat-card:nth-child(even){transform:rotate(.4deg)}
-      .beat-art{position:relative;aspect-ratio:1/1;overflow:hidden}
-      .beat-art img{width:100%;height:100%;object-fit:contain;background:#0a0b06}
-      .beat-art .mini-play{position:absolute;right:12px;bottom:12px;width:58px;height:58px;border-radius:50%;border:2.5px solid #0a0a05;background:var(--red);color:#fff;font-size:1.2rem;display:grid;place-items:center;box-shadow:3px 3px 0 rgba(0,0,0,.6)}
-      .beat-art .mini-play:active{transform:translate(2px,2px)}
-      .beat-art .flag-sticker{position:absolute;top:12px;left:12px;z-index:2}
-      .beat-art .bpm-tag{position:absolute;top:12px;right:12px;background:rgba(5,6,3,.85);color:#f2edd8;border:1.5px solid rgba(242,237,216,.4);border-radius:4px;font-weight:900;font-size:.74rem;padding:5px 9px;letter-spacing:.05em}
-      .beat-body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:8px;flex:1}
-      .beat-name{font-family:var(--display);font-size:1.45rem;margin:0;line-height:1.05;text-transform:uppercase}
-      .beat-meta{display:flex;flex-wrap:wrap;gap:6px}
-      .deliver{font-size:.82rem;color:var(--ink-dim);margin:0}
-      .deliver b{color:var(--ink)}
-      .beat-foot{margin-top:auto;display:flex;align-items:center;gap:12px;padding-top:4px}
-      .beat-price{font-family:var(--display);font-size:1.5rem;color:var(--gold-bright)}
-      .add-btn{margin-left:auto;background:var(--gold);color:var(--gold-ink);border:2px solid #0a0a05;border-radius:6px;box-shadow:3px 3px 0 #0a0a05;font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;font-size:.86rem;padding:10px 16px}
+      /* ---------- vault : compact track list ---------- */
+      .list-intro{color:var(--ink-dim);font-weight:600;margin:0 0 18px;max-width:64ch}
+      .list-intro b{color:var(--ink)}
+      .list-note{font-family:var(--marker);color:var(--red);font-size:1rem;margin:14px 0 0;transform:rotate(-.6deg);transform-origin:left}
+      .track-list{display:flex;flex-direction:column;background:var(--panel);border:2px solid var(--line);border-radius:10px;overflow:hidden;box-shadow:6px 6px 0 rgba(0,0,0,.28)}
+      .track-row{display:flex;align-items:center;gap:14px;padding:10px 14px;border-bottom:1.5px solid var(--line-soft);cursor:pointer}
+      .track-row:last-child{border-bottom:0}
+      .track-row audio{display:none}
+      .track-row:hover{background:var(--panel2)}
+      .track-row.active{background:var(--panel2);box-shadow:inset 4px 0 0 var(--gold)}
+      .row-thumb{position:relative;width:58px;height:58px;flex:none}
+      .row-thumb img{width:58px;height:58px;object-fit:cover;border-radius:6px;border:2px solid #0a0a05;background:#0a0b06}
+      .row-play{position:absolute;inset:0;margin:auto;width:36px;height:36px;min-height:36px;border-radius:50%;border:2px solid #0a0a05;background:rgba(224,49,30,.95);color:#fff;font-size:.82rem;display:grid;place-items:center;padding:0;box-shadow:2px 2px 0 rgba(0,0,0,.55)}
+      .row-play:active{transform:translate(1px,1px)}
+      .row-main{flex:1 1 170px;min-width:0}
+      .row-title-line{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+      .row-title{font-family:var(--display);text-transform:uppercase;font-size:1.08rem;line-height:1.05;margin:0;letter-spacing:.02em}
+      .row-feat{font-family:var(--display);font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;background:var(--gold);color:var(--gold-ink);border:1.5px solid #0a0a05;border-radius:4px;padding:3px 7px;box-shadow:2px 2px 0 #0a0a05;line-height:1}
+      .row-feat[hidden]{display:none}
+      .row-meta{margin:3px 0 0;font-size:.8rem;font-weight:700;color:var(--ink-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .row-seek-wrap{display:none;align-items:center;gap:9px;margin-top:6px}
+      .track-row.active .row-seek-wrap{display:flex}
+      .row-seek{flex:1;min-width:0;accent-color:var(--gold);height:26px;cursor:pointer}
+      .row-time{font-size:.74rem;font-weight:800;color:var(--ink-dim);font-variant-numeric:tabular-nums;white-space:nowrap}
+      .row-buy{display:flex;align-items:center;gap:12px;flex:none;margin-left:auto}
+      .row-price{font-family:var(--display);font-size:1.3rem;color:var(--gold-bright)}
+      .add-btn{background:var(--gold);color:var(--gold-ink);border:2px solid #0a0a05;border-radius:6px;box-shadow:3px 3px 0 #0a0a05;font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;font-size:.86rem;padding:10px 16px}
       .add-btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #0a0a05}
       .add-btn.added{background:var(--green-bright);color:#fff}
       .empty-note{border:2px dashed var(--line);border-radius:8px;padding:30px;text-align:center;color:var(--ink-dim);font-weight:700}
-      .sold-line{margin-top:18px;font-family:var(--marker);font-size:1.05rem;color:var(--red);display:none}
+      @media (max-width:620px){
+        .track-row{gap:10px;padding:9px 10px;flex-wrap:wrap}
+        .row-thumb,.row-thumb img{width:50px;height:50px}
+        .row-meta{white-space:normal}
+        .row-price{font-size:1.15rem}
+        .row-add{padding:9px 12px;font-size:.8rem}
+      }
 
       /* ---------- featured : daily random rotation ---------- */
       .feat-switch-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
@@ -311,6 +327,28 @@
       .flat-deliver .fd-fine{font-size:.78rem;color:#8a876f}
       .flat-seek{flex:1;min-width:120px;accent-color:var(--gold);height:38px;cursor:pointer}
       .flat-add.added{background:var(--green-bright);color:#fff}
+
+      /* ---------- persistent player bar : controls the track list ---------- */
+      .player-bar{position:fixed;left:0;right:0;bottom:0;z-index:58;background:#0c0c07;border-top:2.5px solid var(--gold);color:#f2edd8;display:flex;align-items:center;gap:14px;padding:10px 16px calc(10px + env(safe-area-inset-bottom));flex-wrap:wrap;box-shadow:0 -6px 24px rgba(0,0,0,.45)}
+      .player-bar[hidden]{display:none}
+      .pb-cover{width:52px;height:52px;border-radius:6px;object-fit:cover;border:1.5px solid var(--gold);flex:none;background:#000}
+      .pb-info{flex:0 1 200px;min-width:110px}
+      .pb-info b{display:block;font-family:var(--display);text-transform:uppercase;letter-spacing:.04em;font-size:1rem;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .pb-info span{font-size:.76rem;color:#bdb99f;font-weight:700;white-space:nowrap}
+      .pb-controls{display:flex;align-items:center;gap:8px;flex:none}
+      .pb-btn{width:42px;height:42px;border-radius:50%;border:2px solid #3a3b26;background:#17180f;color:#f2edd8;display:grid;place-items:center;padding:0}
+      .pb-btn svg{width:18px;height:18px;display:block}
+      .pb-btn.pb-main{width:52px;height:52px;background:var(--gold);border-color:#0a0a05;color:var(--gold-ink);font-size:1.15rem;box-shadow:3px 3px 0 rgba(0,0,0,.55)}
+      .pb-btn:active{transform:translate(1px,1px)}
+      .pb-seekwrap{flex:1 1 200px;display:flex;align-items:center;gap:10px;min-width:150px}
+      .pb-seek{flex:1;min-width:0;accent-color:var(--gold);height:30px;cursor:pointer}
+      .pb-time{font-size:.78rem;font-weight:800;color:#bdb99f;font-variant-numeric:tabular-nums;white-space:nowrap}
+      .pb-buy{display:flex;align-items:center;gap:11px;flex:none;margin-left:auto}
+      .pb-price{font-family:var(--display);font-size:1.3rem;color:var(--gold-bright)}
+      .pb-add{background:var(--gold);color:var(--gold-ink);border:2px solid #0a0a05;border-radius:6px;box-shadow:3px 3px 0 rgba(0,0,0,.55);font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;font-size:.85rem;padding:10px 15px}
+      .pb-add:active{transform:translate(2px,2px);box-shadow:1px 1px 0 rgba(0,0,0,.55)}
+      .pb-add.added{background:var(--green-bright);color:#fff}
+      @media (max-width:620px){ .pb-seekwrap{order:5;flex-basis:100%} .pb-info{flex:1 1 110px} .pb-price{display:none} }
 
       /* ---------- how : graphic tiles ---------- */
       .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
@@ -424,12 +462,12 @@
           <span class="brand-tag">★ in the building ★</span>
         </a>
         <nav class="topnav" aria-label="Store">
+          <a href="#videos">Videos</a>
           <a href="#featured">Featured</a>
           <a href="#free-beats">Free Beats</a>
           <a href="#vault">Vault</a>
           <a href="#how">How it works</a>
           <a href="#proof">Proof</a>
-          <a href="#videos">Videos</a>
           <a href="#papers">Papers</a>
           <a href="#faq">FAQ</a>
         </nav>
@@ -481,8 +519,57 @@
     </div>
 
     <main>
+      <!-- VIDEOS : official placements — Fire Flame Remix & Slow Grind (live), directly under the hero -->
+      <section id="videos" style="padding-top:36px;padding-bottom:4px">
+        <div class="wrap">
+          <div class="sec-head">
+            <img class="sec-emblem" src="assets/crown-emblem.webp" alt="" />
+            <div>
+              <h2>The <span class="gld">Videos</span></h2>
+              <p>Produced by Kill Will — watch the official videos for the records that put him in the building.</p>
+            </div>
+            <span class="head-note" style="margin-left:auto">watch ↓</span>
+          </div>
+          <div class="placements-grid">
+            <article class="free-card">
+              <div class="video-wrap">
+                <iframe id="ytPlayer11" src="https://www.youtube.com/embed/ZoWsL3vXSLw?enablejsapi=1" title="Birdman — Fire Flame (Remix) (Official Music Video) ft. Lil Wayne" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+              </div>
+              <div class="free-body">
+                <div class="free-rank"><span class="sticker red" style="font-size:.72rem;padding:5px 9px">Official video</span></div>
+                <h3 class="free-title">Birdman ft. Lil Wayne <span class="qt">“Fire Flame (Remix)”</span></h3>
+                <div class="free-meta">
+                  <span class="pill gold">#14 Billboard Hot Rap Songs</span>
+                  <span class="pill">#1 BET 106 &amp; Park</span>
+                </div>
+                <p class="free-note">Produced by <b>Kill Will</b>. The official music video, straight from YouTube.</p>
+                <div class="free-foot">
+                  <a class="yt-link" href="https://www.youtube.com/watch?v=ZoWsL3vXSLw" target="_blank" rel="noopener">Watch on YouTube ↗</a>
+                </div>
+              </div>
+            </article>
+            <article class="free-card">
+              <div class="video-wrap">
+                <iframe id="ytPlayer12" src="https://www.youtube.com/embed/Jt3K02lbuZ8?enablejsapi=1" title="Young Jeezy — Slow Grind (Tour Bus Performance Video) — Live" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+              </div>
+              <div class="free-body">
+                <div class="free-rank"><span class="sticker red" style="font-size:.72rem;padding:5px 9px">Live performance</span></div>
+                <h3 class="free-title">Young Jeezy <span class="qt">“Slow Grind”</span> — Live</h3>
+                <div class="free-meta">
+                  <span class="pill gold">Tour Bus Performance Video</span>
+                  <span class="pill">Prod. Kill Will</span>
+                </div>
+                <p class="free-note">Produced by <b>Kill Will</b>. The live Tour Bus Performance Video, straight from YouTube.</p>
+                <div class="free-foot">
+                  <a class="yt-link" href="https://www.youtube.com/watch?v=Jt3K02lbuZ8" target="_blank" rel="noopener">Watch on YouTube ↗</a>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
       <!-- FIRST WORD : email registration, moved to the top -->
-      <section id="first-word" style="padding-top:36px;padding-bottom:4px">
+      <section id="first-word" style="padding-top:30px;padding-bottom:4px">
         <div class="wrap">
           <div class="drop-panel">
             <div class="drop-copy">
@@ -804,7 +891,7 @@
             </article>
           </div>
 
-          <p style="margin:20px 0 0;color:var(--ink-dim);font-weight:600;font-size:.92rem"><span id="viewsStatus">Views counted Nov 22, 2026.</span> Every free beat above comes with a free MP3 download — hit the green button on any card. Looking to buy? The paid beats in <a href="#vault">the Vault</a> below are one price, no leases — first come, first served.</p>
+          <p style="margin:20px 0 0;color:var(--ink-dim);font-weight:600;font-size:.92rem"><span id="viewsStatus">Views counted Nov 22, 2026.</span> Every free beat above comes with a free MP3 download — hit the green button on any card. Looking to buy? The paid beats in <a href="#vault">the Vault</a> below are one price, no leases — first come, first served, and placing an order opens an order email to Kill Will at <b>killwillmusic@gmail.com</b>.</p>
 
           <p class="cid-note"><b>Content ID note — free beats only:</b> The free beats on this site and on YouTube are registered with Content ID, so YouTube may show a claim on videos using them — that claim just means the ad money goes to Kill Will, your video stays up. Promo use is always welcome. <b>This does not apply to paid beats</b> — beats bought from <a href="#vault">the Vault</a> are not covered by this note and come with their own full license.</p>
         </div>
@@ -821,171 +908,16 @@
             </div>
             <span class="head-note" style="margin-left:auto">beats for sale ↓</span>
           </div>
-          <!-- FLATLINE : first paid beat -->
-          <div class="player-card flat-card">
-            <div class="player-art">
-              <img src="assets/flatline-cover.jpg" alt="Flatline cover art — gold crown over a vinyl record with a red label, FLATLINE in bold white letters" />
-              <span class="sticker red feat-tag">For sale ★ $599</span>
-              <button class="big-play" id="vflatBigPlay" type="button" aria-label="Play Flatline">▶</button>
-              <span class="sticker price-tag">$599</span>
-            </div>
-            <div class="player-main">
-              <div class="player-eyebrow">
-                <img src="assets/crown-emblem.webp" alt="" />
-                <p class="player-tagline">In the Vault — for sale</p>
-              </div>
-              <h3 class="player-title">Flatline</h3>
-              <div class="pills">
-                <span class="pill gold"><b>~129</b>&nbsp;BPM</span>
-                <span class="pill">Key&nbsp;<b>B♭ minor</b></span>
-                <span class="pill"><b>3:28</b></span>
-                <span class="pill">Prod. Kill Will</span>
-              </div>
-              <div class="wave-box">
-                <div class="transport">
-                  <button class="t-btn main" id="vflatPlay" type="button" aria-label="Play or pause Flatline">▶</button>
-                  <input class="flat-seek" id="vflatSeek" type="range" min="0" max="208" step="0.1" value="0" aria-label="Seek through Flatline" />
-                  <span class="time-lab"><span id="vflatCur">0:00</span> / <span id="vflatDur">3:28</span></span>
-                </div>
-                <audio id="vflatAudio" src="assets/flatline.mp3" preload="metadata"></audio>
-              </div>
-              <div class="flat-deliver">
-                <span class="fd-row">You get: <b>MP3 + WAV master</b> — that's the full delivery.</span>
-                <span class="fd-no">No stems · No trackouts</span>
-                <span class="fd-fine">WAV converted from the MP3 master. If it's not listed here, it's not included.</span>
-              </div>
-              <div class="player-buy">
-                <div class="price-big">$599<small>One price · No leases</small></div>
-                <p class="you-get" style="margin:0">First come, first served — once it sells, it's pulled for good. <b>Agreement + split sheet included.</b></p>
-                <button class="btn btn-red flat-add" id="vflatAdd" type="button" style="margin-left:auto">Add to cart — $599</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- DRIP CHECK : second paid beat -->
-          <div class="player-card flat-card">
-            <div class="player-art">
-              <img src="assets/drip-check-cover.jpg" alt="Drip Check cover art — dripping gold crown over graffiti lettering, gold chains and stacks of cash in smoke, DRIP CHECK in bold white letters" />
-              <span class="sticker red feat-tag">For sale ★ $599</span>
-              <button class="big-play" id="dripBigPlay" type="button" aria-label="Play Drip Check">▶</button>
-              <span class="sticker price-tag">$599</span>
-            </div>
-            <div class="player-main">
-              <div class="player-eyebrow">
-                <img src="assets/crown-emblem.webp" alt="" />
-                <p class="player-tagline">In the Vault — for sale</p>
-              </div>
-              <h3 class="player-title">Drip Check</h3>
-              <div class="pills">
-                <span class="pill gold"><b>~100</b>&nbsp;BPM</span>
-                <span class="pill">Key&nbsp;<b>A major</b></span>
-                <span class="pill"><b>2:50</b></span>
-                <span class="pill">Prod. Kill Will</span>
-              </div>
-              <div class="wave-box">
-                <div class="transport">
-                  <button class="t-btn main" id="dripPlay" type="button" aria-label="Play or pause Drip Check">▶</button>
-                  <input class="flat-seek" id="dripSeek" type="range" min="0" max="170" step="0.1" value="0" aria-label="Seek through Drip Check" />
-                  <span class="time-lab"><span id="dripCur">0:00</span> / <span id="dripDur">2:50</span></span>
-                </div>
-                <audio id="dripAudio" src="assets/drip-check.mp3" preload="metadata"></audio>
-              </div>
-              <div class="flat-deliver">
-                <span class="fd-row">You get: <b>WAV master + MP3</b> — that's the full delivery.</span>
-                <span class="fd-no">No stems · No trackouts</span>
-                <span class="fd-fine">Original WAV master — 16-bit / 44.1kHz stereo, 29 MB. If it's not listed here, it's not included.</span>
-              </div>
-              <div class="player-buy">
-                <div class="price-big">$599<small>One price · No leases</small></div>
-                <p class="you-get" style="margin:0">First come, first served — once it sells, it's pulled for good. <b>Agreement + split sheet included.</b></p>
-                <button class="btn btn-red flat-add" id="dripAdd" type="button" style="margin-left:auto">Add to cart — $599</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- SUN UP : third paid beat -->
-          <div class="player-card flat-card">
-            <div class="player-art">
-              <img src="assets/sun-up-cover.jpg" alt="Sun Up cover art — gold crown with a sunrise glow over graffiti lettering, gold chains and stacks of cash in smoke, SUN UP in bold white letters" />
-              <span class="sticker red feat-tag">For sale ★ $599</span>
-              <button class="big-play" id="sunBigPlay" type="button" aria-label="Play Sun Up">▶</button>
-              <span class="sticker price-tag">$599</span>
-            </div>
-            <div class="player-main">
-              <div class="player-eyebrow">
-                <img src="assets/crown-emblem.webp" alt="" />
-                <p class="player-tagline">In the Vault — for sale</p>
-              </div>
-              <h3 class="player-title">Sun Up</h3>
-              <div class="pills">
-                <span class="pill gold"><b>~92</b>&nbsp;BPM</span>
-                <span class="pill">Key&nbsp;<b>A minor</b></span>
-                <span class="pill"><b>3:40</b></span>
-                <span class="pill">Prod. Kill Will</span>
-              </div>
-              <div class="wave-box">
-                <div class="transport">
-                  <button class="t-btn main" id="sunPlay" type="button" aria-label="Play or pause Sun Up">▶</button>
-                  <input class="flat-seek" id="sunSeek" type="range" min="0" max="220" step="0.1" value="0" aria-label="Seek through Sun Up" />
-                  <span class="time-lab"><span id="sunCur">0:00</span> / <span id="sunDur">3:40</span></span>
-                </div>
-                <audio id="sunAudio" src="assets/sun-up.mp3" preload="metadata"></audio>
-              </div>
-              <div class="flat-deliver">
-                <span class="fd-row">You get: <b>WAV master + MP3</b> — that's the full delivery.</span>
-                <span class="fd-no">No stems · No trackouts</span>
-                <span class="fd-fine">Original WAV master — 16-bit / 44.1kHz stereo, 38 MB. If it's not listed here, it's not included.</span>
-              </div>
-              <div class="player-buy">
-                <div class="price-big">$599<small>One price · No leases</small></div>
-                <p class="you-get" style="margin:0">First come, first served — once it sells, it's pulled for good. <b>Agreement + split sheet included.</b></p>
-                <button class="btn btn-red flat-add" id="sunAdd" type="button" style="margin-left:auto">Add to cart — $599</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- DOUBLE DOWN : fourth paid beat -->
-          <div class="player-card flat-card">
-            <div class="player-art">
-              <img src="assets/double-down-cover.jpg" alt="Double Down cover art — gold crown over graffiti lettering, gold chains, stacks of cash and dice in smoke, DOUBLE DOWN in bold white letters" />
-              <span class="sticker red feat-tag">For sale ★ $599</span>
-              <button class="big-play" id="dblBigPlay" type="button" aria-label="Play Double Down">▶</button>
-              <span class="sticker price-tag">$599</span>
-            </div>
-            <div class="player-main">
-              <div class="player-eyebrow">
-                <img src="assets/crown-emblem.webp" alt="" />
-                <p class="player-tagline">In the Vault — for sale</p>
-              </div>
-              <h3 class="player-title">Double Down</h3>
-              <div class="pills">
-                <span class="pill gold"><b>~129</b>&nbsp;BPM</span>
-                <span class="pill">Half-time feel&nbsp;<b>86</b></span>
-                <span class="pill">Key&nbsp;<b>A major</b></span>
-                <span class="pill"><b>4:01</b></span>
-                <span class="pill">Prod. Kill Will</span>
-              </div>
-              <div class="wave-box">
-                <div class="transport">
-                  <button class="t-btn main" id="dblPlay" type="button" aria-label="Play or pause Double Down">▶</button>
-                  <input class="flat-seek" id="dblSeek" type="range" min="0" max="241" step="0.1" value="0" aria-label="Seek through Double Down" />
-                  <span class="time-lab"><span id="dblCur">0:00</span> / <span id="dblDur">4:01</span></span>
-                </div>
-                <audio id="dblAudio" src="assets/double-down.mp3" preload="metadata"></audio>
-              </div>
-              <div class="flat-deliver">
-                <span class="fd-row">You get: <b>WAV master + MP3</b> — that's the full delivery.</span>
-                <span class="fd-no">No stems · No trackouts</span>
-                <span class="fd-fine">Original WAV master — 16-bit / 44.1kHz stereo, 43 MB. If it's not listed here, it's not included.</span>
-              </div>
-              <div class="player-buy">
-                <div class="price-big">$599<small>One price · No leases</small></div>
-                <p class="you-get" style="margin:0">First come, first served — once it sells, it's pulled for good. <b>Agreement + split sheet included.</b></p>
-                <button class="btn btn-red flat-add" id="dblAdd" type="button" style="margin-left:auto">Add to cart — $599</button>
-              </div>
-            </div>
-          </div>
-
+          <!-- THE LIST : all 31 beats for sale, compact rows.
+               Rows are rendered from the BEATS catalog by the track-list
+               script below the featured-beat script: small cover thumb,
+               title + BPM / key / length inline, price + add-to-cart on
+               the right. Click a row to play it; the persistent player
+               bar pinned to the bottom of the screen carries prev / next
+               and seek through the list. -->
+          <p class="list-intro">Every beat <b>$599</b> — WAV + MP3, no stems, no trackouts. Tap a row to hear it in full, skip through the list with the player bar at the bottom of the screen. First come, first served — once a beat sells, it's pulled for good.</p>
+          <div class="track-list" id="trackList" aria-label="All 31 beats for sale"></div>
+          <p class="list-note">★ = today's featured pick — it stays right here in the list, buyable from its row.</p>
 
         </div>
       </section>
@@ -1043,55 +975,6 @@
         </div>
       </section>
 
-      <!-- VIDEOS : official placements — Fire Flame Remix & Slow Grind -->
-      <section id="videos" style="padding-top:6px">
-        <div class="wrap">
-          <div class="sec-head">
-            <img class="sec-emblem" src="assets/crown-emblem.webp" alt="" />
-            <div>
-              <h2>The <span class="gld">Videos</span></h2>
-              <p>Produced by Kill Will — watch the official videos for the records that put him in the building.</p>
-            </div>
-            <span class="head-note" style="margin-left:auto">watch ↓</span>
-          </div>
-          <div class="placements-grid">
-            <article class="free-card">
-              <div class="video-wrap">
-                <iframe id="ytPlayer11" src="https://www.youtube.com/embed/ZoWsL3vXSLw?enablejsapi=1" title="Birdman — Fire Flame (Remix) (Official Music Video) ft. Lil Wayne" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-              </div>
-              <div class="free-body">
-                <div class="free-rank"><span class="sticker red" style="font-size:.72rem;padding:5px 9px">Official video</span></div>
-                <h3 class="free-title">Birdman ft. Lil Wayne <span class="qt">“Fire Flame (Remix)”</span></h3>
-                <div class="free-meta">
-                  <span class="pill gold">#14 Billboard Hot Rap Songs</span>
-                  <span class="pill">#1 BET 106 &amp; Park</span>
-                </div>
-                <p class="free-note">Produced by <b>Kill Will</b>. The official music video, straight from YouTube.</p>
-                <div class="free-foot">
-                  <a class="yt-link" href="https://www.youtube.com/watch?v=ZoWsL3vXSLw" target="_blank" rel="noopener">Watch on YouTube ↗</a>
-                </div>
-              </div>
-            </article>
-            <article class="free-card">
-              <div class="video-wrap">
-                <iframe id="ytPlayer12" src="https://www.youtube.com/embed/HCtnlJWNeLI?enablejsapi=1" title="Young Jeezy — Slow Grind (The Real Is Back)" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-              </div>
-              <div class="free-body">
-                <div class="free-rank"><span class="sticker red" style="font-size:.72rem;padding:5px 9px">Official video</span></div>
-                <h3 class="free-title">Young Jeezy <span class="qt">“Slow Grind”</span></h3>
-                <div class="free-meta">
-                  <span class="pill gold">The Real Is Back</span>
-                  <span class="pill">Prod. Kill Will</span>
-                </div>
-                <p class="free-note">Produced by <b>Kill Will</b>. The official video, straight from YouTube.</p>
-                <div class="free-foot">
-                  <a class="yt-link" href="https://www.youtube.com/watch?v=HCtnlJWNeLI" target="_blank" rel="noopener">Watch on YouTube ↗</a>
-                </div>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
 
       <!-- PAPERS -->
       <section class="papers" id="papers" style="padding-top:6px">
@@ -1187,6 +1070,29 @@
       </div>
     </footer>
 
+    <!-- persistent player bar : prev / next + seek for the Vault track list -->
+    <div class="player-bar" id="playerBar" hidden>
+      <img class="pb-cover" id="pbCover" src="assets/crown-emblem.webp" alt="" />
+      <div class="pb-info">
+        <b id="pbTitle">Pick a beat</b>
+        <span id="pbMeta">Tap any row in the Vault to play it</span>
+      </div>
+      <div class="pb-controls">
+        <button class="pb-btn" id="pbPrev" type="button" aria-label="Previous beat"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h2.6v14H6zM19.5 5v14L10 12z" fill="currentColor"/></svg></button>
+        <button class="pb-btn pb-main" id="pbPlay" type="button" aria-label="Play or pause the current beat">▶</button>
+        <button class="pb-btn" id="pbNext" type="button" aria-label="Next beat"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.4 5H18v14h-2.6zM4.5 5v14L14 12z" fill="currentColor"/></svg></button>
+      </div>
+      <div class="pb-seekwrap">
+        <span class="pb-time" id="pbCur">0:00</span>
+        <input class="pb-seek" id="pbSeek" type="range" min="0" max="100" step="0.1" value="0" aria-label="Seek through the current beat" />
+        <span class="pb-time" id="pbDur">0:00</span>
+      </div>
+      <div class="pb-buy">
+        <span class="pb-price" id="pbPrice">$599</span>
+        <button class="pb-add" id="pbAdd" type="button">Add to cart</button>
+      </div>
+    </div>
+
     <!-- cart -->
     <div class="scrim" id="scrim"></div>
     <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Your cart" aria-hidden="true">
@@ -1203,7 +1109,7 @@
           <label class="field">Email for delivery<input name="email" type="email" required autocomplete="email" placeholder="you@email.com" /></label>
           <label class="field">Artist name (for the agreement)<input name="artist" placeholder="Your artist name" /></label>
           <button class="checkout-btn" type="submit">Place order</button>
-          <p class="drawer-note">Placing an order opens your email with the full order and downloads your agreement. One price — no payment plans.</p>
+          <p class="drawer-note">Placing an order opens your email with the full order addressed to Kill Will at killwillmusic@gmail.com and downloads your agreement — hit send in your email to notify him and place the order request. One price — no payment plans.</p>
         </form>
         <div class="order-done" id="orderDone">
           <h4>Order drafted ✓</h4>
@@ -1237,8 +1143,128 @@
         { id:"doubledown", title:"Double Down", price:599, bpm:"~129 BPM (half-time feel 86)", key:"A major", len:"4:01",
           files:["WAV master","MP3"], noStems:true,
           deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master, 16-bit / 44.1kHz stereo, 43 MB.",
-          audio:"assets/double-down.mp3", cover:"assets/double-down-cover.jpg" }
+          audio:"assets/double-down.mp3", cover:"assets/double-down-cover.jpg" },
+        { id:"purge-night", title:"Purge Night", price:599, bpm:"~99 BPM", key:"G minor", len:"3:29",
+          files:["WAV master","MP3"], noStems:true,
+          deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
+          audio:"assets/purge-night.mp3", cover:"assets/purge-night-cover.jpg" },
+        { id:"redline", title:"Redline", price:599, bpm:"~144 BPM", key:"G major", len:"2:58",
+          files:["WAV master","MP3"], noStems:true,
+          deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
+          audio:"assets/redline.mp3", cover:"assets/redline-cover.jpg" },
+        { id:"blackout", title:"Blackout", price:599, bpm:"~144 BPM", key:"F minor", len:"3:40",
+          files:["WAV master","MP3"], noStems:true,
+          deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
+          audio:"assets/blackout.mp3", cover:"assets/blackout-cover.jpg" },
+        { id:"overtime", title:"Overtime", price:599, bpm:"~118 BPM", key:"D♯ minor", len:"4:17",
+          files:["WAV master","MP3"], noStems:true,
+          deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
+          audio:"assets/overtime.mp3", cover:"assets/overtime-cover.jpg" },
+        { id:"flooded", title:"Flooded", price:599, bpm:"~74 BPM", key:"D minor", len:"3:55",
+          files:["WAV master","MP3"], noStems:true,
+          deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
+          audio:"assets/flooded.mp3", cover:"assets/flooded-cover.jpg" },
+        { id:"zaza", title:"Zaza", price:599, bpm:"~123 BPM", key:"F♯ minor", len:"3:26",
+          files:["WAV master","MP3"], noStems:true,
+          deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
+          audio:"assets/zaza.mp3", cover:"assets/zaza-cover.jpg" },
+        { id:"day-one", title:"Day One", price:599, bpm:"~99 BPM", key:"F major", len:"2:50",
+          files:["WAV master","MP3"], noStems:true,
+          deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
+          audio:"assets/day-one.mp3", cover:"assets/day-one-cover.jpg" },
+        { id:"heavy-drip", title:"Heavy Drip", price:599, bpm:"~136 BPM", key:"F♯ minor", len:"3:05",
+          files:["WAV master","MP3"], noStems:true,
+          deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
+          audio:"assets/heavy-drip.mp3", cover:"assets/heavy-drip-cover.jpg" },
+        { id:"big-plays", title:"Big Plays", price:599, bpm:"~123 BPM", key:"F♯ major", len:"3:11",
+          files:["WAV master","MP3"], noStems:true,
+          deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
+          audio:"assets/big-plays.mp3", cover:"assets/big-plays-cover.jpg" },
+        { id:"street-lights", title:"Street Lights", price:599, bpm:"~129 BPM", key:"B minor", len:"3:16",
+          files:["WAV master","MP3"], noStems:true,
+          deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
+          audio:"assets/street-lights.mp3", cover:"assets/street-lights-cover.jpg" },
+        { id:"new-wave", title:"New Wave", price:599, bpm:"~86 BPM", key:"C♯ minor", len:"3:31",
+          files:["WAV master","MP3"], noStems:true,
+          deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
+          audio:"assets/new-wave.mp3", cover:"assets/new-wave-cover.jpg" },
+        { id:"after-midnight", title:"After Midnight", price:599, bpm:"~123 BPM", key:"F♯ minor", len:"3:29",
+          files:["WAV master","MP3"], noStems:true,
+          deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
+          audio:"assets/after-midnight.mp3", cover:"assets/after-midnight-cover.jpg" },
+        { id:"new-era", title:"New Era", price:599, bpm:"~136 BPM", key:"D♯ major", len:"3:02",
+          files:["WAV master","MP3"], noStems:true,
+          deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
+          audio:"assets/new-era.mp3", cover:"assets/new-era-cover.jpg" },
+        { id:"double-cup", title:"Double Cup", price:599, bpm:"~89 BPM", key:"C♯ major", len:"3:07",
+          files:["WAV master","MP3"], noStems:true,
+          deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
+          audio:"assets/double-cup.mp3", cover:"assets/double-cup-cover.jpg" },
+        { id:"drip-god", title:"Drip God", price:599, bpm:"~86 BPM", key:"F♯ minor", len:"3:14",
+          files:["WAV master","MP3"], noStems:true,
+          deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
+          audio:"assets/drip-god.mp3", cover:"assets/drip-god-cover.jpg" },
+        { id:"trap-house", title:"Trap House", price:599, bpm:"~144 BPM", key:"A minor", len:"2:44",
+          files:["WAV master","MP3"], noStems:true,
+          deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
+          audio:"assets/trap-house.mp3", cover:"assets/trap-house-cover.jpg" },
+        { id:"nightmare", title:"Nightmare", price:599, bpm:"~144 BPM", key:"G minor", len:"2:50",
+          files:["WAV master","MP3"], noStems:true,
+          deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
+          audio:"assets/nightmare.mp3", cover:"assets/nightmare-cover.jpg" },
+        { id:"frostbite", title:"Frostbite", price:599, bpm:"~92 BPM", key:"C♯ major", len:"2:59",
+          files:["WAV master","MP3"], noStems:true,
+          deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
+          audio:"assets/frostbite.mp3", cover:"assets/frostbite-cover.jpg" },
+        { id:"short-fuse", title:"Short Fuse", price:599, bpm:"~99 BPM", key:"D minor", len:"2:07",
+          files:["WAV master","MP3"], noStems:true,
+          deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
+          audio:"assets/short-fuse.mp3", cover:"assets/short-fuse-cover.jpg" },
+        { id:"last-call", title:"Last Call", price:599, bpm:"~96 BPM", key:"A minor", len:"2:12",
+          files:["WAV master","MP3"], noStems:true,
+          deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
+          audio:"assets/last-call.mp3", cover:"assets/last-call-cover.jpg" },
+        { id:"night-vision", title:"Night Vision", price:599, bpm:"~129 BPM", key:"D minor", len:"3:09",
+          files:["WAV master","MP3"], noStems:true,
+          deliverNote:"WAV master + MP3 only — no stems, no trackouts. WAV converted from the MP3 master.",
+          audio:"assets/night-vision.mp3", cover:"assets/night-vision-cover.jpg" },
+        { id:"sixth-sense", title:"Sixth Sense", price:599, bpm:"~86 BPM", key:"F minor", len:"3:13",
+          files:["WAV master","MP3"], noStems:true,
+          deliverNote:"WAV master + MP3 only — no stems, no trackouts. WAV converted from the MP3 master.",
+          audio:"assets/sixth-sense.mp3", cover:"assets/sixth-sense-cover.jpg" },
+        { id:"next-up", title:"Next Up", price:599, bpm:"~129 BPM", key:"D minor", len:"3:14",
+          files:["WAV master","MP3"], noStems:true,
+          deliverNote:"WAV master + MP3 only — no stems, no trackouts. WAV converted from the MP3 master.",
+          audio:"assets/next-up.mp3", cover:"assets/next-up-cover.jpg" },
+        { id:"triple-threat", title:"Triple Threat", price:599, bpm:"~123 BPM", key:"C♯ major", len:"3:28",
+          files:["WAV master","MP3"], noStems:true,
+          deliverNote:"WAV master + MP3 only — no stems, no trackouts. WAV converted from the MP3 master.",
+          audio:"assets/triple-threat.mp3", cover:"assets/triple-threat-cover.jpg" },
+        { id:"rare-breed", title:"Rare Breed", price:599, bpm:"~129 BPM", key:"D♯ minor", len:"3:32",
+          files:["WAV master","MP3"], noStems:true,
+          deliverNote:"WAV master + MP3 only — no stems, no trackouts. WAV converted from the MP3 master.",
+          audio:"assets/rare-breed.mp3", cover:"assets/rare-breed-cover.jpg" },
+        { id:"getaway", title:"Getaway", price:599, bpm:"~129 BPM", key:"F♯ major", len:"3:15",
+          files:["WAV master","MP3"], noStems:true,
+          deliverNote:"WAV master + MP3 only — no stems, no trackouts. WAV converted from the MP3 master.",
+          audio:"assets/getaway.mp3", cover:"assets/getaway-cover.jpg" },
+        { id:"lucky-eleven", title:"Lucky Eleven", price:599, bpm:"~92 BPM", key:"E minor", len:"3:21",
+          files:["WAV master","MP3"], noStems:true,
+          deliverNote:"WAV master + MP3 only — no stems, no trackouts. WAV converted from the MP3 master.",
+          audio:"assets/lucky-eleven.mp3", cover:"assets/lucky-eleven-cover.jpg" }
       ];
+
+      /* ============ owner notification — orders ============
+         Orders notify the owner at killwillmusic@gmail.com through the
+         buyer-initiated order email itself: placing an order drafts a
+         full order email addressed to that inbox (see the orderForm
+         handler below) and the buyer hits send to deliver it. That is
+         an order request/draft, not a completed payment — no payment
+         is taken on this page yet. This static page has no server, so
+         it cannot silently email the owner on a free-beat download:
+         silent download alerts need a server-backed endpoint or an
+         email relay in the owner's own account. No download or buyer
+         data is posted to any third-party relay from this page. */
 
       /* ============ cart ============ */
       var cart = [];
@@ -1270,6 +1296,7 @@
             var btnId = btnMap[b.id] || null;
             var addBtn = btnId ? document.getElementById(btnId) : null;
             if (addBtn){ addBtn.classList.remove("added"); addBtn.textContent = "Add to cart — $599"; }
+            document.querySelectorAll('.vault-add[data-beat-id="' + b.id + '"]').forEach(function(gb){ gb.classList.remove("added"); gb.textContent = "Add to cart"; });
             if (typeof syncFeaturedAddBtn === "function") syncFeaturedAddBtn();
             renderCart();
           });
@@ -1281,6 +1308,7 @@
         cartTotalRow.style.display = has ? "flex" : "none";
         orderForm.style.display = has ? "flex" : "none";
         cartTotal.textContent = money(total);
+        if (typeof window.syncPlayerBarAdd === "function") window.syncPlayerBarAdd();
       }
       function bindAdd(btnId, beatId){
         var btn = document.getElementById(btnId);
@@ -1299,10 +1327,6 @@
           openCart();
         });
       }
-      bindAdd("vflatAdd", "flatline");
-      bindAdd("dripAdd", "dripcheck");
-      bindAdd("sunAdd", "sunup");
-      bindAdd("dblAdd", "doubledown");
       orderForm.addEventListener("submit", function(e){
         e.preventDefault();
         if (!cart.length) return;
@@ -1320,13 +1344,16 @@
         lines.push("", "TOTAL: " + money(total), "", "Name: " + buyer, "Email for delivery: " + email);
         if (artist) lines.push("Artist name (for the agreement): " + artist);
         lines.push("", "I understand: one price, no leases, no payment plans. The beat is mine once the sale is confirmed, and it's pulled from the store for good.");
-        var mail = "mailto:killwillmusic@gmail.com?subject=" + encodeURIComponent("Order — " + cart.map(function(b){ return b.title; }).join(", ") + " — KillWillBeats") + "&body=" + encodeURIComponent(lines.join("\n"));
+        /* Owner notification: this order email, addressed to
+           killwillmusic@gmail.com, is the alert — the buyer sends it
+           to place the order request. */
+        var mail = "mailto:killwillmusic@gmail.com?subject=" + encodeURIComponent("Order request — " + cart.map(function(b){ return b.title; }).join(", ") + " — KillWillBeats") + "&body=" + encodeURIComponent(lines.join("\n"));
         document.getElementById("orderMailBtn").href = mail;
         var first = cart[0];
         download("killwill-producer-agreement-and-split-sheet.txt",
           agreementText(first.title, money(first.price), first.files.join(" + ") + (first.noStems ? " — no stems, no trackouts" : "")));
         document.getElementById("orderDoneText").textContent =
-          "Your order for " + cart.map(function(b){ return b.title; }).join(", ") + " (" + money(total) + ") is addressed from " + email + ". Open the email and hit send to lock it in — first come, first served. Your agreement + split sheet just downloaded.";
+          "Your order request for " + cart.map(function(b){ return b.title; }).join(", ") + " (" + money(total) + ") is addressed from " + email + " to Kill Will at killwillmusic@gmail.com. Open the email and hit send to notify Kill Will and lock it in — first come, first served. Your agreement + split sheet just downloaded.";
         var done = document.getElementById("orderDone");
         done.style.display = "block";
         done.scrollIntoView({ behavior:"smooth", block:"nearest" });
@@ -1341,8 +1368,7 @@
          another player flips its buttons back to Play automatically. */
       var ytPlayers = [];
       function pauseAllVaultExcept(except){
-        ["flatAudio","vflatAudio","dripAudio","sunAudio","dblAudio"].forEach(function(id){
-          var a = document.getElementById(id);
+        document.querySelectorAll("audio").forEach(function(a){
           if (a && a !== except && !a.paused) a.pause();
         });
       }
@@ -1377,7 +1403,11 @@
         firstScript.parentNode.insertBefore(tag, firstScript);
       })();
 
-      /* ============ vault players (flatline + drip check + sun up + double down) ============ */
+      /* ============ featured card player (the Featured Beat showcase) ============
+         Its play event pauses every other audio element and YouTube
+         embed via pauseAllVaultExcept / pauseAllYouTubeExcept, and
+         anything else starting pauses it right back — one song at a
+         time across the whole page. */
       (function(){
         function fmt(s){ if (!isFinite(s)) return "0:00"; s = Math.max(0, Math.floor(s)); return Math.floor(s/60) + ":" + ("0" + (s%60)).slice(-2); }
         function setupPlayer(p, otherIds){
@@ -1408,11 +1438,7 @@
           audio.addEventListener("timeupdate", function(){ seek.value = audio.currentTime; cur.textContent = fmt(audio.currentTime); });
           seek.addEventListener("input", function(){ audio.currentTime = parseFloat(seek.value); cur.textContent = fmt(audio.currentTime); });
         }
-        setupPlayer("flat", ["vflatAudio", "dripAudio", "sunAudio", "dblAudio"]);
-        setupPlayer("vflat", ["flatAudio", "dripAudio", "sunAudio", "dblAudio"]);
-        setupPlayer("drip", ["flatAudio", "vflatAudio", "sunAudio", "dblAudio"]);
-        setupPlayer("sun", ["flatAudio", "vflatAudio", "dripAudio", "dblAudio"]);
-        setupPlayer("dbl", ["flatAudio", "vflatAudio", "dripAudio", "sunAudio"]);
+        setupPlayer("flat", []);
       })();
 
       /* ============ featured beat : daily random rotation through the for-sale beats ============
@@ -1445,7 +1471,34 @@
           coverAlt:"Double Down cover art — gold crown over graffiti lettering, gold chains, stacks of cash and dice in smoke, DOUBLE DOWN in bold white letters",
           pills:'<span class="pill gold"><b>~129</b>&nbsp;BPM</span><span class="pill">Half-time feel&nbsp;<b>86</b></span><span class="pill">Key&nbsp;<b>A major</b></span><span class="pill"><b>4:01</b></span><span class="pill">Prod. Kill Will</span>',
           deliverFiles:"WAV master + MP3",
-          deliverFine:"Original WAV master — 16-bit / 44.1kHz stereo, 43 MB. If it's not listed here, it's not included." }
+          deliverFine:"Original WAV master — 16-bit / 44.1kHz stereo, 43 MB. If it's not listed here, it's not included." },
+        "purge-night": { seconds:209, coverAlt:"Purge Night cover art — dripping white bubble letters with red splatter, gold crown, chains and cash", pills:'<span class="pill gold"><b>~99</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>G minor</b></span><span class="pill"><b>3:29</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"Original WAV master. If it's not listed here, it's not included." },
+        "redline": { seconds:178, coverAlt:"Redline cover art — distressed white block letters with a red slash, gold crown, chains and cash", pills:'<span class="pill gold"><b>~144</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>G major</b></span><span class="pill"><b>2:58</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"Original WAV master. If it's not listed here, it's not included." },
+        "blackout": { seconds:220, coverAlt:"Blackout cover art — white lightning-scratch letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>~144</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>F minor</b></span><span class="pill"><b>3:40</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"Original WAV master. If it's not listed here, it's not included." },
+        "overtime": { seconds:257, coverAlt:"Overtime cover art — heavy white varsity block letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>~118</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>D♯ minor</b></span><span class="pill"><b>4:17</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"Original WAV master. If it's not listed here, it's not included." },
+        "flooded": { seconds:235, coverAlt:"Flooded cover art — icy blue water letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>~74</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>D minor</b></span><span class="pill"><b>3:55</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"Original WAV master. If it's not listed here, it's not included." },
+        "zaza": { seconds:206, coverAlt:"Zaza cover art — green and gold marker-stroke letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>~123</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>F♯ minor</b></span><span class="pill"><b>3:26</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"Original WAV master. If it's not listed here, it's not included." },
+        "day-one": { seconds:170, coverAlt:"Day One cover art — ornate gold gothic letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>~99</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>F major</b></span><span class="pill"><b>2:50</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"Original WAV master. If it's not listed here, it's not included." },
+        "heavy-drip": { seconds:185, coverAlt:"Heavy Drip cover art — gold dripping brush letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>~136</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>F♯ minor</b></span><span class="pill"><b>3:05</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"Original WAV master. If it's not listed here, it's not included." },
+        "big-plays": { seconds:191, coverAlt:"Big Plays cover art — gold varsity block letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>~123</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>F♯ major</b></span><span class="pill"><b>3:11</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"Original WAV master. If it's not listed here, it's not included." },
+        "street-lights": { seconds:196, coverAlt:"Street Lights cover art — gold neon tube letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>~129</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>B minor</b></span><span class="pill"><b>3:16</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"Original WAV master. If it's not listed here, it's not included." },
+        "new-wave": { seconds:211, coverAlt:"New Wave cover art — gold liquid metal script letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>~86</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>C♯ minor</b></span><span class="pill"><b>3:31</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"Original WAV master. If it's not listed here, it's not included." },
+        "after-midnight": { seconds:209, coverAlt:"After Midnight cover art — silver serif letters over a moon and night skyline, gold crown, chains and cash", pills:'<span class="pill gold"><b>~123</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>F♯ minor</b></span><span class="pill"><b>3:29</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"Original WAV master. If it's not listed here, it's not included." },
+        "new-era": { seconds:182, coverAlt:"New Era cover art — chrome 3D block letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>~136</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>D♯ major</b></span><span class="pill"><b>3:02</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"Original WAV master. If it's not listed here, it's not included." },
+        "double-cup": { seconds:187, coverAlt:"Double Cup cover art — purple bubble drip letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>~89</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>C♯ major</b></span><span class="pill"><b>3:07</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"Original WAV master. If it's not listed here, it's not included." },
+        "drip-god": { seconds:194, coverAlt:"Drip God cover art — ornate gold serif letters with filigree, gold crown, chains and cash", pills:'<span class="pill gold"><b>~86</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>F♯ minor</b></span><span class="pill"><b>3:14</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"Original WAV master. If it's not listed here, it's not included." },
+        "trap-house": { seconds:164, coverAlt:"Trap House cover art — white chalk brush letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>~144</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>A minor</b></span><span class="pill"><b>2:44</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"Original WAV master. If it's not listed here, it's not included." },
+        "nightmare": { seconds:170, coverAlt:"Nightmare cover art — red horror drip letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>~144</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>G minor</b></span><span class="pill"><b>2:50</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"Original WAV master. If it's not listed here, it's not included." },
+        "frostbite": { seconds:179, coverAlt:"Frostbite cover art — ice-shard letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>~92</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>C♯ major</b></span><span class="pill"><b>2:59</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"Original WAV master. If it's not listed here, it's not included." },
+        "short-fuse": { seconds:127, coverAlt:"Short Fuse cover art — flaming orange letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>~99</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>D minor</b></span><span class="pill"><b>2:07</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"Original WAV master. If it's not listed here, it's not included." },
+        "last-call": { seconds:132, coverAlt:"Last Call cover art — red neon script letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>~96</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>A minor</b></span><span class="pill"><b>2:12</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"Original WAV master. If it's not listed here, it's not included." },
+        "night-vision": { seconds:189, coverAlt:"Night Vision cover art — green stencil letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>~129</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>D minor</b></span><span class="pill"><b>3:09</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"WAV converted from the MP3 master. If it's not listed here, it's not included." },
+        "sixth-sense": { seconds:193, coverAlt:"Sixth Sense cover art — wispy smoke letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>~86</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>F minor</b></span><span class="pill"><b>3:13</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"WAV converted from the MP3 master. If it's not listed here, it's not included." },
+        "next-up": { seconds:194, coverAlt:"Next Up cover art — white angular stencil letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>~129</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>D minor</b></span><span class="pill"><b>3:14</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"WAV converted from the MP3 master. If it's not listed here, it's not included." },
+        "triple-threat": { seconds:208, coverAlt:"Triple Threat cover art — red and white sketch outline letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>~123</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>C♯ major</b></span><span class="pill"><b>3:28</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"WAV converted from the MP3 master. If it's not listed here, it's not included." },
+        "rare-breed": { seconds:212, coverAlt:"Rare Breed cover art — white dry-brush stroke letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>~129</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>D♯ minor</b></span><span class="pill"><b>3:32</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"WAV converted from the MP3 master. If it's not listed here, it's not included." },
+        "getaway": { seconds:195, coverAlt:"Getaway cover art — white slash graffiti letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>~129</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>F♯ major</b></span><span class="pill"><b>3:15</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"WAV converted from the MP3 master. If it's not listed here, it's not included." },
+        "lucky-eleven": { seconds:201, coverAlt:"Lucky Eleven cover art — gold embroidered varsity letters, gold crown, chains and stacks of cash in smoke", pills:'<span class="pill gold"><b>~92</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>E minor</b></span><span class="pill"><b>3:21</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"WAV converted from the MP3 master. If it's not listed here, it's not included." }
       };
       var currentFeaturedId = "flatline";
       function featuredBeat(){
@@ -1499,6 +1552,7 @@
         var note = document.getElementById("featSwitchNote");
         if (note) note.textContent = "Now featuring: " + beat.title + " — today's pick from the " + BEATS.length + " beats for sale. A new random beat takes this spot tomorrow.";
         syncFeaturedAddBtn();
+        if (typeof window.markFeaturedRow === "function") window.markFeaturedRow(id);
         if (card) setTimeout(function(){ card.classList.remove("feat-fading"); }, 200);
       }
       function randomFeaturedId(excludeId){
@@ -1543,6 +1597,7 @@
               var vaultBtnMap = { flatline:"vflatAdd", dripcheck:"dripAdd", sunup:"sunAdd", doubledown:"dblAdd" };
               var vBtn = document.getElementById(vaultBtnMap[beat.id] || "");
               if (vBtn){ vBtn.classList.add("added"); vBtn.textContent = "In your cart ✓"; }
+              document.querySelectorAll('.vault-add[data-beat-id="' + beat.id + '"]').forEach(function(gb){ gb.classList.add("added"); gb.textContent = "In your cart ✓"; });
               syncFeaturedAddBtn();
               renderCart();
             }
@@ -1569,6 +1624,202 @@
           featDayKey = key;
           setFeaturedBeat(dailyFeaturedId());
         }, 30000);
+      })();
+
+      /* ============ vault track list : compact rows + persistent player ============
+         All 31 for-sale beats render as compact rows from the BEATS
+         catalog: small cover thumb on the left, title with BPM / key /
+         length inline, price + add-to-cart on the right. Clicking a row
+         plays it in full; the playing row opens its own seek bar, and
+         the persistent player bar pinned to the bottom of the screen
+         carries prev / next, seek and add-to-cart for whichever beat is
+         loaded, auto-advancing through the list when a beat ends. Same
+         one-song-at-a-time rule as the rest of the page: starting a row
+         pauses every other audio element and every YouTube embed, and
+         anything else starting pauses the row (every button re-syncs
+         off the audio element's own play / pause / ended events). The
+         daily featured pick keeps its row in this list — buyable like
+         every other row — and its row wears the ★ badge, which follows
+         the pick when the Featured slot changes. */
+      (function(){
+        function fmt(s){ if (!isFinite(s)) return "0:00"; s = Math.max(0, Math.floor(s)); return Math.floor(s/60) + ":" + ("0" + (s%60)).slice(-2); }
+        function lenToSecs(len){ var p = (len || "").split(":"); if (p.length !== 2) return 0; return (parseInt(p[0], 10) || 0) * 60 + (parseInt(p[1], 10) || 0); }
+        function playAudio(a){ try { var pr = a.play(); if (pr && pr.catch) pr.catch(function(){}); } catch(e){} }
+        var list = document.getElementById("trackList");
+        if (!list) return;
+        var bar = document.getElementById("playerBar");
+        var pbCover = document.getElementById("pbCover");
+        var pbTitle = document.getElementById("pbTitle");
+        var pbMeta = document.getElementById("pbMeta");
+        var pbPlay = document.getElementById("pbPlay");
+        var pbPrev = document.getElementById("pbPrev");
+        var pbNext = document.getElementById("pbNext");
+        var pbSeek = document.getElementById("pbSeek");
+        var pbCur = document.getElementById("pbCur");
+        var pbDur = document.getElementById("pbDur");
+        var pbPrice = document.getElementById("pbPrice");
+        var pbAdd = document.getElementById("pbAdd");
+        var rows = {};
+        var order = [];
+        var currentId = null;
+        function beatById(id){ var f = null; BEATS.forEach(function(b){ if (b.id === id) f = b; }); return f; }
+
+        BEATS.forEach(function(beat){
+          order.push(beat.id);
+          var extra = FEAT_EXTRA[beat.id] || {};
+          var secs = lenToSecs(beat.len);
+          var row = document.createElement("article");
+          row.className = "track-row";
+          row.setAttribute("data-beat-id", beat.id);
+          row.innerHTML =
+            '<div class="row-thumb"><img src="' + beat.cover + '" alt="' + (extra.coverAlt || (beat.title + " cover art")) + '" loading="lazy" />' +
+            '<button class="row-play" type="button" aria-label="Play ' + beat.title + '">▶</button></div>' +
+            '<div class="row-main"><div class="row-title-line"><h3 class="row-title">' + beat.title + '</h3>' +
+            '<span class="row-feat" hidden>★ Featured today</span></div>' +
+            '<p class="row-meta">' + beat.bpm + ' · Key ' + beat.key + ' · ' + beat.len + ' · WAV + MP3</p>' +
+            '<div class="row-seek-wrap"><input class="row-seek" type="range" min="0" max="' + secs + '" step="0.1" value="0" aria-label="Seek through ' + beat.title + '" />' +
+            '<span class="row-time">0:00 / ' + beat.len + '</span></div></div>' +
+            '<div class="row-buy"><span class="row-price">$' + beat.price + '</span>' +
+            '<button class="add-btn vault-add row-add" type="button" data-beat-id="' + beat.id + '">Add to cart</button></div>' +
+            '<audio id="audio-' + beat.id + '" src="' + beat.audio + '" preload="none"></audio>';
+          list.appendChild(row);
+          var rec = {
+            beat: beat, row: row,
+            audio: row.querySelector("audio"),
+            playBtn: row.querySelector(".row-play"),
+            seek: row.querySelector(".row-seek"),
+            time: row.querySelector(".row-time"),
+            addBtn: row.querySelector(".row-add"),
+            feat: row.querySelector(".row-feat"),
+            totalLabel: beat.len
+          };
+          rows[beat.id] = rec;
+
+          function syncBtn(){
+            var label = rec.audio.paused ? "▶" : "❚❚";
+            rec.playBtn.textContent = label;
+            if (currentId === beat.id) pbPlay.textContent = label;
+          }
+          rec.playBtn.addEventListener("click", function(e){ e.stopPropagation(); toggleRow(beat.id); });
+          row.addEventListener("click", function(e){
+            if (e.target.closest("input") || e.target.closest("button")) return;
+            toggleRow(beat.id);
+          });
+          rec.audio.addEventListener("play", function(){
+            setCurrent(beat.id);
+            syncBtn();
+            pauseAllVaultExcept(rec.audio);
+            pauseAllYouTubeExcept(null);
+          });
+          rec.audio.addEventListener("pause", syncBtn);
+          rec.audio.addEventListener("ended", function(){ syncBtn(); step(1); });
+          rec.audio.addEventListener("loadedmetadata", function(){ if (isFinite(rec.audio.duration)) rec.seek.max = rec.audio.duration; });
+          rec.audio.addEventListener("timeupdate", function(){
+            rec.seek.value = rec.audio.currentTime;
+            rec.time.textContent = fmt(rec.audio.currentTime) + " / " + (isFinite(rec.audio.duration) ? fmt(rec.audio.duration) : rec.totalLabel);
+            if (currentId === beat.id){
+              pbSeek.value = rec.audio.currentTime;
+              pbCur.textContent = fmt(rec.audio.currentTime);
+              if (isFinite(rec.audio.duration)) pbDur.textContent = fmt(rec.audio.duration);
+            }
+          });
+          rec.seek.addEventListener("input", function(){ rec.audio.currentTime = parseFloat(rec.seek.value); });
+          rec.addBtn.addEventListener("click", function(e){
+            e.stopPropagation();
+            if (!cart.some(function(x){ return x.id === beat.id; })){
+              cart.push(beat);
+              rec.addBtn.classList.add("added");
+              rec.addBtn.textContent = "In your cart ✓";
+              if (typeof syncFeaturedAddBtn === "function") syncFeaturedAddBtn();
+              renderCart();
+            }
+            openCart();
+          });
+        });
+
+        function showBar(){
+          if (!bar) return;
+          bar.hidden = false;
+          document.body.style.paddingBottom = bar.offsetHeight + "px";
+        }
+        function syncBarAdd(){
+          var beat = beatById(currentId);
+          if (!beat || !pbAdd) return;
+          var inCart = cart.some(function(x){ return x.id === beat.id; });
+          pbAdd.classList.toggle("added", inCart);
+          pbAdd.textContent = inCart ? "In your cart ✓" : "Add to cart";
+        }
+        window.syncPlayerBarAdd = syncBarAdd;
+        function setCurrent(id){
+          var rec = rows[id];
+          if (!rec) return;
+          currentId = id;
+          order.forEach(function(oid){ rows[oid].row.classList.toggle("active", oid === id); });
+          if (!bar) return;
+          pbCover.src = rec.beat.cover;
+          pbCover.alt = "";
+          pbTitle.textContent = rec.beat.title;
+          pbMeta.textContent = rec.beat.bpm + " · Key " + rec.beat.key + " · " + rec.beat.len;
+          pbPrice.textContent = "$" + rec.beat.price;
+          var hasDur = isFinite(rec.audio.duration) && rec.audio.duration > 0;
+          pbSeek.max = hasDur ? rec.audio.duration : lenToSecs(rec.beat.len);
+          pbSeek.value = rec.audio.currentTime || 0;
+          pbCur.textContent = fmt(rec.audio.currentTime || 0);
+          pbDur.textContent = hasDur ? fmt(rec.audio.duration) : rec.beat.len;
+          pbPlay.textContent = rec.audio.paused ? "▶" : "❚❚";
+          syncBarAdd();
+          showBar();
+        }
+        function toggleRow(id){
+          var rec = rows[id];
+          if (!rec) return;
+          if (rec.audio.paused){ setCurrent(id); playAudio(rec.audio); }
+          else rec.audio.pause();
+        }
+        function step(dir){
+          if (!order.length) return;
+          var idx = currentId ? order.indexOf(currentId) : -1;
+          var nextId = order[(idx + dir + order.length) % order.length];
+          var rec = rows[nextId];
+          if (!rec) return;
+          try { rec.audio.currentTime = 0; } catch(e){}
+          setCurrent(nextId);
+          playAudio(rec.audio);
+        }
+        if (bar){
+          pbPlay.addEventListener("click", function(){ if (currentId) toggleRow(currentId); });
+          pbPrev.addEventListener("click", function(){ step(-1); });
+          pbNext.addEventListener("click", function(){ step(1); });
+          pbSeek.addEventListener("input", function(){
+            var rec = rows[currentId];
+            if (rec) rec.audio.currentTime = parseFloat(pbSeek.value);
+          });
+          pbAdd.addEventListener("click", function(){
+            var beat = beatById(currentId);
+            if (!beat) return;
+            if (!cart.some(function(x){ return x.id === beat.id; })){
+              cart.push(beat);
+              var rec = rows[beat.id];
+              if (rec){ rec.addBtn.classList.add("added"); rec.addBtn.textContent = "In your cart ✓"; }
+              if (typeof syncFeaturedAddBtn === "function") syncFeaturedAddBtn();
+              renderCart();
+            }
+            openCart();
+          });
+          window.addEventListener("resize", function(){ if (!bar.hidden) document.body.style.paddingBottom = bar.offsetHeight + "px"; });
+        }
+
+        /* the featured pick keeps its row: badge whichever row holds
+           the Featured slot today, and re-badge when the pick changes */
+        window.markFeaturedRow = function(id){
+          order.forEach(function(oid){
+            var rec = rows[oid];
+            var on = oid === id;
+            rec.feat.hidden = !on;
+            rec.row.classList.toggle("is-featured", on);
+          });
+        };
+        if (typeof currentFeaturedId !== "undefined") window.markFeaturedRow(currentFeaturedId);
       })();
 
       /* ============ cart drawer ============ */
