@@ -220,6 +220,16 @@
       @media (max-width:760px){ .free-card:first-child{grid-column:span 1} }
       .video-wrap{position:relative;aspect-ratio:16/9;background:#000;border-bottom:2px solid #0a0a05}
       .video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+      /* click-to-play facade (Credits): the card shows the video's own
+         thumbnail and a play button — no YouTube player, and no "Watch
+         on YouTube" button, loads until the visitor taps play. The tap
+         swaps in the real embed and starts it. */
+      .yt-facade{position:absolute;inset:0;width:100%;height:100%;border:0;padding:0;background:#000;display:block;text-align:left}
+      .yt-facade img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+      .yt-facade::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 55%,rgba(0,0,0,.45))}
+      .yt-facade-play{position:absolute;inset:0;margin:auto;width:84px;height:84px;border-radius:50%;border:3px solid #0a0a05;background:var(--red);color:#fff;font-size:1.7rem;display:grid;place-items:center;box-shadow:5px 5px 0 rgba(0,0,0,.65);z-index:1}
+      .yt-facade:active .yt-facade-play{transform:translate(2px,2px);box-shadow:3px 3px 0 rgba(0,0,0,.65)}
+      .yt-facade-label{position:absolute;left:12px;bottom:12px;z-index:1;background:#0c0c07;color:var(--gold-bright);font-family:var(--display);text-transform:uppercase;font-size:.74rem;letter-spacing:.08em;padding:6px 10px;border:1.5px solid var(--gold);border-radius:4px}
       .free-body{padding:15px 16px 16px;display:flex;flex-direction:column;gap:8px;flex:1}
       .free-rank{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
       .free-rank .rank-num{font-family:var(--display);font-size:1.05rem;color:var(--gold-ink);background:var(--gold);border:2px solid #0a0a05;border-radius:5px;padding:3px 9px;line-height:1;box-shadow:2px 2px 0 #0a0a05}
@@ -436,13 +446,20 @@
       .order-done p{font-size:.88rem;color:var(--ink-dim);margin:0 0 10px}
       .order-done a.btn{padding:10px 18px;min-height:2.6rem;font-size:.88rem}
 
-      .hero{position:relative;isolation:isolate;overflow:hidden}
-      .hero::before{content:"";position:absolute;inset:0;z-index:-2;background:url("assets/hero-trap-mural.webp") center 30%/cover no-repeat}
-      .hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(4,5,3,.93) 18%,rgba(4,5,3,.72) 55%,rgba(4,5,3,.45))}
+      /* ONE background only: the trap mural photo itself. No second dark
+         layer stacked over it — just a light scrim behind the words so
+         the text stays readable while the photo actually shows, on
+         desktop and on phones alike. */
+      .hero{position:relative;isolation:isolate;overflow:hidden;background:#0a0b06}
+      .hero::before{content:"";position:absolute;inset:0;z-index:-1;background:url("assets/hero-trap-mural.webp") center 32%/cover no-repeat;filter:brightness(1.14) saturate(1.06)}
+      .hero::after{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(90deg,rgba(4,5,3,.62) 0%,rgba(4,5,3,.34) 52%,rgba(4,5,3,.10) 82%,rgba(4,5,3,0) 100%);pointer-events:none}
+      .hero-in{position:relative;z-index:1}
+      @media (max-width:640px){
+        .hero::before{background-position:center 26%;filter:brightness(1.22) saturate(1.08)}
+        .hero::after{background:linear-gradient(180deg,rgba(4,5,3,.40) 0%,rgba(4,5,3,.18) 55%,rgba(4,5,3,.48) 100%)}
+      }
       .hero h1{text-shadow:4px 4px 0 rgba(0,0,0,.65)}
-      .hero-line{text-shadow:2px 2px 0 rgba(0,0,0,.7)}
-      .building-line{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px}
-      .building-line .bld{font-family:var(--display);text-transform:uppercase;letter-spacing:.14em;font-size:.8rem;color:var(--gold-bright);border:1.5px solid var(--gold);border-radius:4px;padding:5px 10px;background:rgba(5,6,3,.72)}
+      .hero-line{text-shadow:2px 2px 0 rgba(0,0,0,.75)}
       /* ---------- search bubble : sticky pill over the Vault list ---------- */
       .vault-search-wrap{position:sticky;top:78px;z-index:45;margin:0 0 18px}
       .search-bubble{display:flex;align-items:center;gap:11px;background:#0c0c07;color:#f2edd8;border:2.5px solid var(--gold);border-radius:999px;padding:7px 8px 7px 20px;box-shadow:6px 6px 0 rgba(0,0,0,.5)}
@@ -464,9 +481,8 @@
     <header class="topbar">
       <div class="wrap topbar-in">
         <img class="logo-badge" src="assets/crown-emblem.webp" alt="Kill Will crown and vinyl emblem logo" />
-        <a class="brand-lockup" href="#top" aria-label="Kill Will Beats — Kill Will Beats in the building">
+        <a class="brand-lockup" href="#top" aria-label="Kill Will Beats — back to the top">
           <span class="wordmark">Kill <b>Will</b> Beats</span>
-          <span class="brand-tag">★ in the building ★</span>
         </a>
         <nav class="topnav" aria-label="Store">
           <a href="#videos">Credits</a>
@@ -489,7 +505,6 @@
           <img class="hero-logo" src="assets/crown-emblem.webp" alt="Kill Will Beats emblem — gold crown over a vinyl record" />
           <div class="hero-text">
             <h1>Kill <b>Will</b> Beats</h1>
-            <div class="building-line"><span class="bld">★ Kill Will Beats — In The Building ★</span></div>
             <p class="hero-line">Beats for sale — hurry up and buy, first come, first served. Sold once and gone for good. This batch: $599 for WAV + MP3. Beats with trackouts carry their own price — more beats on the way.</p>
           </div>
           <div class="hero-cta">
@@ -523,7 +538,11 @@
           <div class="placements-grid">
             <article class="free-card">
               <div class="video-wrap">
-                <iframe id="ytPlayer11" src="https://www.youtube.com/embed/ZoWsL3vXSLw?enablejsapi=1" title="Birdman — Fire Flame (Remix) (Official Music Video) ft. Lil Wayne" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <button class="yt-facade" type="button" data-yt-id="ZoWsL3vXSLw" data-yt-title="Birdman — Fire Flame (Remix) (Official Music Video) ft. Lil Wayne" data-bar-title="Birdman ft. Lil Wayne “Fire Flame (Remix)”" data-cover="assets/credit-fire-flame.jpg" aria-label="Play the official video: Birdman ft. Lil Wayne — Fire Flame (Remix)">
+                  <img src="assets/credit-fire-flame.jpg" alt="" loading="lazy" />
+                  <span class="yt-facade-play" aria-hidden="true">▶</span>
+                  <span class="yt-facade-label">Play video</span>
+                </button>
               </div>
               <div class="free-body">
                 <div class="free-rank"><span class="sticker red" style="font-size:.72rem;padding:5px 9px">Official video</span></div>
@@ -537,7 +556,11 @@
             </article>
             <article class="free-card">
               <div class="video-wrap">
-                <iframe id="ytPlayer12" src="https://www.youtube.com/embed/Jt3K02lbuZ8?enablejsapi=1" title="Young Jeezy — Slow Grind (Tour Bus Performance Video) — Live" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <button class="yt-facade" type="button" data-yt-id="Jt3K02lbuZ8" data-yt-title="Young Jeezy — Slow Grind (Tour Bus Performance Video) — Live" data-bar-title="Young Jeezy “Slow Grind” — Live" data-cover="assets/credit-slow-grind.jpg" aria-label="Play the live video: Young Jeezy — Slow Grind, Tour Bus Performance">
+                  <img src="assets/credit-slow-grind.jpg" alt="" loading="lazy" />
+                  <span class="yt-facade-play" aria-hidden="true">▶</span>
+                  <span class="yt-facade-label">Play video</span>
+                </button>
               </div>
               <div class="free-body">
                 <div class="free-rank"><span class="sticker red" style="font-size:.72rem;padding:5px 9px">Live performance</span></div>
@@ -1175,35 +1198,64 @@
           if (p && p !== except){ try { p.pauseVideo(); } catch(e){} }
         });
       }
-      window.onYouTubeIframeAPIReady = function(){
-        /* Credits embeds only — the free-beats grid creates its players
-           at render and registers them itself (see the free-beats script),
-           so they must not be picked up here a second time. */
-        var frames = document.querySelectorAll(".placements-grid .video-wrap iframe");
-        frames.forEach(function(frame){
-          try {
-            var card = frame.closest ? frame.closest("article") : null;
-            var titleEl = card ? card.querySelector(".free-title") : null;
-            var vidTitle = titleEl ? titleEl.textContent.replace(/\s+/g, " ").trim() : "Official video";
-            var player = new YT.Player(frame, {
-              events: {
-                onStateChange: function(ev){
-                  if (ev.data === YT.PlayerState.PLAYING){
-                    pauseAllVaultExcept(null);
-                    pauseAllYouTubeExcept(player);
-                    /* the bottom bar shows whatever is playing — this video included */
-                    if (typeof window.__barShowYouTube === "function"){
-                      window.__barShowYouTube({ player: player, title: vidTitle, meta: "Official video · YouTube", cover: "assets/crown-emblem.webp", priceLabel: "Video" });
+      /* Credits videos are click-to-play facades: no YouTube iframe —
+         and none of YouTube's own buttons, "Watch on YouTube" included —
+         exists on the page until a visitor taps play. The tap swaps the
+         real embed in (autoplay on, related videos limited to the same
+         channel) and registers it here, so it still joins the
+         one-song-at-a-time rule and the bottom player bar. The
+         free-beats grid creates its players at render and registers
+         them itself (see the free-beats script). */
+      function registerCreditPlayer(iframe, barTitle, cover){
+        var tries = 0;
+        (function attempt(){
+          if (window.YT && YT.Player){
+            try {
+              var player = new YT.Player(iframe, {
+                events: {
+                  onStateChange: function(ev){
+                    if (ev.data === YT.PlayerState.PLAYING){
+                      pauseAllVaultExcept(null);
+                      pauseAllYouTubeExcept(player);
+                      /* the bottom bar shows whatever is playing — this video included */
+                      if (typeof window.__barShowYouTube === "function"){
+                        window.__barShowYouTube({ player: player, title: barTitle || "Official video", meta: "Official video · YouTube", cover: cover || "assets/crown-emblem.webp", priceLabel: "Video" });
+                      }
+                    } else if (ev.data === YT.PlayerState.PAUSED || ev.data === YT.PlayerState.ENDED){
+                      if (typeof window.__barYouTubeState === "function") window.__barYouTubeState(player, false);
                     }
-                  } else if (ev.data === YT.PlayerState.PAUSED || ev.data === YT.PlayerState.ENDED){
-                    if (typeof window.__barYouTubeState === "function") window.__barYouTubeState(player, false);
                   }
                 }
-              }
-            });
-            ytPlayers.push(player);
-          } catch(e){}
+              });
+              ytPlayers.push(player);
+            } catch(e){}
+            return;
+          }
+          if (++tries < 40) setTimeout(attempt, 300);
+        })();
+      }
+      document.querySelectorAll(".placements-grid .yt-facade").forEach(function(btn){
+        btn.addEventListener("click", function(){
+          var wrap = btn.closest ? btn.closest(".video-wrap") : null;
+          if (!wrap) return;
+          /* one song at a time starts at the tap, not at first frame */
+          pauseAllVaultExcept(null);
+          pauseAllYouTubeExcept(null);
+          var iframe = document.createElement("iframe");
+          iframe.src = "https://www.youtube-nocookie.com/embed/" + btn.getAttribute("data-yt-id") + "?enablejsapi=1&autoplay=1&rel=0";
+          iframe.title = btn.getAttribute("data-yt-title") || "Video";
+          iframe.setAttribute("allow", "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share");
+          iframe.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
+          iframe.setAttribute("allowfullscreen", "");
+          wrap.innerHTML = "";
+          wrap.appendChild(iframe);
+          registerCreditPlayer(iframe, btn.getAttribute("data-bar-title"), btn.getAttribute("data-cover"));
         });
+      });
+      window.onYouTubeIframeAPIReady = function(){
+        /* Nothing to scan on load any more: Credits players register
+           when their facade is tapped (above), and the free-beats grid
+           registers its own players at render. */
       };
       (function(){
         var tag = document.createElement("script");
