@@ -222,6 +222,29 @@
       .cid-note.slim{font-size:.78rem;padding:10px 13px}
       .free-fine{font-size:.78rem;color:var(--ink-faint);font-weight:600;margin:16px 0 0;line-height:1.5}
 
+      /* ---------- afterpay : the split-it pitch ----------
+         Every installment figure on the page is figured in the
+         scripts from that beat's OWN price (price / 4) — beats with
+         trackouts cost more than the $599 batch, and their split is
+         bigger. Static copy here never names a dollar split. */
+      .ap-badge{display:inline-flex;align-items:center;background:#b2fce4;color:#0a0a05;border:2px solid #0a0a05;border-radius:6px;box-shadow:3px 3px 0 #0a0a05;font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;padding:6px 12px;font-size:.85rem;line-height:1;white-space:nowrap}
+      .hero-ap{margin:9px 0 0;display:flex;align-items:center;gap:10px;flex-wrap:wrap;color:#e6e0c6;font-weight:700;font-size:.94rem;text-shadow:2px 2px 0 rgba(0,0,0,.75)}
+      .ap-banner{display:flex;gap:16px;align-items:flex-start;background:var(--green-deep);border:2px solid var(--green-bright);border-radius:8px;padding:16px 18px;margin:0 0 20px;box-shadow:5px 5px 0 rgba(0,0,0,.28)}
+      .ap-banner p{margin:0;color:var(--ink-dim);font-weight:600;font-size:.98rem;line-height:1.55}
+      .ap-banner p b{color:var(--ink)}
+      .ap-banner .ap-fine{display:block;margin-top:6px;font-size:.76rem;color:var(--ink-faint);font-weight:600}
+      @media (max-width:560px){ .ap-banner{flex-direction:column;gap:10px} }
+      .ap-line{flex:1 1 100%;font-size:.9rem;font-weight:800;color:#b2fce4}
+      .ap-line b{color:#fff}
+      .row-price-stack{display:flex;flex-direction:column;align-items:flex-end;gap:1px}
+      .row-ap{font-size:.68rem;font-weight:800;color:var(--ink-dim);letter-spacing:.02em;white-space:nowrap}
+      .row-ap b{color:#b2fce4;font-weight:800}
+      .pb-price-stack{display:flex;flex-direction:column;align-items:flex-end;gap:0;line-height:1.05}
+      .pb-ap{font-size:.66rem;font-weight:800;color:#b2fce4;white-space:nowrap}
+      @media (max-width:620px){ .pb-ap{display:none} }
+      .cart-ap{display:flex;justify-content:space-between;gap:10px;font-size:.92rem;font-weight:700;color:var(--ink-dim);border:1.5px dashed var(--green-bright);border-radius:8px;padding:10px 13px;background:var(--green-deep)}
+      .cart-ap b{color:#b2fce4}
+
       /* ---------- free beats (YouTube) ---------- */
       .free-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:22px}
       @media (max-width:480px){ .free-grid{grid-template-columns:1fr} }
@@ -534,6 +557,7 @@
           <div class="hero-text">
             <h1>Kill <b>Will</b> Beats</h1>
             <p class="hero-line">Beats for sale — hurry up and buy, first come, first served. Sold once and gone for good.</p>
+            <p class="hero-ap"><span class="ap-badge">Afterpay</span><span>Pay over time with <b>Afterpay</b> — 4 interest-free payments on beats up to $2,000. Lock it in today.</span></p>
           </div>
           <div class="hero-cta">
             <a class="btn btn-red" href="#vault">Shop Beats</a>
@@ -546,8 +570,8 @@
 
     <div class="marquee" aria-hidden="true">
       <div class="marquee-track">
-        <span>Kill Will Beats in the building</span><span class="mq-star">★</span><span>Hurry up and buy</span><span class="mq-star">★</span><span>No leases</span><span class="mq-star">★</span><span>First come, first served</span><span class="mq-star">★</span>
-        <span>Kill Will Beats in the building</span><span class="mq-star">★</span><span>Hurry up and buy</span><span class="mq-star">★</span><span>No leases</span><span class="mq-star">★</span><span>First come, first served</span><span class="mq-star">★</span>
+        <span>Kill Will Beats in the building</span><span class="mq-star">★</span><span>Hurry up and buy</span><span class="mq-star">★</span><span>No leases</span><span class="mq-star">★</span><span>Afterpay — pay over time</span><span class="mq-star">★</span><span>First come, first served</span><span class="mq-star">★</span>
+        <span>Kill Will Beats in the building</span><span class="mq-star">★</span><span>Hurry up and buy</span><span class="mq-star">★</span><span>No leases</span><span class="mq-star">★</span><span>Afterpay — pay over time</span><span class="mq-star">★</span><span>First come, first served</span><span class="mq-star">★</span>
       </div>
     </div>
 
@@ -647,6 +671,7 @@
                 <span class="price-big" id="featPriceBig">$599<small>This beat · No leases</small></span>
                 <span class="you-get">First come, first served — once it sells, it's pulled for good. <b>Agreement + split sheet included.</b></span>
                 <button class="btn btn-gold flat-add" id="flatAdd" type="button" data-beat-id="flatline">Add to cart — $599</button>
+                <span class="ap-line" id="featApLine">or pay over time with <b>Afterpay</b></span>
               </div>
             </div>
             <audio id="flatAudio" src="assets/flatline.mp3" preload="none" style="display:none"></audio>
@@ -665,6 +690,10 @@
             <span class="head-note" style="margin-left:auto">first come, first served ↓</span>
           </div>
           <div class="forsale-banner" aria-label="Beats for sale">For <span class="red">Sale</span></div>
+          <div class="ap-banner" role="note" aria-label="Afterpay — split any beat into 4 interest-free payments">
+            <span class="ap-badge">Afterpay</span>
+            <p><b>Pay over time.</b> Every beat's row shows its own Afterpay option, figured from its own price: beats up to <b>$2,000</b> split into <b>4 interest-free payments</b>; bigger beats up to $4,000 go on <b>monthly installments</b> over 6 or 12 months (interest applies). First come, first served still rules: once it's yours, it's pulled for good.<span class="ap-fine">US buyers · subject to Afterpay approval · late fees may apply.</span></p>
+          </div>
           <!-- THE LIST : all 31 beats for sale, compact rows.
                Rows are rendered from the BEATS catalog by the track-list
                script below the featured-beat script: cover thumb shown
@@ -729,6 +758,7 @@
               <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px">
                 <span class="sticker rot-l">From $599</span>
                 <span class="sticker bone rot-r">No leases ✕</span>
+                <span class="sticker black rot-l">Afterpay · pay over time</span>
                 <span class="sticker black rot-l">First come, first served</span>
               </div>
             </div>
@@ -767,8 +797,8 @@
             </div>
             <div class="step">
               <span class="big-num">02</span>
-              <svg class="step-icon" viewBox="0 0 52 52" aria-hidden="true"><rect x="4" y="12" width="44" height="28" rx="4" fill="#c9a227" stroke="#0a0a05" stroke-width="2.5" transform="rotate(-4 26 26)"/><text x="26" y="34" text-anchor="middle" font-family="Anton,sans-serif" font-size="19" fill="#171200">$1×</text></svg>
-              <h3>Pay once</h3><p>Hurry up and buy — first come, first served. The price on its row is the price. No leases, no plans, no payment options.</p>
+              <svg class="step-icon" viewBox="0 0 52 52" aria-hidden="true"><rect x="4" y="12" width="44" height="28" rx="4" fill="#c9a227" stroke="#0a0a05" stroke-width="2.5" transform="rotate(-4 26 26)"/><text x="26" y="34" text-anchor="middle" font-family="Anton,sans-serif" font-size="19" fill="#171200">4×</text></svg>
+              <h3>Pay in full — or in 4</h3><p>Hurry up and buy — first come, first served. The price on its row is the price: pay it all today, or pay over time with Afterpay — 4 interest-free payments on beats up to $2,000, monthly installments on the bigger ones. Every row shows that beat's own option. No leases.</p>
             </div>
             <div class="step">
               <span class="big-num">03</span>
@@ -848,7 +878,7 @@
             <details><summary>Can I lease a beat?</summary><p>No. No leases, no tiers, no stream caps. Buy it outright or don't.</p></details>
             <details><summary>What files do I get?</summary><p>Exactly what's listed on that beat's own card and row — same list in your order and agreement.</p></details>
             <details><summary>How does first come, first served work?</summary><p>Simple: whoever buys it first gets it. The second it sells, it's pulled from the store for good — never sold to anyone else. Your agreement is the proof.</p></details>
-            <details><summary>Payment plans?</summary><p>No. Hurry up and buy — first come, first served, paid once in full. No payment options at checkout.</p></details>
+            <details><summary>Payment plans?</summary><p>Yes — Afterpay. Beats up to $2,000 split into 4 interest-free payments (price ÷ 4 — every Vault row shows its exact number). Bigger beats, up to $4,000, go on Afterpay monthly installments over 6 or 12 months (interest applies). Above $4,000 there's no Afterpay — full price up front. US buyers, subject to Afterpay approval. First come, first served still rules: once your order is confirmed, the beat is pulled for good.</p></details>
             <details><summary>Are beats available now?</summary><p>Yes — beats in the Vault are for sale now. First come, first served — once a beat sells, it's pulled from the store for good. Drop your email in the first-word signup on this page to get first word on what's in the Vault.</p></details>
             <details><summary>Publishing splits?</summary><p>Set per song on the split sheet that comes with your sale — filled in for your record in the documents.</p></details>
           </div>
@@ -894,6 +924,7 @@
           <a href="https://youtube.com/@killwillbeats" target="_blank" rel="noopener">YouTube — @killwillbeats</a>
           <a href="#papers">Agreement + split sheet included</a>
           <span>Prices in USD. First come, first served — beats sell once.</span>
+          <span>Afterpay available — pay over time on beats up to $4,000.</span>
         </div>
       </div>
     </footer>
@@ -918,7 +949,7 @@
         <span class="pb-time" id="pbDur">0:00</span>
       </div>
       <div class="pb-buy">
-        <span class="pb-price" id="pbPrice">$599</span>
+        <span class="pb-price-stack"><span class="pb-price" id="pbPrice">$599</span><span class="pb-ap" id="pbAp"></span></span>
         <button class="pb-add" id="pbAdd" type="button">Add to cart</button>
       </div>
     </div>
@@ -934,12 +965,13 @@
         <div id="cartItems"></div>
         <p class="drawer-note" id="cartEmpty">Your cart is empty. First come, first served — every beat sells once, then it's gone for good.</p>
         <div class="cart-total" id="cartTotalRow" style="display:none"><span>Total</span><span id="cartTotal">$0</span></div>
+        <div class="cart-ap" id="cartApRow" style="display:none"><span id="cartApText"></span></div>
         <form id="orderForm" style="display:none;flex-direction:column;gap:12px">
           <label class="field">Your name<input name="buyer" required autocomplete="name" placeholder="Full name" /></label>
           <label class="field">Email for delivery<input name="email" type="email" required autocomplete="email" placeholder="you@email.com" /></label>
           <label class="field">Artist name (for the agreement)<input name="artist" placeholder="Your artist name" /></label>
           <button class="checkout-btn" type="submit">Place order</button>
-          <p class="drawer-note">Placing an order opens your email with the full order addressed to Kill Will at killwillmusic@gmail.com and downloads your agreement — hit send in your email to notify him and place the order request. Hurry up and buy — first come, first served. No payment plans.</p>
+          <p class="drawer-note">Placing an order opens your email with the full order addressed to Kill Will at killwillmusic@gmail.com and downloads your agreement — hit send in your email to notify him and place the order request. Hurry up and buy — first come, first served. Pay in full or over time with Afterpay.</p>
         </form>
         <div class="order-done" id="orderDone">
           <h4>Order drafted ✓</h4>
@@ -958,7 +990,8 @@
          the files it actually delivers, and real audio. Delivery mirrors
          files, every time: WAV-only beats list ["WAV master"]; full-file
          beats list ["MP3","WAV master","Stems / trackouts"]. No leases,
-         no tiers, no payment options. */
+         no tiers. Afterpay options are figured per beat from its own
+         price — see apOption below. */
       var BEATS = [
         { id:"flatline", title:"Flatline", price:599, bpm:"~129 BPM", key:"B♭ minor", len:"3:28",
           files:["MP3","WAV master"], noStems:true,
@@ -1107,6 +1140,29 @@
       var cartTotal = document.getElementById("cartTotal");
       var orderForm = document.getElementById("orderForm");
       function money(n){ return "$" + n.toLocaleString("en-US"); }
+      /* Afterpay, figured from the beat's OWN price every time —
+         never a hardcoded split. Pay in 4 (interest-free) only works
+         up to $2,000; above that, up to $4,000, it's monthly
+         installments (6 or 12 months, interest applies) and NO
+         4-payment figure is ever shown; over $4,000 there is no
+         Afterpay at all, so no line shows. */
+      function apOption(price){
+        if (price > 4000) return null;
+        if (price > 2000) return { kind:"monthly" };
+        return { kind:"pay4", amt:"$" + (price / 4).toLocaleString("en-US", { minimumFractionDigits:2, maximumFractionDigits:2 }) };
+      }
+      function apShort(price){
+        var o = apOption(price);
+        if (!o) return "";
+        return o.kind === "pay4" ? "4 × " + o.amt + " · Afterpay" : "Afterpay monthly · 6/12 mo";
+      }
+      function apLong(price){
+        var o = apOption(price);
+        if (!o) return "";
+        return o.kind === "pay4"
+          ? "or 4 interest-free payments of " + o.amt + " with Afterpay"
+          : "or monthly installments with Afterpay — 6 or 12 months (interest applies)";
+      }
       function renderCart(){
         cartCount.textContent = cart.length;
         cartItems.innerHTML = "";
@@ -1140,6 +1196,19 @@
         cartTotalRow.style.display = has ? "flex" : "none";
         orderForm.style.display = has ? "flex" : "none";
         cartTotal.textContent = money(total);
+        var apRow = document.getElementById("cartApRow");
+        var apText = document.getElementById("cartApText");
+        if (apRow && apText){
+          var apO = has ? apOption(total) : null;
+          if (apO){
+            apRow.style.display = "flex";
+            apText.innerHTML = apO.kind === "pay4"
+              ? "or 4 interest-free payments of <b>" + apO.amt + "</b> with <b>Afterpay</b>"
+              : "or <b>monthly installments</b> with <b>Afterpay</b> — 6 or 12 months (interest applies)";
+          } else {
+            apRow.style.display = "none";
+          }
+        }
         if (typeof window.syncPlayerBarAdd === "function") window.syncPlayerBarAdd();
       }
       function bindAdd(btnId, beatId){
@@ -1175,7 +1244,7 @@
         });
         lines.push("", "TOTAL: " + money(total), "", "Name: " + buyer, "Email for delivery: " + email);
         if (artist) lines.push("Artist name (for the agreement): " + artist);
-        lines.push("", "I understand: hurry up and buy — first come, first served. No leases, no payment plans. The beat is mine once the sale is confirmed, and it's pulled from the store for good.");
+        lines.push("", "I understand: hurry up and buy — first come, first served. No leases. I'll pay in full or over time with Afterpay. The beat is mine once the sale is confirmed, and it's pulled from the store for good.");
         /* Owner notification: this order email, addressed to
            killwillmusic@gmail.com, is the alert — the buyer sends it
            to place the order request. */
@@ -1419,6 +1488,12 @@
         if (priceBig) priceBig.textContent = money(beat.price);
         var priceTag = document.getElementById("featPriceTag");
         if (priceTag) priceTag.textContent = money(beat.price);
+        var apLine = document.getElementById("featApLine");
+        if (apLine){
+          var apTxt = apLong(beat.price);
+          apLine.textContent = apTxt;
+          apLine.style.display = apTxt ? "" : "none";
+        }
         var files = document.getElementById("featDeliverFiles");
         if (files) files.textContent = extra.deliverFiles;
         var fine = document.getElementById("featDeliverFine");
@@ -1578,6 +1653,7 @@
         var pbCur = document.getElementById("pbCur");
         var pbDur = document.getElementById("pbDur");
         var pbPrice = document.getElementById("pbPrice");
+        var pbAp = document.getElementById("pbAp");
         var pbAdd = document.getElementById("pbAdd");
         var rows = {};
         var order = [];
@@ -1605,7 +1681,8 @@
             '<p class="row-meta">' + beat.bpm + ' · Key ' + beat.key + ' · ' + beat.len + ' · WAV + MP3</p>' +
             '<div class="row-seek-wrap"><input class="row-seek" type="range" min="0" max="' + secs + '" step="0.1" value="0" aria-label="Seek through ' + beat.title + '" />' +
             '<span class="row-time">0:00 / ' + beat.len + '</span></div></div>' +
-            '<div class="row-buy"><span class="row-price">$' + beat.price + '</span>' +
+            '<div class="row-buy"><span class="row-price-stack"><span class="row-price">$' + beat.price + '</span>' +
+            (apOption(beat.price) ? '<span class="row-ap">or ' + apShort(beat.price) + '</span>' : '') + '</span>' +
             '<button class="add-btn vault-add row-add" type="button" data-beat-id="' + beat.id + '">Add to cart</button></div>' +
             '<audio id="audio-' + beat.id + '" src="' + beat.audio + '" preload="none"></audio>';
           list.appendChild(row);
@@ -1702,6 +1779,7 @@
           pbTitle.textContent = rec.beat.title;
           pbMeta.textContent = rec.beat.bpm + " · Key " + rec.beat.key + " · " + rec.beat.len;
           pbPrice.textContent = "$" + rec.beat.price;
+          if (pbAp){ var apS = apShort(rec.beat.price); pbAp.textContent = apS ? "or " + apS : ""; }
           var hasDur = isFinite(rec.audio.duration) && rec.audio.duration > 0;
           pbSeek.max = hasDur ? rec.audio.duration : lenToSecs(rec.beat.len);
           pbSeek.value = rec.audio.currentTime || 0;
@@ -1820,6 +1898,27 @@
         };
         window.__listStepFromFeatured = function(){ step(1); };
 
+        /* free-beat handoff: when a Free Beats YouTube video ends, the
+           music does not stop — a random Vault beat starts playing
+           next. The pick is fresh every time, drawn from the whole
+           for-sale list (the featured beat plays from the Featured
+           card's player, like everywhere else). Once it starts, the
+           Vault's own end-of-track advance (step, above) carries the
+           chain from there, same as any other Vault playback. */
+        window.__playRandomVaultBeat = function(){
+          if (!order.length) return;
+          var id = order[Math.floor(Math.random() * order.length)];
+          var rec = rows[id];
+          if (!rec) return;
+          if (id === currentFeaturedId){
+            var fa = document.getElementById("flatAudio");
+            if (fa){ try { fa.currentTime = 0; } catch(e){} setCurrent(id); playAudio(fa); return; }
+          }
+          try { rec.audio.currentTime = 0; } catch(e){}
+          setCurrent(id);
+          playAudio(rec.audio);
+        };
+
         /* now-playing bar : YouTube tracks. When a Credits or Free
            Beats video starts, the bar switches to that track — its
            cover, title and meta — and the bar's play button pauses /
@@ -1836,6 +1935,7 @@
           pbTitle.textContent = info.title || "Now playing";
           pbMeta.textContent = info.meta || "YouTube";
           pbPrice.textContent = info.priceLabel || "Video";
+          if (pbAp) pbAp.textContent = "";
           if (pbAdd) pbAdd.style.display = "none";
           if (pbSeekWrap) pbSeekWrap.style.display = "none";
           pbPlay.textContent = "❚❚";
@@ -1967,8 +2067,8 @@
         L.push("   buyer receives the full license under this agreement for the beat above.");
         L.push("3. DELIVERY MIRRORS THE CARD. The buyer receives exactly the files listed");
         L.push("   for the beat at purchase — WAV master + MP3, no stems, no trackouts.");
-        L.push("4. PRICE. The price above is the full price for this beat. There are no");
-        L.push("   plans or payment options attached to this sale.");
+        L.push("4. PRICE. The price above is the full price for this beat, payable in");
+        L.push("   full or over time with Afterpay where the price qualifies.");
         L.push("");
         L.push("SPLIT SHEET");
         L.push("-----------");
@@ -2010,8 +2110,11 @@
          joins the page-wide one-song-at-a-time rule: when a free beat
          starts playing it pauses all Vault audio, the featured beat
          and every other YouTube embed, and anything else starting
-         pauses it right back. If the page stays open past midnight,
-         the grid rolls over to the new day's 10 once nothing is playing. */
+         pauses it right back. When a free beat plays to the end, a
+         random Vault beat starts next (window.__playRandomVaultBeat)
+         so the music never just stops. If the page stays open past
+         midnight, the grid rolls over to the new day's 10 once nothing
+         is playing. */
       (function(){
         var FREE_BEATS = [{"t": "Drip and Splash", "a": "Sauce Walka", "id": "yR95e6Luy4o", "d": "3:18", "v": 392, "s": "drip-and-splash"}, {"t": "Self Made", "a": "Lil Wayne", "id": "7DgEFP6XJ4M", "d": "3:21", "v": 112, "s": "self-made"}, {"t": "Space Ship", "a": "Lil Wayne", "id": "1Oqrsk6Rvb4", "d": "3:00", "v": 151, "s": "space-ship"}, {"t": "The Mayor", "a": "Young Dolph", "id": "jcmHDwlADYQ", "d": "3:09", "v": 60, "s": "the-mayor"}, {"t": "YRN", "a": "Migos", "id": "Nj8lKdSxj14", "d": "2:50", "v": 91, "s": "yrn"}, {"t": "Street Cred", "a": "21 Savage", "id": "0xFR_daxpvA", "d": "3:19", "v": 54, "s": "street-cred"}, {"t": "808 Mafia", "a": "Southside", "id": "X_P0qVyzU_A", "d": "2:51", "v": 89, "s": "808-mafia"}, {"t": "Kill Confirmed", "a": "Lil Durk", "id": "wAiqFaDy6QY", "d": "2:49", "v": 70, "s": "kill-confirmed"}, {"t": "Major Paper", "a": "Young Dolph", "id": "bIaeYpkO9-M", "d": "3:06", "v": 66, "s": "major-paper"}, {"t": "Huncho", "a": "Quavo", "id": "Kfg4vyzBdL8", "d": "2:49", "v": 78, "s": "huncho"}, {"t": "Drought", "a": "Lil Wayne", "id": "M4HuBXGTlx8", "d": "3:05", "v": 135, "s": "drought"}, {"t": "Free Bands", "a": "Future", "id": "3nz2QoOLIRo", "d": "2:59", "v": 55, "s": "free-bands"}, {"t": "Wave", "a": "Max B French Montana", "id": "IZGx_uffKPM", "d": "4:27", "v": 52, "s": "wave"}, {"t": "Gumbo", "a": "Moneybagg Yo", "id": "QYU2VsBLfws", "d": "2:59", "v": 102, "s": "gumbo"}, {"t": "Paid if Full", "a": "Sada Baby", "id": "j0yJxm5ad_g", "d": "2:25", "v": 38, "s": "paid-if-full"}, {"t": "High Standard", "a": "Future Southside", "id": "8O6cVbP50t0", "d": "3:01", "v": 36, "s": "high-standard"}, {"t": "Expensive", "a": "Young Dolph Key Glock", "id": "PvYTvAWXSMM", "d": "2:50", "v": 30, "s": "expensive"}, {"t": "Memphis", "a": "Young Dolph Key Glock", "id": "Yeg6efcFk04", "d": "3:17", "v": 55, "s": "memphis"}, {"t": "Celine", "a": "Lil Baby", "id": "CLus1n8BjH0", "d": "2:57", "v": 27, "s": "celine"}, {"t": "Pyrotechnic", "a": "21 Savage", "id": "7Y_N32sEyEk", "d": "3:02", "v": 53, "s": "pyrotechnic"}, {"t": "Street Dream", "a": "Young Jeezy", "id": "QMhRnP_stYI", "d": "2:54", "v": 73, "s": "street-dream"}, {"t": "Stacks", "a": "Gucci Mane Zaytoven", "id": "ogbZxGEgVBI", "d": "3:29", "v": 68, "s": "stacks"}, {"t": "Kush and Lean", "a": "Lil Wayne", "id": "surYUyXPzlE", "d": "3:27", "v": 93, "s": "kush-and-lean"}, {"t": "Fast Money", "a": "Meek Mill", "id": "rSkS0GnOd3I", "d": "2:10", "v": 47, "s": "fast-money"}, {"t": "Hell Raiser", "a": "Lil Wayne", "id": "ErFhUz71w84", "d": "3:12", "v": 119, "s": "hell-raiser"}, {"t": "Too Playa", "a": "Zaytoven", "id": "voMipqfMlhw", "d": "2:52", "v": 89, "s": "too-playa"}, {"t": "Super Up", "a": "Lil Durk", "id": "OXLe581yTs0", "d": "2:28", "v": 62, "s": "super-up"}, {"t": "Zoned Out", "a": "Juice Wrld", "id": "65wQtwfhAgA", "d": "3:15", "v": 88, "s": "zoned-out"}, {"t": "Dead Presidents", "a": "EST Gee", "id": "bR7wuiVad7I", "d": "2:50", "v": 106, "s": "dead-presidents"}, {"t": "17.5", "a": "Jeezy", "id": "_eu6Au-AY8A", "d": "3:10", "v": 61, "s": "17-5"}, {"t": "Forever Street", "a": "Young Scooter Future", "id": "uwGW7TRIcfw", "d": "3:03", "v": 57, "s": "forever-street"}, {"t": "Plugged In", "a": "Southside Metro", "id": "NlQXhkbAqis", "d": "2:59", "v": 37, "s": "plugged-in"}, {"t": "Keep Goin", "a": "Zaytoven Future", "id": "8us5Ys0ZvZ0", "d": "2:50", "v": 76, "s": "keep-goin"}, {"t": "Dreams", "a": "Juice Wrld", "id": "GDjb05ko5Y8", "d": "3:02", "v": 28, "s": "dreams"}, {"t": "No Rap Cap", "a": "Kill Will", "id": "ANMuf5FmpZQ", "d": "2:46", "v": 319, "s": "no-rap-cap"}, {"t": "Trap Lord", "a": "Kill Will Gucci Mane", "id": "XsW5AJD0gyI", "d": "3:13", "v": 66, "s": "trap-lord"}, {"t": "Level 1 Million", "a": "Kill Will Future", "id": "oUeaTkbAMJA", "d": "3:13", "v": 27, "s": "level-1-million"}, {"t": "Most Valuable Player", "a": "Kill Will", "id": "J89xdmr42g0", "d": "3:16", "v": 46, "s": "most-valuable-player"}, {"t": "Lil Uzi Rich", "a": "Kill Will", "id": "8oG3LUyi358", "d": "2:57", "v": 71, "s": "lil-uzi-rich"}, {"t": "Money Convos", "a": "Kill Will", "id": "SJAPzt6Q6rE", "d": "4:01", "v": 63, "s": "money-convos"}, {"t": "Project Baby", "a": "Kill Will", "id": "MVflyOJVcNc", "d": "3:02", "v": 85, "s": "project-baby"}, {"t": "Money Junkie", "a": "Kill Will", "id": "n53B_lyjY1Q", "d": "2:57", "v": 78, "s": "money-junkie"}, {"t": "Lonesome", "a": "Kill Will", "id": "aOLJWphr7Bc", "d": "3:02", "v": 119, "s": "lonesome"}, {"t": "Flame", "a": "Kill Will", "id": "_7Tvv4a_baQ", "d": "3:48", "v": 117, "s": "flame"}, {"t": "Kill Bill", "a": "Kodak Black", "id": "MjvoVilO8D0", "d": "3:05", "v": 47, "s": "kill-bill"}, {"t": "Kingpin", "a": "Kill Will", "id": "DXup5x6N280", "d": "3:40", "v": 92, "s": "kingpin"}, {"t": "Franklins", "a": "Kill Will", "id": "MQ3OJ8REJc8", "d": "2:57", "v": 66, "s": "franklins"}, {"t": "Paid in Full", "a": "Kill Will", "id": "ryytC5h_PQU", "d": "3:01", "v": 73, "s": "paid-in-full"}, {"t": "The Alchemist", "a": "Kill Will", "id": "2U0z5-l9snw", "d": "3:30", "v": 83, "s": "the-alchemist"}, {"t": "More Bands", "a": "Kill Will", "id": "wb3WK35nvKw", "d": "3:23", "v": 80, "s": "more-bands"}, {"t": "Young Money", "a": "Kill Will", "id": "YVBXmJxUjr8", "d": "2:44", "v": 38, "s": "young-money"}, {"t": "Get Rich Quick", "a": "Kill Will", "id": "DTbQxBqx3eI", "d": "2:41", "v": 66, "s": "get-rich-quick"}, {"t": "Success", "a": "Kill Will", "id": "VDmRrF8BQoA", "d": "3:10", "v": 33, "s": "success"}, {"t": "Smooth Sailing", "a": "Kill Will", "id": "2fRVtLWDW3I", "d": "3:46", "v": 34, "s": "smooth-sailing"}, {"t": "Gold Bottles", "a": "Kill Will", "id": "O0MGU4XRh8o", "d": "2:37", "v": 44, "s": "gold-bottles"}, {"t": "Miami Nights", "a": "Kill Will", "id": "zLy5Bnca9ZI", "d": "3:13", "v": 64, "s": "miami-nights"}, {"t": "Streets of Rage", "a": "Kill Will", "id": "qz8zVmS0Tck", "d": "2:55", "v": 74, "s": "streets-of-rage"}, {"t": "Made in Italy", "a": "Kill Will", "id": "mUllJajyzcM", "d": "3:29", "v": 86, "s": "made-in-italy"}, {"t": "Air Mags on Feet", "a": "Kill Will", "id": "6Y-abw6pDAo", "d": "3:08", "v": 41, "s": "air-mags-on-feet"}, {"t": "Space Cadet", "a": "Kill Will", "id": "mlQS0LG563w", "d": "3:08", "v": 43, "s": "space-cadet"}, {"t": "Nike Box Full", "a": "Kill Will", "id": "6H3fCNmXEGo", "d": "3:29", "v": 62, "s": "nike-box-full"}, {"t": "Gucci Gang", "a": "Kill Will", "id": "xPeK5GYE6pY", "d": "3:33", "v": 54, "s": "gucci-gang"}, {"t": "Baddie", "a": "Kill Will", "id": "mygfrEpEMSU", "d": "2:33", "v": 77, "s": "baddie"}, {"t": "Hard 2 Knock", "a": "Kill Will", "id": "ABbkOvxmW2Q", "d": "3:29", "v": 49, "s": "hard-2-knock"}, {"t": "Draped in Dior", "a": "Kill Will", "id": "k8BagrPShfs", "d": "2:11", "v": 22, "s": "draped-in-dior"}, {"t": "Big Face Roley", "a": "Kill Will", "id": "nxntDySGMeQ", "d": "2:50", "v": 25, "s": "big-face-roley"}, {"t": "Charged Up", "a": "Kill Will", "id": "R-7AxFfgPYE", "d": "3:00", "v": 53, "s": "charged-up"}, {"t": "Bag Chaser", "a": "Kill Will", "id": "gPgCgA1McOY", "d": "3:28", "v": 33, "s": "bag-chaser"}, {"t": "Valentino", "a": "Kill Will", "id": "Mns6NU1-ops", "d": "3:00", "v": 68, "s": "valentino"}, {"t": "She in Love", "a": "Kill Will", "id": "kSH9cTctP9E", "d": "3:00", "v": 19, "s": "she-in-love"}, {"t": "Forty Ball", "a": "Kill Will", "id": "UhBGIAWfU64", "d": "3:00", "v": 36, "s": "forty-ball"}, {"t": "Narcos", "a": "Kill Will", "id": "YS3zblVsM80", "d": "3:11", "v": 29, "s": "narcos"}, {"t": "Flying Private", "a": "Kill Will", "id": "EYjEs2qFaO8", "d": "3:33", "v": 36, "s": "flying-private"}, {"t": "Boobie Trap", "a": "Kill Will", "id": "CUUk1uShZXc", "d": "2:07", "v": 33, "s": "boobie-trap"}, {"t": "Designer Duffle Bags", "a": "Kill Will", "id": "j_TV7ijZc_M", "d": "3:13", "v": 40, "s": "designer-duffle-bags"}, {"t": "Luxury Everything", "a": "Kill Will", "id": "dr3hudzTXcg", "d": "3:13", "v": 51, "s": "luxury-everything"}, {"t": "Muscle", "a": "Kill Will", "id": "2qnQ805Rp_0", "d": "2:17", "v": 44, "s": "muscle"}, {"t": "CREAM", "a": "Kill Will", "id": "btI1U5cBCbE", "d": "2:55", "v": 38, "s": "cream"}, {"t": "Ocean View", "a": "Kill Will", "id": "_BEK_M1ODH8", "d": "3:13", "v": 155, "s": "ocean-view"}, {"t": "Blizzard Alert", "a": "Kill Will", "id": "N1m4bKi35H0", "d": "3:45", "v": 29, "s": "blizzard-alert"}, {"t": "Skull Gang", "a": "Kill Will", "id": "t2Lb7ymsG8Y", "d": "3:13", "v": 166, "s": "skull-gang"}, {"t": "Foreign Exotic", "a": "Kill Will", "id": "nptNvMrk9Pw", "d": "3:23", "v": 52, "s": "foreign-exotic"}, {"t": "Phone Striking", "a": "Kill Will", "id": "hSAtELQqVQ4", "d": "2:55", "v": 76, "s": "phone-striking"}, {"t": "Money Bags", "a": "Kill Will", "id": "BuhQqOXexv0", "d": "2:52", "v": 55, "s": "money-bags"}, {"t": "Afrobeat Island Vibe", "a": "Kill Will", "id": "l53ic92Idmc", "d": "2:06", "v": 90, "s": "afrobeat-island-vibe"}, {"t": "Coupe Dreams", "a": "Kill Will", "id": "rxXwte2DtyM", "d": "3:46", "v": 122, "s": "coupe-dreams"}, {"t": "Rich Gang", "a": "Kill Will", "id": "2ONl_5fIU40", "d": "3:45", "v": 132, "s": "rich-gang"}, {"t": "Blue Money", "a": "Kill Will", "id": "MQ5W2nNW8Ao", "d": "2:30", "v": 137, "s": "blue-money"}, {"t": "Lamb Chop", "a": "Kill Will", "id": "Nch6QpLzAl4", "d": "2:57", "v": 126, "s": "lamb-chop"}, {"t": "President Trump", "a": "Kill Will", "id": "WkUSRQCKLW4", "d": "2:57", "v": 144, "s": "president-trump"}, {"t": "Racks Stacked Up", "a": "Kill Will", "id": "v_fsyWNsZz8", "d": "3:12", "v": 129, "s": "racks-stacked-up"}, {"t": "Laundry Money", "a": "Kill Will", "id": "OCXpd5dSZgQ", "d": "3:03", "v": 95, "s": "laundry-money"}, {"t": "Money Counter", "a": "Kill Will", "id": "lRVToPVXd_A", "d": "3:02", "v": 104, "s": "money-counter"}, {"t": "Ambition", "a": "Kill Will", "id": "5KgUQ1QfsmQ", "d": "3:05", "v": 140, "s": "ambition"}, {"t": "Chase Bank", "a": "Kill Will", "id": "PNonZZ8nxSo", "d": "2:52", "v": 155, "s": "chase-bank"}, {"t": "Heaven Sent", "a": "Kill Will", "id": "8VUNkHSi4jI", "d": "3:07", "v": 161, "s": "heaven-sent"}, {"t": "New Money", "a": "Kill Will", "id": "Pzt5oqQusZM", "d": "2:43", "v": 232, "s": "new-money"}];
         var DL_BASE = "https://killwillbeats26.github.io/killwillbeats-free-beats/mp3/";
@@ -2049,9 +2152,15 @@
                     if (typeof window.__barShowYouTube === "function"){
                       window.__barShowYouTube({ player: player, title: beat.a + " Type Beat \u201C" + beat.t + "\u201D", meta: "Free beat · " + beat.d + " · YouTube", cover: "assets/free-thumbs/" + beat.s + ".jpg", priceLabel: "Free" });
                     }
-                  } else if (ev.data === YT.PlayerState.PAUSED || ev.data === YT.PlayerState.ENDED){
+                  } else if (ev.data === YT.PlayerState.PAUSED){
                     freePlaying = false;
                     if (typeof window.__barYouTubeState === "function") window.__barYouTubeState(player, false);
+                  } else if (ev.data === YT.PlayerState.ENDED){
+                    freePlaying = false;
+                    if (typeof window.__barYouTubeState === "function") window.__barYouTubeState(player, false);
+                    /* a finished free beat hands off to a random Vault
+                       beat — the music keeps going instead of stopping */
+                    if (typeof window.__playRandomVaultBeat === "function") window.__playRandomVaultBeat();
                   }
                 } } });
                 ytPlayers.push(player);
