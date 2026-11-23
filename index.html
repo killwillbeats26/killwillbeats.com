@@ -296,6 +296,12 @@
       .empty-note{border:2px dashed var(--line);border-radius:8px;padding:30px;text-align:center;color:var(--ink-dim);font-weight:700}
       .sold-line{margin-top:18px;font-family:var(--marker);font-size:1.05rem;color:var(--red);display:none}
 
+      /* ---------- featured : random rotation ---------- */
+      .feat-switch-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+      .feat-switch-note{font-size:.8rem;color:#bdb99f;font-weight:700}
+      .player-card .player-art img,.player-card .player-title{transition:opacity .18s ease}
+      .player-card.feat-fading .player-art img,.player-card.feat-fading .player-title{opacity:.25}
+
       /* ---------- flatline : first paid drop ---------- */
       .flat-card{margin-bottom:22px}
       .flat-deliver{background:#0d2013;border:1.5px solid #2c4a33;border-radius:8px;padding:13px 16px;display:flex;flex-direction:column;gap:5px}
@@ -514,14 +520,14 @@
             <img class="sec-emblem" src="assets/crown-emblem.webp" alt="" />
             <div>
               <h2>Featured <span class="gld">Beat</span></h2>
-              <p>For sale now — one price, $599, sold once and gone for good. Press play and hear it in full.</p>
+              <p>For sale now — one price, $599, sold once and gone for good. This spot rotates randomly through every beat for sale in the Vault. Press play and hear it in full.</p>
             </div>
-            <span class="head-note" style="margin-left:auto">for sale ↓</span>
+            <span class="head-note" style="margin-left:auto">random pick ↓</span>
           </div>
-          <!-- FEATURED BEAT : Flatline, moved to the top above Free Beats -->
-          <div class="player-card flat-card">
+          <!-- FEATURED BEAT : random pick from the for-sale Vault beats, above Free Beats -->
+          <div class="player-card flat-card" id="featCard">
             <div class="player-art">
-              <img src="assets/flatline-cover.jpg" alt="Flatline cover art — gold crown over a vinyl record with a red label, FLATLINE in bold white letters" />
+              <img id="featCover" src="assets/flatline-cover.jpg" alt="Flatline cover art — gold crown over a vinyl record with a red label, FLATLINE in bold white letters" />
               <span class="sticker red feat-tag">Featured ★ For sale $599</span>
               <button class="big-play" id="flatBigPlay" type="button" aria-label="Play Flatline">▶</button>
               <span class="sticker price-tag">$599</span>
@@ -531,12 +537,16 @@
                 <img src="assets/crown-emblem.webp" alt="" />
                 <p class="player-tagline">Featured beat — for sale now</p>
               </div>
-              <h3 class="player-title">Flatline</h3>
-              <div class="pills">
+              <h3 class="player-title" id="featTitle">Flatline</h3>
+              <div class="pills" id="featPills">
                 <span class="pill gold"><b>~129</b>&nbsp;BPM</span>
                 <span class="pill">Key&nbsp;<b>B♭ minor</b></span>
                 <span class="pill"><b>3:28</b></span>
                 <span class="pill">Prod. Kill Will</span>
+              </div>
+              <div class="feat-switch-row">
+                <button class="sec-btn" id="featShuffle" type="button">↻ Switch — random beat</button>
+                <span class="feat-switch-note" id="featSwitchNote">Random pick from the Vault — switches on its own while nothing's playing.</span>
               </div>
               <div class="wave-box">
                 <div class="transport">
@@ -547,14 +557,14 @@
                 <audio id="flatAudio" src="assets/flatline.mp3" preload="metadata"></audio>
               </div>
               <div class="flat-deliver">
-                <span class="fd-row">You get: <b>MP3 + WAV master</b> — that's the full delivery.</span>
+                <span class="fd-row">You get: <b id="featDeliverFiles">MP3 + WAV master</b> — that's the full delivery.</span>
                 <span class="fd-no">No stems · No trackouts</span>
-                <span class="fd-fine">WAV converted from the MP3 master. If it's not listed here, it's not included.</span>
+                <span class="fd-fine" id="featDeliverFine">WAV converted from the MP3 master. If it's not listed here, it's not included.</span>
               </div>
               <div class="player-buy">
                 <div class="price-big">$599<small>One price · No leases</small></div>
                 <p class="you-get" style="margin:0">First come, first served — once it sells, it's pulled for good. <b>Agreement + split sheet included.</b></p>
-                <button class="btn btn-red flat-add" id="flatAdd" type="button" style="margin-left:auto">Add to cart — $599</button>
+                <button class="btn btn-red flat-add" id="flatAdd" type="button" style="margin-left:auto" data-beat-id="flatline">Add to cart — $599</button>
               </div>
             </div>
           </div>
@@ -1215,10 +1225,11 @@
           var rm = document.createElement("button"); rm.type = "button"; rm.className = "ci-remove"; rm.textContent = "Remove";
           rm.addEventListener("click", function(){
             cart = cart.filter(function(x){ return x.id !== b.id; });
-            var btnMap = { flatline:"flatAdd", dripcheck:"dripAdd", sunup:"sunAdd", doubledown:"dblAdd" };
+            var btnMap = { flatline:null, dripcheck:"dripAdd", sunup:"sunAdd", doubledown:"dblAdd" };
             var btnId = btnMap[b.id] || null;
             var addBtn = btnId ? document.getElementById(btnId) : null;
             if (addBtn){ addBtn.classList.remove("added"); addBtn.textContent = "Add to cart — $599"; }
+            if (typeof syncFeaturedAddBtn === "function") syncFeaturedAddBtn();
             renderCart();
           });
           item.appendChild(rm);
@@ -1241,12 +1252,12 @@
             cart.push(beat);
             btn.classList.add("added");
             btn.textContent = "In your cart ✓";
+            if (typeof syncFeaturedAddBtn === "function") syncFeaturedAddBtn();
             renderCart();
           }
           openCart();
         });
       }
-      bindAdd("flatAdd", "flatline");
       bindAdd("dripAdd", "dripcheck");
       bindAdd("sunAdd", "sunup");
       bindAdd("dblAdd", "doubledown");
@@ -1359,6 +1370,132 @@
         setupPlayer("drip", ["flatAudio", "sunAudio", "dblAudio"]);
         setupPlayer("sun", ["flatAudio", "dripAudio", "dblAudio"]);
         setupPlayer("dbl", ["flatAudio", "dripAudio", "sunAudio"]);
+      })();
+
+      /* ============ featured beat : random rotation through the for-sale beats ============
+         The Featured slot at the top is not locked to one beat. On load it
+         picks one of the for-sale Vault beats (BEATS) at random; the
+         Shuffle button jumps to a different random one; and while the
+         featured player sits idle (nothing playing, position at the start)
+         it switches to another random beat every 20 seconds. Playback,
+         seek and Add to Cart always follow whichever beat is featured —
+         the featured Add button adds that beat, and the Vault card for the
+         same beat stays in sync. */
+      var FEAT_EXTRA = {
+        flatline: { seconds:208,
+          coverAlt:"Flatline cover art — gold crown over a vinyl record with a red label, FLATLINE in bold white letters",
+          pills:'<span class="pill gold"><b>~129</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>B♭ minor</b></span><span class="pill"><b>3:28</b></span><span class="pill">Prod. Kill Will</span>',
+          deliverFiles:"MP3 + WAV master",
+          deliverFine:"WAV converted from the MP3 master. If it's not listed here, it's not included." },
+        dripcheck: { seconds:170,
+          coverAlt:"Drip Check cover art — dripping gold crown over graffiti lettering, gold chains and stacks of cash in smoke, DRIP CHECK in bold white letters",
+          pills:'<span class="pill gold"><b>~100</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>A major</b></span><span class="pill"><b>2:50</b></span><span class="pill">Prod. Kill Will</span>',
+          deliverFiles:"WAV master + MP3",
+          deliverFine:"Original WAV master — 16-bit / 44.1kHz stereo, 29 MB. If it's not listed here, it's not included." },
+        sunup: { seconds:220,
+          coverAlt:"Sun Up cover art — gold crown with a sunrise glow over graffiti lettering, gold chains and stacks of cash in smoke, SUN UP in bold white letters",
+          pills:'<span class="pill gold"><b>~92</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>A minor</b></span><span class="pill"><b>3:40</b></span><span class="pill">Prod. Kill Will</span>',
+          deliverFiles:"WAV master + MP3",
+          deliverFine:"Original WAV master — 16-bit / 44.1kHz stereo, 38 MB. If it's not listed here, it's not included." },
+        doubledown: { seconds:241,
+          coverAlt:"Double Down cover art — gold crown over graffiti lettering, gold chains, stacks of cash and dice in smoke, DOUBLE DOWN in bold white letters",
+          pills:'<span class="pill gold"><b>~129</b>&nbsp;BPM</span><span class="pill">Half-time feel&nbsp;<b>86</b></span><span class="pill">Key&nbsp;<b>A major</b></span><span class="pill"><b>4:01</b></span><span class="pill">Prod. Kill Will</span>',
+          deliverFiles:"WAV master + MP3",
+          deliverFine:"Original WAV master — 16-bit / 44.1kHz stereo, 43 MB. If it's not listed here, it's not included." }
+      };
+      var currentFeaturedId = "flatline";
+      function featuredBeat(){
+        var found = null;
+        BEATS.forEach(function(b){ if (b.id === currentFeaturedId) found = b; });
+        return found;
+      }
+      function syncFeaturedAddBtn(){
+        var btn = document.getElementById("flatAdd");
+        if (!btn) return;
+        var inCart = cart.some(function(x){ return x.id === currentFeaturedId; });
+        btn.classList.toggle("added", inCart);
+        btn.textContent = inCart ? "In your cart ✓" : "Add to cart — $599";
+      }
+      function setFeaturedBeat(id){
+        var beat = null;
+        BEATS.forEach(function(b){ if (b.id === id) beat = b; });
+        if (!beat || !FEAT_EXTRA[id]) return;
+        var extra = FEAT_EXTRA[id];
+        currentFeaturedId = id;
+        var card = document.getElementById("featCard");
+        if (card) card.classList.add("feat-fading");
+        var audio = document.getElementById("flatAudio");
+        if (audio && !audio.paused) audio.pause();
+        var cover = document.getElementById("featCover");
+        if (cover){ cover.src = beat.cover; cover.alt = extra.coverAlt; }
+        var title = document.getElementById("featTitle");
+        if (title) title.textContent = beat.title;
+        var pills = document.getElementById("featPills");
+        if (pills) pills.innerHTML = extra.pills;
+        var files = document.getElementById("featDeliverFiles");
+        if (files) files.textContent = extra.deliverFiles;
+        var fine = document.getElementById("featDeliverFine");
+        if (fine) fine.textContent = extra.deliverFine;
+        var bigBtn = document.getElementById("flatBigPlay");
+        if (bigBtn) bigBtn.setAttribute("aria-label", "Play " + beat.title);
+        var playBtn = document.getElementById("flatPlay");
+        if (playBtn) playBtn.setAttribute("aria-label", "Play or pause " + beat.title);
+        var seek = document.getElementById("flatSeek");
+        if (seek){ seek.max = extra.seconds; seek.value = 0; seek.setAttribute("aria-label", "Seek through " + beat.title); }
+        var cur = document.getElementById("flatCur");
+        if (cur) cur.textContent = "0:00";
+        var dur = document.getElementById("flatDur");
+        if (dur) dur.textContent = beat.len;
+        if (audio){
+          audio.src = beat.audio;
+          audio.load();
+        }
+        var addBtn = document.getElementById("flatAdd");
+        if (addBtn) addBtn.setAttribute("data-beat-id", id);
+        var note = document.getElementById("featSwitchNote");
+        if (note) note.textContent = "Now featuring: " + beat.title + " — random pick from the " + BEATS.length + " beats for sale. Switches on its own while nothing's playing.";
+        syncFeaturedAddBtn();
+        if (card) setTimeout(function(){ card.classList.remove("feat-fading"); }, 200);
+      }
+      function randomFeaturedId(excludeId){
+        var pool = BEATS.filter(function(b){ return b.id !== excludeId; });
+        if (!pool.length) pool = BEATS;
+        return pool[Math.floor(Math.random() * pool.length)].id;
+      }
+      (function(){
+        var addBtn = document.getElementById("flatAdd");
+        if (addBtn){
+          addBtn.addEventListener("click", function(){
+            var beat = featuredBeat();
+            if (!beat) return;
+            if (!cart.some(function(x){ return x.id === beat.id; })){
+              cart.push(beat);
+              var vaultBtnMap = { dripcheck:"dripAdd", sunup:"sunAdd", doubledown:"dblAdd" };
+              var vBtn = document.getElementById(vaultBtnMap[beat.id] || "");
+              if (vBtn){ vBtn.classList.add("added"); vBtn.textContent = "In your cart ✓"; }
+              syncFeaturedAddBtn();
+              renderCart();
+            }
+            openCart();
+          });
+        }
+        var shuffleBtn = document.getElementById("featShuffle");
+        if (shuffleBtn){
+          shuffleBtn.addEventListener("click", function(){
+            setFeaturedBeat(randomFeaturedId(currentFeaturedId));
+          });
+        }
+        /* random beat on every page load */
+        setFeaturedBeat(randomFeaturedId(null));
+        /* idle auto-switch: only when the featured player isn't mid-listen */
+        setInterval(function(){
+          if (document.hidden) return;
+          var audio = document.getElementById("flatAudio");
+          if (!audio) return;
+          if (!audio.paused) return;
+          if (audio.currentTime > 0.5 && !audio.ended) return;
+          setFeaturedBeat(randomFeaturedId(currentFeaturedId));
+        }, 20000);
       })();
 
       /* ============ cart drawer ============ */
