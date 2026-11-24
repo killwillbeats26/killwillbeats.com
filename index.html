@@ -454,6 +454,29 @@
       .pb-add.added{background:var(--green-bright);color:#fff}
       @media (max-width:620px){ .pb-seekwrap{order:5;flex-basis:100%} .pb-info{flex:1 1 110px} .pb-price{display:none} }
 
+      /* ---------- recently played : history panel over the player bar ---------- */
+      .hist-panel{position:fixed;left:0;right:0;bottom:76px;z-index:59;background:#0c0c07;border-top:2.5px solid var(--gold);color:#f2edd8;box-shadow:0 -12px 34px rgba(0,0,0,.55);max-height:64vh;display:flex;flex-direction:column}
+      .hist-panel[hidden]{display:none}
+      .hist-head{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1.5px solid #232414;flex-wrap:wrap}
+      .hist-head b{font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;font-size:1.1rem}
+      .hist-sub{font-size:.78rem;color:#bdb99f;font-weight:700}
+      .hist-clear{margin-left:auto;background:#17180f;border:1.5px solid #3a3b26;color:#bdb99f;border-radius:5px;font-size:.76rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;padding:8px 12px}
+      .hist-clear:hover{border-color:var(--gold);color:var(--gold-bright)}
+      .hist-close{width:38px;height:38px;min-height:38px;border-radius:50%;border:1.5px solid #3a3b26;background:#17180f;color:#f2edd8;font-size:.95rem;display:grid;place-items:center;padding:0}
+      .hist-video{position:relative;aspect-ratio:16/9;background:#000;margin:12px 12px 0;border:1.5px solid var(--gold);border-radius:8px;overflow:hidden;flex:none}
+      .hist-video[hidden]{display:none}
+      .hist-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+      .hist-list{overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:7px}
+      .hist-item{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:#14150c;border:1.5px solid #2c2d1e;border-radius:8px;padding:8px 10px;color:#f2edd8}
+      .hist-item:active{transform:translate(1px,1px)}
+      .hist-item img{width:46px;height:46px;border-radius:6px;object-fit:cover;border:1.5px solid var(--gold);flex:none;background:#000}
+      .hist-item .hi-t{flex:1;min-width:0}
+      .hist-item .hi-t b{display:block;font-family:var(--display);text-transform:uppercase;font-size:.95rem;letter-spacing:.03em;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .hist-item .hi-t span{font-size:.74rem;color:#bdb99f;font-weight:700}
+      .hist-item .hi-play{flex:none;width:36px;height:36px;border-radius:50%;background:var(--red);color:#fff;display:grid;place-items:center;font-size:.78rem;border:2px solid #0a0a05}
+      .hist-empty{padding:4px 16px 16px;color:#bdb99f;font-weight:600;font-size:.9rem;margin:0}
+      .pb-btn.on{border-color:var(--gold);color:var(--gold-bright)}
+
       /* ---------- how : graphic tiles ---------- */
       .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
       .step{border:2px solid var(--line);border-radius:8px;padding:22px;background:var(--panel);box-shadow:5px 5px 0 rgba(0,0,0,.28);position:relative;overflow:hidden}
@@ -1064,6 +1087,7 @@
         <button class="pb-btn" id="pbPrev" type="button" aria-label="Previous beat"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h2.6v14H6zM19.5 5v14L10 12z" fill="currentColor"/></svg></button>
         <button class="pb-btn pb-main" id="pbPlay" type="button" aria-label="Play or pause the current beat">▶</button>
         <button class="pb-btn" id="pbNext" type="button" aria-label="Next beat"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.4 5H18v14h-2.6zM4.5 5v14L14 12z" fill="currentColor"/></svg></button>
+        <button class="pb-btn" id="pbHist" type="button" aria-label="Recently played — your last 10" aria-expanded="false" aria-controls="histPanel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.5 4.2a8 8 0 1 1-7.4 5" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/><path d="M4.6 3.8v5.4h5.4" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.5 8v4.4l3 1.8" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       </div>
       <div class="pb-seekwrap" id="pbSeekWrap">
         <span class="pb-time" id="pbCur">0:00</span>
@@ -1074,6 +1098,22 @@
         <span class="pb-price-stack"><span class="pb-price" id="pbPrice">$599</span><span class="pb-ap" id="pbAp"></span></span>
         <button class="pb-add" id="pbAdd" type="button">Add to cart</button>
       </div>
+    </div>
+
+    <!-- recently played : the visitor's last 10 played tracks, saved on
+         their device (localStorage) — Vault beats, the Featured beat,
+         Free Beats YouTube videos and the Credits videos all land here,
+         newest first. Tap any row to play that track again in place. -->
+    <div class="hist-panel" id="histPanel" hidden>
+      <div class="hist-head">
+        <b>Recently played</b>
+        <span class="hist-sub">Your last 10 — saved on this device</span>
+        <button class="hist-clear" id="histClear" type="button">Clear history</button>
+        <button class="hist-close" id="histClose" type="button" aria-label="Close history">✕</button>
+      </div>
+      <div class="hist-video" id="histVideo" hidden></div>
+      <div class="hist-list" id="histList"></div>
+      <p class="hist-empty" id="histEmpty">Nothing yet — play any beat or video and it lands here.</p>
     </div>
 
     <!-- cart -->
@@ -1675,7 +1715,7 @@
                       pauseAllYouTubeExcept(player);
                       /* the bottom bar shows whatever is playing — this video included */
                       if (typeof window.__barShowYouTube === "function"){
-                        window.__barShowYouTube({ player: player, title: barTitle || "Official video", meta: "Official video · YouTube", cover: cover || "assets/crown-emblem.webp", priceLabel: "Video" });
+                        window.__barShowYouTube({ player: player, title: barTitle || "Official video", meta: "Official video · YouTube", cover: cover || "assets/crown-emblem.webp", priceLabel: "Video", ytId: ytId || "", histType: "credit" });
                       }
                     } else if (ev.data === YT.PlayerState.PAUSED){
                       if (typeof window.__barYouTubeState === "function") window.__barYouTubeState(player, false);
@@ -2554,6 +2594,7 @@
           return picks;
         }
         var freePlaying = false;
+        var freePlayersById = {};
         function registerPlayer(iframe, beat){
           var tries = 0;
           (function attempt(){
@@ -2566,7 +2607,7 @@
                     pauseAllYouTubeExcept(player);
                     /* the bottom bar shows whatever is playing — this free beat included */
                     if (typeof window.__barShowYouTube === "function"){
-                      window.__barShowYouTube({ player: player, title: beat.a + " Type Beat \u201C" + beat.t + "\u201D", meta: "Free beat · " + beat.d + " · YouTube", cover: "assets/free-thumbs/" + beat.s + ".jpg", priceLabel: "Free" });
+                      window.__barShowYouTube({ player: player, title: beat.a + " Type Beat \u201C" + beat.t + "\u201D", meta: "Free beat · " + beat.d + " · YouTube", cover: "assets/free-thumbs/" + beat.s + ".jpg", priceLabel: "Free", ytId: beat.id, histType: "free" });
                     }
                   } else if (ev.data === YT.PlayerState.PAUSED){
                     freePlaying = false;
@@ -2580,12 +2621,57 @@
                   }
                 } } });
                 ytPlayers.push(player);
+                freePlayersById[beat.id] = player;
               } catch(e){}
               return;
             }
             if (++tries < 40) setTimeout(attempt, 300);
           })();
         }
+        /* replay a free beat (the history panel calls this): if today's
+           grid holds its card, play it right there — a tap on its facade,
+           or a restart of its live player. If the beat is not in today's
+           10, mount its embed in the caller's video slot instead (the
+           history panel's), registered the same way, so the one-song
+           rule, the bottom bar and the end-of-video Vault handoff all
+           still apply. Returns where it played: "grid" or "mount". */
+        window.__playFreeBeat = function(ytId, mountEl){
+          var beat = null;
+          FREE_BEATS.forEach(function(b){ if (b.id === ytId) beat = b; });
+          if (!beat) return null;
+          var facade = list.querySelector('.yt-facade[data-yt-id="' + ytId + '"]');
+          if (facade){
+            facade.click();
+            var card = facade.closest(".free-card");
+            if (card) setTimeout(function(){ card.scrollIntoView({ behavior:"smooth", block:"center" }); }, 60);
+            return "grid";
+          }
+          var p = freePlayersById[ytId];
+          if (p){
+            pauseAllVaultExcept(null);
+            pauseAllYouTubeExcept(p);
+            try { p.seekTo(0, true); } catch(e){}
+            try { p.playVideo(); } catch(e){}
+            try { var ifr = p.getIframe(); if (ifr) ifr.scrollIntoView({ behavior:"smooth", block:"center" }); } catch(e){}
+            return "grid";
+          }
+          if (mountEl){
+            pauseAllVaultExcept(null);
+            pauseAllYouTubeExcept(null);
+            mountEl.hidden = false;
+            mountEl.innerHTML = "";
+            var iframe = document.createElement("iframe");
+            iframe.src = "https://www.youtube-nocookie.com/embed/" + ytId + "?enablejsapi=1&autoplay=1&playsinline=1&rel=0";
+            iframe.title = "[FREE] " + beat.a + " Type Beat \u2014 " + beat.t;
+            iframe.setAttribute("allow", "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share");
+            iframe.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
+            iframe.setAttribute("allowfullscreen", "");
+            mountEl.appendChild(iframe);
+            registerPlayer(iframe, beat);
+            return "mount";
+          }
+          return null;
+        };
         function forceDownload(a, beat){
           if (typeof fbq === "function") fbq("trackCustom", "FreeDownload", { beat_name: beat.t });
           var url = DL_BASE + beat.s + ".mp3";
@@ -2607,6 +2693,7 @@
         }
         function render(){
           freePlaying = false;
+          freePlayersById = {};
           list.innerHTML = "";
           dailyPicks(new Date()).forEach(function(idx, n){
             var beat = FREE_BEATS[idx];
@@ -2614,7 +2701,11 @@
             card.className = "free-card";
             card.innerHTML =
               '<div class="video-wrap">' +
-                '<iframe src="https://www.youtube.com/embed/' + beat.id + '?enablejsapi=1" title="[FREE] ' + beat.a + ' Type Beat \u2014 ' + beat.t + '" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>' +
+                '<button class="yt-facade" type="button" data-yt-id="' + beat.id + '" aria-label="Play the free beat: ' + beat.a + ' Type Beat \u201C' + beat.t + '\u201D">' +
+                  '<img src="assets/free-thumbs/' + beat.s + '.jpg" alt="" loading="lazy" />' +
+                  '<span class="yt-facade-play" aria-hidden="true">▶</span>' +
+                  '<span class="yt-facade-label">Play video</span>' +
+                '</button>' +
               '</div>' +
               '<div class="free-body">' +
                 '<div class="free-rank"><span class="rank-num">#' + (n + 1) + '</span><span class="sticker" style="font-size:.72rem;padding:5px 9px">Free</span></div>' +
@@ -2627,8 +2718,29 @@
                   '<a class="dl-btn free-dl" href="' + DL_BASE + beat.s + '.mp3" download="Kill Will - ' + beat.t + '.mp3">\u2B07 Download MP3</a>' +
                 '</div>' +
               '</div>';
-            var iframe = card.querySelector("iframe");
-            if (iframe) registerPlayer(iframe, beat);
+            var facade = card.querySelector(".yt-facade");
+            if (facade) facade.addEventListener("click", function(){
+              /* click-to-play, same as the Credits videos: the card shows
+                 the beat's own thumbnail until tapped — no YouTube player
+                 and none of its chrome (title link, "Watch on YouTube")
+                 exists before that, and the embed that swaps in plays
+                 inline on this page (playsinline), never bouncing the
+                 visitor out to YouTube. One song at a time starts at
+                 the tap, not at first frame. */
+              pauseAllVaultExcept(null);
+              pauseAllYouTubeExcept(null);
+              var wrap = facade.closest(".video-wrap");
+              if (!wrap) return;
+              var iframe = document.createElement("iframe");
+              iframe.src = "https://www.youtube-nocookie.com/embed/" + beat.id + "?enablejsapi=1&autoplay=1&playsinline=1&rel=0";
+              iframe.title = "[FREE] " + beat.a + " Type Beat \u2014 " + beat.t;
+              iframe.setAttribute("allow", "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share");
+              iframe.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
+              iframe.setAttribute("allowfullscreen", "");
+              wrap.innerHTML = "";
+              wrap.appendChild(iframe);
+              registerPlayer(iframe, beat);
+            });
             var dl = card.querySelector(".free-dl");
             dl.addEventListener("click", function(e){
               e.preventDefault();
@@ -2705,6 +2817,261 @@
           .catch(function(){ /* keep the catalog fallback counts */ });
       };
       window.refreshViewCounts();
+    </script>
+    <script>
+      /* ============ recently played (last 10) + lock-screen audio ============
+         HISTORY: every track that actually starts playing lands in a
+         last-10 list saved on the visitor's own device (localStorage,
+         key kwb_play_history_v1): Vault beats and the Featured beat
+         (caught from their <audio> play events), Free Beats YouTube
+         videos and the Credits videos (caught by wrapping the bottom
+         bar's __barShowYouTube, which every YouTube PLAYING event
+         already calls). Newest first, de-duplicated by track, capped
+         at 10, and it survives reloads on the same device. The list
+         lives in the panel above the bottom player bar (the bar's
+         history button toggles it); tapping an entry replays that
+         track in place — Vault audio through its row / the Featured
+         player, a Free Beat through its card embed (or an embed
+         mounted in the panel when that beat is not in today's 10),
+         a Credits video through its facade / live player.
+         LOCK-SCREEN AUDIO: the Vault / Featured beats are plain
+         <audio> elements, which keep playing with the screen locked
+         as far as the phone's browser allows — nothing on this page
+         pauses them on page hide / visibility change. The Media
+         Session wiring below gives the lock screen the playing
+         beat's title, artist (Kill Will) and cover art, plus working
+         play / pause / next / previous controls that drive the same
+         players the bottom bar drives. YouTube free beats stay
+         YouTube videos (kept for the views), so iPhone still pauses
+         those on lock — that limit is YouTube's, not the page's. */
+      (function(){
+        var HIST_KEY = "kwb_play_history_v1";
+        var bar = document.getElementById("playerBar");
+        var panel = document.getElementById("histPanel");
+        var listEl = document.getElementById("histList");
+        var emptyEl = document.getElementById("histEmpty");
+        var videoSlot = document.getElementById("histVideo");
+        var histBtn = document.getElementById("pbHist");
+        var clearBtn = document.getElementById("histClear");
+        var closeBtn = document.getElementById("histClose");
+        if (!panel || !listEl) return;
+
+        var history = [];
+        try {
+          var saved = JSON.parse(localStorage.getItem(HIST_KEY) || "[]");
+          if (Array.isArray(saved)) history = saved.filter(function(x){ return x && x.key && x.id && x.title; }).slice(0, 10);
+        } catch(e){ history = []; }
+        function save(){ try { localStorage.setItem(HIST_KEY, JSON.stringify(history)); } catch(e){} }
+
+        function render(){
+          listEl.innerHTML = "";
+          if (emptyEl) emptyEl.style.display = history.length ? "none" : "block";
+          history.forEach(function(en){
+            var item = document.createElement("button");
+            item.type = "button";
+            item.className = "hist-item";
+            item.setAttribute("aria-label", "Play again: " + en.title);
+            var img = document.createElement("img");
+            img.src = en.cover || "assets/crown-emblem.webp";
+            img.alt = "";
+            img.loading = "lazy";
+            var mid = document.createElement("span");
+            mid.className = "hi-t";
+            var b = document.createElement("b");
+            b.textContent = en.title;
+            var s = document.createElement("span");
+            s.textContent = en.label || "";
+            mid.appendChild(b);
+            mid.appendChild(s);
+            var play = document.createElement("span");
+            play.className = "hi-play";
+            play.setAttribute("aria-hidden", "true");
+            play.textContent = "▶";
+            item.appendChild(img);
+            item.appendChild(mid);
+            item.appendChild(play);
+            item.addEventListener("click", function(){ replay(en); });
+            listEl.appendChild(item);
+          });
+        }
+        function push(en){
+          if (!en || !en.key || !en.id) return;
+          history = history.filter(function(x){ return x.key !== en.key; });
+          en.ts = Date.now();
+          history.unshift(en);
+          if (history.length > 10) history.length = 10;
+          save();
+          render();
+        }
+        window.__histPush = push;
+
+        function replayVault(id){
+          var isFeat = (typeof currentFeaturedId !== "undefined" && id === currentFeaturedId);
+          var audio = isFeat ? document.getElementById("flatAudio") : document.getElementById("audio-" + id);
+          if (audio && !audio.paused){
+            /* already playing: a history tap restarts it from the top */
+            try { audio.currentTime = 0; } catch(e){}
+            return;
+          }
+          var row = document.querySelector('.track-row[data-beat-id="' + id + '"]');
+          var btn = row ? row.querySelector(".row-play") : null;
+          if (btn){ btn.click(); return; }
+          if (isFeat && typeof window.__playFeaturedBeat === "function") window.__playFeaturedBeat();
+        }
+        function replay(en){
+          if (en.type === "vault"){
+            replayVault(en.id);
+            closePanel();
+          } else if (en.type === "credit"){
+            var sec = document.getElementById("videos");
+            if (sec) sec.scrollIntoView({ behavior:"smooth", block:"start" });
+            if (typeof startCreditVideo === "function") startCreditVideo(en.id);
+            closePanel();
+          } else if (en.type === "free"){
+            var where = (typeof window.__playFreeBeat === "function") ? window.__playFreeBeat(en.id, videoSlot) : null;
+            /* "mount" keeps the panel open — the video is playing in
+               the panel's own slot; anything else closes it so the
+               grid card is in view */
+            if (where !== "mount") closePanel();
+          }
+        }
+
+        function openPanel(){
+          render();
+          panel.hidden = false;
+          if (bar) panel.style.bottom = bar.offsetHeight + "px";
+          if (histBtn){ histBtn.setAttribute("aria-expanded", "true"); histBtn.classList.add("on"); }
+        }
+        function closePanel(){
+          panel.hidden = true;
+          if (histBtn){ histBtn.setAttribute("aria-expanded", "false"); histBtn.classList.remove("on"); }
+          if (videoSlot){ videoSlot.innerHTML = ""; videoSlot.hidden = true; }
+        }
+        if (histBtn) histBtn.addEventListener("click", function(){ if (panel.hidden) openPanel(); else closePanel(); });
+        if (closeBtn) closeBtn.addEventListener("click", closePanel);
+        if (clearBtn) clearBtn.addEventListener("click", function(){
+          history = [];
+          save();
+          render();
+          if (videoSlot){ videoSlot.innerHTML = ""; videoSlot.hidden = true; }
+        });
+        window.addEventListener("resize", function(){ if (!panel.hidden && bar) panel.style.bottom = bar.offsetHeight + "px"; });
+        render();
+
+        /* ---------- media session : lock-screen metadata + controls ---------- */
+        var msTarget = null; /* {kind:"audio", el} | {kind:"yt", player} */
+        var interacted = false;
+        ["pointerdown", "keydown", "touchstart"].forEach(function(ev){
+          document.addEventListener(ev, function(){ interacted = true; }, { passive:true });
+        });
+        function absUrl(src){
+          try { return new URL(src, document.baseURI).href; } catch(e){ return src; }
+        }
+        function setMedia(title, cover, album){
+          if (!("mediaSession" in navigator)) return;
+          try {
+            navigator.mediaSession.metadata = new MediaMetadata({
+              title: title,
+              artist: "Kill Will",
+              album: album || "KillWillBeats",
+              artwork: [{ src: absUrl(cover || "assets/crown-emblem.webp"), sizes: "512x512", type: /\.webp($|\?)/.test(cover || "") ? "image/webp" : "image/jpeg" }]
+            });
+          } catch(e){}
+        }
+        function setPlaybackState(st){
+          if (!("mediaSession" in navigator)) return;
+          try { navigator.mediaSession.playbackState = st; } catch(e){}
+        }
+        function beatForAudio(el){
+          if (!el || typeof BEATS === "undefined") return null;
+          if (el.id === "flatAudio") return (typeof featuredBeat === "function") ? featuredBeat() : null;
+          if (el.id && el.id.indexOf("audio-") === 0){
+            var id = el.id.slice(6), f = null;
+            BEATS.forEach(function(b){ if (b.id === id) f = b; });
+            return f;
+          }
+          return null;
+        }
+        /* every Vault / Featured play, pause and end funnels through
+           these capture-phase listeners (media events don't bubble) —
+           they keep the lock screen showing the beat that is actually
+           playing and feed the history once the visitor has tapped
+           something (the featured beat's load-time autoplay attempt
+           is not a visitor play, so it never lands in history) */
+        document.addEventListener("play", function(e){
+          var el = e.target;
+          if (!el || el.tagName !== "AUDIO") return;
+          msTarget = { kind:"audio", el: el };
+          var beat = beatForAudio(el);
+          if (beat){
+            setMedia(beat.title, beat.cover, "KillWillBeats — The Vault");
+            if (interacted) push({ key:"vault:" + beat.id, type:"vault", id:beat.id, title:beat.title, cover:beat.cover, label:"Vault · " + beat.bpm + " · Key " + beat.key });
+          }
+          setPlaybackState("playing");
+        }, true);
+        document.addEventListener("pause", function(e){
+          var el = e.target;
+          if (!el || el.tagName !== "AUDIO") return;
+          if (msTarget && msTarget.kind === "audio" && msTarget.el === el) setPlaybackState("paused");
+        }, true);
+        document.addEventListener("ended", function(e){
+          var el = e.target;
+          if (el && el.tagName === "AUDIO" && msTarget && msTarget.kind === "audio" && msTarget.el === el) setPlaybackState("paused");
+        }, true);
+
+        /* YouTube tracks (Free Beats + Credits): the bottom bar's
+           show/state hooks already fire on every PLAYING / PAUSED —
+           wrap them to feed history and the lock screen too */
+        if (typeof window.__barShowYouTube === "function"){
+          var origShow = window.__barShowYouTube;
+          window.__barShowYouTube = function(info){
+            origShow(info);
+            if (!info) return;
+            msTarget = { kind:"yt", player: info.player || null };
+            setMedia(info.title, info.cover, info.meta || "KillWillBeats");
+            setPlaybackState("playing");
+            if (info.histType === "free" && info.ytId){
+              push({ key:"free:" + info.ytId, type:"free", id:info.ytId, title:info.title, cover:info.cover, label:info.meta || "Free beat · YouTube" });
+            } else if (info.histType === "credit" && info.ytId){
+              push({ key:"credit:" + info.ytId, type:"credit", id:info.ytId, title:info.title, cover:info.cover, label:info.meta || "Official video · YouTube" });
+            }
+          };
+        }
+        if (typeof window.__barYouTubeState === "function"){
+          var origState = window.__barYouTubeState;
+          window.__barYouTubeState = function(player, playing){
+            origState(player, playing);
+            if (msTarget && msTarget.kind === "yt" && player && msTarget.player === player){
+              setPlaybackState(playing ? "playing" : "paused");
+            }
+          };
+        }
+
+        if ("mediaSession" in navigator){
+          function setHandler(name, fn){ try { navigator.mediaSession.setActionHandler(name, fn); } catch(e){} }
+          setHandler("play", function(){
+            if (msTarget && msTarget.kind === "audio" && msTarget.el){
+              try { var pr = msTarget.el.play(); if (pr && pr.catch) pr.catch(function(){}); } catch(e){}
+            } else if (msTarget && msTarget.kind === "yt" && msTarget.player){
+              try { msTarget.player.playVideo(); } catch(e){}
+            } else {
+              var b = document.getElementById("pbPlay");
+              if (b) b.click();
+            }
+          });
+          setHandler("pause", function(){
+            if (msTarget && msTarget.kind === "audio" && msTarget.el){ try { msTarget.el.pause(); } catch(e){} }
+            else if (msTarget && msTarget.kind === "yt" && msTarget.player){ try { msTarget.player.pauseVideo(); } catch(e){} }
+          });
+          setHandler("previoustrack", function(){ var b = document.getElementById("pbPrev"); if (b) b.click(); });
+          setHandler("nexttrack", function(){ var b = document.getElementById("pbNext"); if (b) b.click(); });
+          setHandler("seekto", function(d){
+            if (msTarget && msTarget.kind === "audio" && msTarget.el && d && typeof d.seekTime === "number"){
+              try { msTarget.el.currentTime = d.seekTime; } catch(e){}
+            }
+          });
+        }
+      })();
     </script>
   </body>
 </html>
