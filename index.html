@@ -604,6 +604,26 @@
       .vault-empty{margin:0 0 18px}
       .vault-empty[hidden]{display:none}
       @media (max-width:620px){ .vault-search-wrap{top:70px} .search-count{display:none} .search-bubble{padding-left:15px} }
+
+      /* ---------- email gate : free downloads unlock with an email ---------- */
+      .gate-scrim{position:fixed;inset:0;background:rgba(2,3,1,.72);z-index:80}
+      .gate-scrim[hidden]{display:none}
+      .gate-modal{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:81;width:min(440px,calc(100vw - 32px));max-height:calc(100vh - 32px);overflow-y:auto;background:var(--bg2);border:2px solid var(--gold);border-radius:10px;box-shadow:8px 8px 0 rgba(0,0,0,.55);padding:26px 24px 22px;color:var(--ink)}
+      .gate-modal[hidden]{display:none}
+      .gate-modal h3{font-family:var(--display);font-size:1.9rem;line-height:1;margin:14px 0 4px;text-transform:uppercase}
+      .gate-beat{font-family:var(--display);color:var(--gold-bright);text-transform:uppercase;letter-spacing:.03em;margin:0 0 8px;font-size:1.05rem}
+      .gate-beat:empty{display:none}
+      .gate-copy{color:var(--ink-dim);font-weight:600;font-size:.93rem;margin:0 0 16px}
+      .gate-form{display:flex;flex-direction:column;gap:12px;position:relative}
+      .gate-close{position:absolute;top:12px;right:12px;width:40px;height:40px;min-height:40px;border-radius:50%;border:2px solid var(--line);background:var(--panel);color:var(--ink);font-size:1rem;display:grid;place-items:center;padding:0}
+      .gate-status{font-size:.85rem;font-weight:700;color:var(--ink-dim);margin:0}
+      .gate-status:empty{display:none}
+      .gate-status.err{color:#ff9a8a}
+      .gate-status.ok{color:var(--green-bright)}
+      .notify-status{font-size:.85rem;font-weight:700;color:var(--ink-dim);margin:0}
+      .notify-status:empty{display:none}
+      .notify-status.err{color:#ff9a8a}
+      .cookie-note{font-size:.78rem;color:var(--ink-faint);margin:14px 0 0;max-width:64ch;line-height:1.5}
     </style>
   </head>
   <body>
@@ -818,7 +838,7 @@
                a Download MP3 button. -->
           <div class="free-grid" id="freeList" aria-label="Today's 10 free beats"></div>
 
-          <p class="free-fine"><span id="viewsStatus">Views counted Nov 22, 2026.</span> Free MP3 on every card — hit the green button. A different random 10 shows up tomorrow.</p>
+          <p class="free-fine"><span id="viewsStatus">Views counted Nov 22, 2026.</span> Free MP3 on every card — drop your email once and the download unlocks. A different random 10 shows up tomorrow.</p>
 
           <p class="cid-note slim"><b>Content ID note — free beats only:</b> YouTube may show a claim on videos using these beats — the ad money goes to Kill Will, your video stays up. <b>Paid beats aren't covered by this note</b> — Vault beats come with their own full license.</p>
         </div>
@@ -845,12 +865,12 @@
                 <label class="field">Your email<input name="email" type="email" required autocomplete="email" placeholder="you@email.com" /></label>
                 <label class="field">Artist name (optional)<input name="artist" autocomplete="name" placeholder="Your artist name" /></label>
                 <button class="btn btn-red" type="submit" style="width:100%;justify-content:center">Get first word</button>
-                <p class="drawer-note">Tapping the button opens your email app with the request ready to go — hit send there and you're on the first-word list.</p>
+                <p class="notify-status" id="notifyStatus" role="status"></p>
+                <p class="drawer-note">One list for everything: first word on new Vault beats lands in your inbox, and joining unlocks the free MP3 downloads on this page too.</p>
               </form>
               <div class="free-done" id="notifyDone" style="display:none;margin-top:14px">
-                <h4>Request ready ✓</h4>
+                <h4>You're on the list ✓</h4>
                 <p id="notifyDoneText"></p>
-                <a class="btn btn-gold" id="notifyMailBtn" href="mailto:killwillmusic@gmail.com">Open the request email</a>
               </div>
             </div>
           </div>
@@ -1003,6 +1023,7 @@
           <span>Prices in USD. First come, first served — beats sell once.</span>
           <span>Afterpay available — pay over time on beats up to $4,000.</span>
         </div>
+        <p class="cookie-note">Cookies: this site uses Google Analytics cookies to count visits and see which beats get played. That's the only tracking here.</p>
       </div>
     </footer>
 
@@ -1032,6 +1053,24 @@
     </div>
 
     <!-- cart -->
+    <!-- email gate : a free download asks for an email first; one signup
+         (here or in the first-word box) unlocks every free download for
+         the rest of the visit -->
+    <div class="gate-scrim" id="gateScrim" hidden></div>
+    <div class="gate-modal" id="gateModal" role="dialog" aria-modal="true" aria-labelledby="gateTitle" hidden>
+      <button class="gate-close" id="gateClose" type="button" aria-label="Close email form">✕</button>
+      <span class="sticker red rot-l">Free download</span>
+      <h3 id="gateTitle">One quick step</h3>
+      <p class="gate-beat" id="gateBeat"></p>
+      <p class="gate-copy">Drop your email and the MP3 unlocks right here — you'll also get first word on new beats hitting the Vault. Free beats stay free for promo use, just credit Kill Will.</p>
+      <form id="gateForm" class="gate-form" novalidate>
+        <label class="field">Your email<input id="gateEmail" name="EMAIL" type="email" required autocomplete="email" placeholder="you@email.com" /></label>
+        <div style="position:absolute;left:-5000px" aria-hidden="true"><input type="text" name="b_1af0d6f4f945036255d6f09ce_fd63560db7" tabindex="-1" value="" autocomplete="off" /></div>
+        <button class="btn btn-red" type="submit" id="gateSubmit" style="width:100%;justify-content:center">Unlock my download</button>
+        <p class="gate-status" id="gateStatus" role="status"></p>
+      </form>
+    </div>
+
     <div class="scrim" id="scrim"></div>
     <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Your cart" aria-hidden="true">
       <div class="drawer-head">
@@ -1052,6 +1091,106 @@
       </div>
     </aside>
 
+    <script>
+      /* ============ Mailchimp : one list for the whole page ============
+         The "Get first word" signup and the free-download email gate
+         both subscribe to the same KillWillBeats Mailchimp list through
+         its post-json endpoint (JSONP — no page redirect). The bot-trap
+         field rides along empty, exactly as Mailchimp's own embedded
+         forms send it. The unlock flag is session-only memory: nothing
+         is stored on the visitor's device. */
+      window.kwbMailchimp = (function(){
+        var POST_URL = "https://killwillbeats.us2.list-manage.com/subscribe/post?u=1af0d6f4f945036255d6f09ce&id=fd63560db7&f_id=009867e0f0";
+        var TRAP_FIELD = "b_1af0d6f4f945036255d6f09ce_fd63560db7";
+        var seq = 0;
+        var unlocked = false;
+        function subscribe(email, done){
+          var cbName = "__kwbMc" + (++seq) + "_" + Date.now();
+          var url = POST_URL.replace("/subscribe/post?", "/subscribe/post-json?")
+            + "&EMAIL=" + encodeURIComponent(email)
+            + "&" + TRAP_FIELD + "="
+            + "&c=" + cbName;
+          var script = document.createElement("script");
+          var finished = false;
+          function finish(ok, msg){
+            if (finished) return; finished = true;
+            try { delete window[cbName]; } catch(e){ window[cbName] = undefined; }
+            if (script.parentNode) script.parentNode.removeChild(script);
+            done(ok, msg);
+          }
+          window[cbName] = function(data){
+            var msg = (data && data.msg) ? String(data.msg) : "";
+            var ok = !!(data && data.result === "success") || /already subscribed/i.test(msg);
+            finish(ok, msg);
+          };
+          script.onerror = function(){ finish(false, ""); };
+          script.src = url;
+          document.body.appendChild(script);
+          setTimeout(function(){ finish(false, ""); }, 12000);
+        }
+        return {
+          subscribe: subscribe,
+          isUnlocked: function(){ return unlocked; },
+          unlock: function(){ unlocked = true; }
+        };
+      })();
+
+      /* ============ email gate for free downloads ============ */
+      window.kwbGate = (function(){
+        var modal = document.getElementById("gateModal"),
+            scrim = document.getElementById("gateScrim"),
+            form = document.getElementById("gateForm"),
+            emailEl = document.getElementById("gateEmail"),
+            statusEl = document.getElementById("gateStatus"),
+            beatEl = document.getElementById("gateBeat"),
+            submitBtn = document.getElementById("gateSubmit");
+        var pending = null, busy = false;
+        function open(beatTitle, onUnlock){
+          pending = onUnlock;
+          beatEl.textContent = beatTitle || "";
+          statusEl.textContent = ""; statusEl.className = "gate-status";
+          modal.hidden = false; scrim.hidden = false;
+          setTimeout(function(){ emailEl.focus(); }, 40);
+        }
+        function close(){
+          modal.hidden = true; scrim.hidden = true; pending = null;
+        }
+        document.getElementById("gateClose").addEventListener("click", close);
+        scrim.addEventListener("click", close);
+        document.addEventListener("keydown", function(e){ if (e.key === "Escape" && !modal.hidden) close(); });
+        form.addEventListener("submit", function(e){
+          e.preventDefault();
+          if (busy) return;
+          var email = (emailEl.value || "").trim();
+          if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+            statusEl.textContent = "That email doesn't look right — check it and try again.";
+            statusEl.className = "gate-status err";
+            emailEl.focus();
+            return;
+          }
+          busy = true;
+          submitBtn.disabled = true;
+          submitBtn.textContent = "Unlocking…";
+          statusEl.textContent = ""; statusEl.className = "gate-status";
+          window.kwbMailchimp.subscribe(email, function(ok){
+            busy = false;
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Unlock my download";
+            if (ok){
+              window.kwbMailchimp.unlock();
+              statusEl.textContent = "You're in — your download is starting.";
+              statusEl.className = "gate-status ok";
+              var cb = pending;
+              setTimeout(function(){ close(); if (cb) cb(); }, 450);
+            } else {
+              statusEl.textContent = "That didn't go through — check the email and try again.";
+              statusEl.className = "gate-status err";
+            }
+          });
+        });
+        return { open: open, close: close };
+      })();
+    </script>
     <script>
       /* ============ catalog ============
          Every entry needs a title, its OWN price. The current batch is
@@ -2200,23 +2339,37 @@
       scrim.addEventListener("click", closeCart);
       document.addEventListener("keydown", function(e){ if (e.key === "Escape") closeCart(); });
 
-      /* ============ first-word list for the first drop ============ */
+      /* ============ first-word list : same Mailchimp list as the download gate ============ */
       document.getElementById("notifyForm").addEventListener("submit", function(e){
         e.preventDefault();
-        var fd = new FormData(this);
-        var email = (fd.get("email") || "").toString();
-        var artist = (fd.get("artist") || "").toString();
-        var lines = ["First-word request from killwillbeats.com", "",
-          "Send it to: " + email];
-        if (artist) lines.push("Artist name: " + artist);
-        lines.push("", "Email me first about beats in the vault.");
-        var mail = "mailto:killwillmusic@gmail.com?subject=" + encodeURIComponent("First word — Kill Will beats drop") + "&body=" + encodeURIComponent(lines.join("\n"));
-        document.getElementById("notifyMailBtn").href = mail;
-        document.getElementById("notifyDoneText").textContent =
-          "Your request is addressed from " + email + ". Open the email and hit send — you'll get first word on beats in the vault.";
-        var done = document.getElementById("notifyDone");
-        done.style.display = "block";
-        done.scrollIntoView({ behavior:"smooth", block:"nearest" });
+        var form = this;
+        var fd = new FormData(form);
+        var email = (fd.get("email") || "").toString().trim();
+        var status = document.getElementById("notifyStatus");
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+          status.textContent = "That email doesn't look right — check it and try again.";
+          status.className = "notify-status err";
+          return;
+        }
+        var btn = form.querySelector("button[type='submit']");
+        btn.disabled = true;
+        status.textContent = "Joining the list…";
+        status.className = "notify-status";
+        window.kwbMailchimp.subscribe(email, function(ok){
+          btn.disabled = false;
+          if (ok){
+            window.kwbMailchimp.unlock();
+            status.textContent = "";
+            document.getElementById("notifyDoneText").textContent =
+              email + " is on the list — first word on new Vault beats goes straight to your inbox, and the free MP3 downloads on this page are unlocked.";
+            var done = document.getElementById("notifyDone");
+            done.style.display = "block";
+            done.scrollIntoView({ behavior:"smooth", block:"nearest" });
+          } else {
+            status.textContent = "That didn't go through — check the email and try again.";
+            status.className = "notify-status err";
+          }
+        });
       });
 
       /* ============ agreement text ============ */
@@ -2388,7 +2541,18 @@
             var dl = card.querySelector(".free-dl");
             dl.addEventListener("click", function(e){
               e.preventDefault();
-              forceDownload(dl, beat);
+              /* email gate: the first download of the visit asks for an
+                 email (same Mailchimp list as the first-word signup);
+                 once subscribed, every free download runs direct */
+              if (window.kwbMailchimp && window.kwbMailchimp.isUnlocked()){
+                forceDownload(dl, beat);
+                return;
+              }
+              if (window.kwbGate){
+                window.kwbGate.open(beat.a + " Type Beat \u201C" + beat.t + "\u201D", function(){ forceDownload(dl, beat); });
+              } else {
+                forceDownload(dl, beat);
+              }
             });
             list.appendChild(card);
           });
