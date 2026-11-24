@@ -216,18 +216,24 @@
       @media (max-width:880px){ .player-card{grid-template-columns:1fr} .player-main{padding:16px} }
       /* ---------- marquee tape ---------- */
       .marquee{background:var(--red);color:#fff;overflow:hidden;white-space:nowrap;border-bottom:3px solid #0a0a05;transform:rotate(-.6deg) scale(1.01)}
-      .marquee-track{display:inline-flex;align-items:center;animation:marquee 24s linear infinite;padding:9px 0;font-family:var(--display);letter-spacing:.1em;text-transform:uppercase;font-size:.95rem;will-change:transform}
-      .marquee-track span{padding:0 16px}
+      .marquee-track{display:flex;width:max-content;flex-wrap:nowrap;align-items:center;animation:marquee 24s linear infinite;padding:9px 0;font-family:var(--display);letter-spacing:.1em;text-transform:uppercase;font-size:.95rem;will-change:transform}
+      .marquee-track span{padding:0 16px;flex:none;flex-shrink:0;white-space:nowrap}
       .marquee-track .mq-star{color:var(--gold-bright)}
       /* ticker payment logos: white cut-outs directly on the red tape —
-         transparent background, no plate, no box, red shows through */
-      .marquee-track .mq-pay{display:inline-flex;align-items:center;gap:9px;padding:0 16px}
-      .marquee-track .mq-pay span{padding:0}
+         transparent background, no plate, no box, red shows through.
+         The pay group keeps its FULL max-content width and never
+         shrinks: every item in the track is flex-shrink:0, so the
+         "Pay over time" text can never collapse into the phrase
+         that follows it. Logo widths are explicit (height × each
+         mark's own aspect ratio) so the group's width is reserved
+         in full before the SVGs even load. */
+      .marquee-track .mq-pay{display:inline-flex;align-items:center;gap:9px;padding:0 16px;flex:none;flex-shrink:0;width:max-content;white-space:nowrap}
+      .marquee-track .mq-pay span{padding:0;flex:none;flex-shrink:0;white-space:nowrap}
       .marquee-track .mq-pay .mq-dot,.marquee-track .mq-pay .mq-dash{opacity:.85}
-      .mq-logo{display:block;width:auto;flex:none}
-      .mq-logo-afterpay{height:15px}
-      .mq-logo-klarna{height:16px}
-      .mq-logo-affirm{height:15px}
+      .mq-logo{display:block;flex:none;flex-shrink:0;object-fit:contain}
+      .mq-logo-afterpay{height:15px;width:80px}
+      .mq-logo-klarna{height:16px;width:60px}
+      .mq-logo-affirm{height:15px;width:36px}
       @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
       .marquee.gold-tape{background:var(--gold);color:var(--gold-ink);transform:rotate(.5deg) scale(1.01);border-top:3px solid #0a0a05;border-bottom:3px solid #0a0a05}
       .marquee.gold-tape .mq-star{color:var(--red)}
@@ -311,21 +317,22 @@
       .pay-logo img{display:block;height:19px;width:auto}
       .pay-logo img.logo-klarna{height:27px}
       .pay-logo img.logo-affirm{height:21px}
-      .ap-badges-col{display:flex;flex-direction:column;gap:8px;flex:none;align-items:stretch}
-      .ap-badges-col .pay-logo{width:100%}
-      @media (max-width:560px){ .ap-badges-col{flex-direction:row;flex-wrap:wrap} .ap-badges-col .pay-logo{width:auto} }
-      /* Vault banner logos run small and quiet — roughly half the
-         standard plate size, so the banner reads as a note, not an ad.
-         (The cart checkout note keeps the standard plate size.) */
-      .ap-banner .pay-logo{padding:4px 7px;border-radius:5px}
-      .ap-banner .pay-logo img{height:10px}
-      .ap-banner .pay-logo img.logo-klarna{height:14px}
-      .ap-banner .pay-logo img.logo-affirm{height:11px}
-      .ap-banner{display:flex;gap:16px;align-items:flex-start;background:var(--green-deep);border:2px solid var(--green-bright);border-radius:8px;padding:16px 18px;margin:0 0 20px;box-shadow:5px 5px 0 rgba(0,0,0,.28)}
+      /* Vault banner logos: same cut-out treatment as the ticker —
+         white marks with transparent backgrounds, no plates and no
+         boxes, so the banner's own background shows through. They run
+         small and quiet in one horizontal row in the banner's bottom
+         right corner, below the text, so they never cover a word.
+         Logo widths are explicit (height × each mark's aspect ratio).
+         (The cart checkout note keeps the standard white-plate logo.) */
+      .ap-badges-row{display:flex;flex-direction:row;gap:14px;align-items:center;align-self:flex-end;flex:none;margin-top:12px;line-height:0}
+      .ap-badges-row img{display:block;flex:none;object-fit:contain}
+      .ap-badges-row img.logo-afterpay{height:11px;width:59px}
+      .ap-badges-row img.logo-klarna{height:12px;width:45px}
+      .ap-badges-row img.logo-affirm{height:11px;width:27px}
+      .ap-banner{display:flex;flex-direction:column;align-items:stretch;background:var(--green-deep);border:2px solid var(--green-bright);border-radius:8px;padding:16px 18px;margin:0 0 20px;box-shadow:5px 5px 0 rgba(0,0,0,.28)}
       .ap-banner p{margin:0;color:var(--ink-dim);font-weight:600;font-size:.98rem;line-height:1.55}
       .ap-banner p b{color:var(--ink)}
       .ap-banner .ap-fine{display:block;margin-top:6px;font-size:.76rem;color:var(--ink-faint);font-weight:600}
-      @media (max-width:560px){ .ap-banner{flex-direction:column;gap:10px} }
       .ap-line{flex:1 1 100%;font-size:.9rem;font-weight:800;color:#b2fce4}
       .ap-line b{color:#fff}
       .row-price-stack{display:flex;flex-direction:column;align-items:flex-end;gap:1px}
@@ -864,8 +871,8 @@
           </div>
           <div class="forsale-banner" aria-label="Beats for sale">For <span class="red">Sale</span></div>
           <div class="ap-banner" role="note" aria-label="Pay over time — Afterpay, Klarna and Affirm available at checkout">
-            <span class="ap-badges-col"><span class="pay-logo"><img src="assets/pay-afterpay.svg" alt="Afterpay" /></span><span class="pay-logo"><img class="logo-klarna" src="assets/pay-klarna.svg" alt="Klarna" /></span><span class="pay-logo"><img class="logo-affirm" src="assets/pay-affirm.svg" alt="Affirm" /></span></span>
             <p><b>Pay over time.</b> Every beat's row shows its own Afterpay option, figured from its own price: beats up to <b>$2,000</b> split into <b>4 interest-free payments</b>; bigger beats up to $4,000 go on <b>monthly installments</b> over 6 or 12 months (interest applies). <b>Klarna</b> and <b>Affirm</b> are also available at checkout. First come, first served still rules: once it's yours, it's pulled for good.<span class="ap-fine">US buyers · subject to approval · late fees may apply.</span></p>
+            <span class="ap-badges-row"><img class="logo-afterpay" src="assets/pay-afterpay-cutout.svg" alt="Afterpay" /><img class="logo-klarna" src="assets/pay-klarna-cutout.svg" alt="Klarna" /><img class="logo-affirm" src="assets/pay-affirm-cutout.svg" alt="Affirm" /></span>
           </div>
           <!-- THE LIST : all 31 beats for sale, compact rows.
                Rows are rendered from the BEATS catalog by the track-list
