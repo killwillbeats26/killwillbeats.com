@@ -625,6 +625,21 @@
       .notify-status.err{color:#ff9a8a}
       .cookie-note{font-size:.78rem;color:var(--ink-faint);margin:14px 0 0;max-width:64ch;line-height:1.5}
     </style>
+    <!-- Meta Pixel Code -->
+    <script>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', '4246664032137392');
+      fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=4246664032137392&ev=PageView&noscript=1" /></noscript>
+    <!-- End Meta Pixel Code -->
   </head>
   <body>
     <header class="topbar">
@@ -1408,6 +1423,7 @@
       }
       function openStripeFor(beat){
         if (!beat || !beat.stripeUrl) return;
+        if (typeof fbq === "function") fbq("track", "InitiateCheckout", { value: 599, currency: "USD", content_ids: [beat.id], content_type: "product" });
         checkoutPendingId = beat.id;
         saveCartState();
         window.open(beat.stripeUrl, "_blank", "noopener");
@@ -1454,7 +1470,7 @@
             pay.className = "ci-pay" + (isPaid ? " paid" : "");
             pay.href = b.stripeUrl; pay.target = "_blank"; pay.rel = "noopener";
             pay.textContent = isPaid ? "Paid ✓ — Stripe" : "Pay " + money(b.price) + " — Stripe";
-            pay.addEventListener("click", function(){ checkoutPendingId = b.id; saveCartState(); setTimeout(renderCart, 0); });
+            pay.addEventListener("click", function(){ if (typeof fbq === "function") fbq("track", "InitiateCheckout", { value: 599, currency: "USD", content_ids: [b.id], content_type: "product" }); checkoutPendingId = b.id; saveCartState(); setTimeout(renderCart, 0); });
             actions.appendChild(pay);
           }
           item.appendChild(actions);
@@ -1476,7 +1492,7 @@
               singleBtn.className = "checkout-btn";
               singleBtn.href = only.stripeUrl; singleBtn.target = "_blank"; singleBtn.rel = "noopener";
               singleBtn.textContent = "Checkout with Stripe — " + money(only.price);
-              singleBtn.addEventListener("click", function(){ checkoutPendingId = only.id; saveCartState(); setTimeout(renderCart, 0); });
+              singleBtn.addEventListener("click", function(){ if (typeof fbq === "function") fbq("track", "InitiateCheckout", { value: 599, currency: "USD", content_ids: [only.id], content_type: "product" }); checkoutPendingId = only.id; saveCartState(); setTimeout(renderCart, 0); });
               cartCheckoutActions.appendChild(singleBtn);
               if (checkoutPendingId === only.id && paidIds.indexOf(only.id) === -1){
                 var doneBtn = document.createElement("button");
@@ -2497,6 +2513,7 @@
           })();
         }
         function forceDownload(a, beat){
+          if (typeof fbq === "function") fbq("trackCustom", "FreeDownload", { beat_name: beat.t });
           var url = DL_BASE + beat.s + ".mp3";
           var label = a.textContent;
           a.textContent = "Preparing\u2026";
