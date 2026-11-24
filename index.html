@@ -302,11 +302,16 @@
       .pay-logo img{display:block;height:19px;width:auto}
       .pay-logo img.logo-klarna{height:27px}
       .pay-logo img.logo-affirm{height:21px}
-      .pay-badges{display:inline-flex;align-items:center;gap:7px;flex-wrap:wrap}
       .ap-badges-col{display:flex;flex-direction:column;gap:8px;flex:none;align-items:stretch}
       .ap-badges-col .pay-logo{width:100%}
       @media (max-width:560px){ .ap-badges-col{flex-direction:row;flex-wrap:wrap} .ap-badges-col .pay-logo{width:auto} }
-      .hero-ap{margin:9px 0 0;display:flex;align-items:center;gap:10px;flex-wrap:wrap;color:#e6e0c6;font-weight:700;font-size:.94rem;text-shadow:2px 2px 0 rgba(0,0,0,.75)}
+      /* Vault banner logos run small and quiet — roughly half the
+         standard plate size, so the banner reads as a note, not an ad.
+         (The cart checkout note keeps the standard plate size.) */
+      .ap-banner .pay-logo{padding:4px 7px;border-radius:5px}
+      .ap-banner .pay-logo img{height:10px}
+      .ap-banner .pay-logo img.logo-klarna{height:14px}
+      .ap-banner .pay-logo img.logo-affirm{height:11px}
       .ap-banner{display:flex;gap:16px;align-items:flex-start;background:var(--green-deep);border:2px solid var(--green-bright);border-radius:8px;padding:16px 18px;margin:0 0 20px;box-shadow:5px 5px 0 rgba(0,0,0,.28)}
       .ap-banner p{margin:0;color:var(--ink-dim);font-weight:600;font-size:.98rem;line-height:1.55}
       .ap-banner p b{color:var(--ink)}
@@ -717,7 +722,6 @@
           <div class="hero-text">
             <h1>Kill <b>Will</b> Beats</h1>
             <p class="hero-line">Beats for sale — hurry up and buy, first come, first served. Sold once and gone for good.</p>
-            <p class="hero-ap"><span class="pay-badges"><span class="pay-logo"><img src="assets/pay-afterpay.svg" alt="Afterpay" /></span><span class="pay-logo"><img class="logo-klarna" src="assets/pay-klarna.svg" alt="Klarna" /></span><span class="pay-logo"><img class="logo-affirm" src="assets/pay-affirm.svg" alt="Affirm" /></span></span><span>Pay over time with <b>Afterpay</b>, <b>Klarna</b> or <b>Affirm</b> — 4 interest-free payments with Afterpay on beats up to $2,000. Lock it in today.</span></p>
           </div>
           <div class="hero-cta">
             <a class="btn btn-red" href="#vault">Shop Beats</a>
@@ -2556,6 +2560,12 @@
         window.kwbMailchimp.subscribe(email, function(ok){
           btn.disabled = false;
           if (ok){
+            /* Save the email this visitor just entered — the same save
+               the free-download gate makes — so their Stripe checkout
+               links carry ?prefilled_email= and Afterpay shows in
+               Stripe's main payment list right away. Only the email
+               actually typed into this form is saved; nothing invented. */
+            window.kwbMailchimp.rememberEmail(email);
             window.kwbMailchimp.unlock();
             status.textContent = "";
             document.getElementById("notifyDoneText").textContent =
