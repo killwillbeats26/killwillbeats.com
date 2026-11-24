@@ -322,6 +322,16 @@
       @media (max-width:620px){ .pb-ap{display:none} }
       .cart-ap{display:flex;justify-content:space-between;gap:10px;font-size:.92rem;font-weight:700;color:var(--ink-dim);border:1.5px dashed var(--green-bright);border-radius:8px;padding:10px 13px;background:var(--green-deep)}
       .cart-ap b{color:#b2fce4}
+      /* prominent Afterpay finder at the checkout step — Stripe tucks
+         Afterpay under its collapsed "More payment methods" until the
+         buyer enters an email, so the cart says exactly where to find
+         it, with the real logo, right above the checkout button */
+      .cart-ap-note{display:flex;gap:12px;align-items:center;border:2px solid var(--green-bright);border-radius:8px;padding:12px 13px;background:var(--green-deep)}
+      .cart-ap-note .pay-logo{flex:none}
+      .cart-ap-note p{margin:0;font-size:.92rem;line-height:1.5;color:var(--ink-dim);font-weight:600}
+      .cart-ap-note p b{color:var(--ink)}
+      .step-ap-tip{margin-top:10px!important;border:1.5px dashed var(--green-bright);border-radius:8px;padding:10px 12px;background:var(--green-deep);font-size:.88rem!important;line-height:1.5}
+      .step-ap-tip b{color:var(--ink)}
 
       /* ---------- free beats (YouTube) ---------- */
       .free-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:22px}
@@ -947,7 +957,7 @@
             <div class="step">
               <span class="big-num">02</span>
               <svg class="step-icon" viewBox="0 0 52 52" aria-hidden="true"><rect x="4" y="12" width="44" height="28" rx="4" fill="#c9a227" stroke="#0a0a05" stroke-width="2.5" transform="rotate(-4 26 26)"/><text x="26" y="34" text-anchor="middle" font-family="Anton,sans-serif" font-size="19" fill="#171200">4×</text></svg>
-              <h3>Pay in full — or in 4</h3><p>Hurry up and buy — first come, first served. The price on its row is the price: pay it all today, or pay over time with Afterpay, Klarna or Affirm — 4 interest-free payments with Afterpay on beats up to $2,000, Afterpay monthly installments on the bigger ones. Every row shows that beat's own option. No leases.</p>
+              <h3>Pay in full — or in 4</h3><p>Hurry up and buy — first come, first served. The price on its row is the price: pay it all today, or pay over time with Afterpay, Klarna or Affirm — 4 interest-free payments with Afterpay on beats up to $2,000, Afterpay monthly installments on the bigger ones. Every row shows that beat's own option. No leases.</p><p class="step-ap-tip"><b>Finding Afterpay:</b> on Stripe, type your email first — Afterpay jumps into the main payment list. See “More payment methods”? Tap it, Afterpay's in there too.</p>
             </div>
             <div class="step">
               <span class="big-num">03</span>
@@ -1157,6 +1167,10 @@
         <div class="cart-total" id="cartTotalRow" style="display:none"><span>Total</span><span id="cartTotal">$0</span></div>
         <div class="cart-ap" id="cartApRow" style="display:none"><span id="cartApText"></span></div>
         <div id="cartCheckout" style="display:none;flex-direction:column;gap:12px">
+          <div class="cart-ap-note" role="note" aria-label="Afterpay at checkout — enter your email on Stripe and it shows in the payment list">
+            <span class="pay-logo"><img src="assets/pay-afterpay.svg" alt="Afterpay" /></span>
+            <p><b>Afterpay is at checkout.</b> Enter your email on Stripe and Afterpay shows in the payment list — no digging under “More payment methods.” Klarna &amp; Affirm are there too.</p>
+          </div>
           <div id="cartCheckoutActions" style="display:flex;flex-direction:column;gap:10px"></div>
           <p class="cart-progress" id="cartCheckoutProgress" hidden></p>
           <p class="drawer-note">Checkout opens Stripe — Stripe collects your email and payment details itself. Pay in full or over time with Afterpay, Klarna or Affirm where Stripe offers it.</p>
@@ -1170,13 +1184,29 @@
          both subscribe to the same KillWillBeats Mailchimp list through
          its post-json endpoint (JSONP — no page redirect). The bot-trap
          field rides along empty, exactly as Mailchimp's own embedded
-         forms send it. The unlock flag is session-only memory: nothing
-         is stored on the visitor's device. */
+         forms send it. The unlock flag stays session-only memory. The
+         email itself — only an email the visitor actually gave this
+         page, and only after a successful signup — is remembered on
+         their device (localStorage, key kwb_visitor_email_v1) for one
+         job: pre-filling that same email on the Stripe checkout link
+         (?prefilled_email=) so Stripe expands its payment list and
+         Afterpay shows in the main list right away instead of hiding
+         under "More payment methods." No email is ever invented. */
       window.kwbMailchimp = (function(){
         var POST_URL = "https://killwillbeats.us2.list-manage.com/subscribe/post?u=1af0d6f4f945036255d6f09ce&id=fd63560db7&f_id=009867e0f0";
         var TRAP_FIELD = "b_1af0d6f4f945036255d6f09ce_fd63560db7";
+        var EMAIL_KEY = "kwb_visitor_email_v1";
         var seq = 0;
         var unlocked = false;
+        function rememberEmail(email){
+          try { if (email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) localStorage.setItem(EMAIL_KEY, email); } catch(e){}
+        }
+        function savedEmail(){
+          try {
+            var e = localStorage.getItem(EMAIL_KEY) || "";
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e) ? e : "";
+          } catch(e){ return ""; }
+        }
         function subscribe(email, done){
           var cbName = "__kwbMc" + (++seq) + "_" + Date.now();
           var url = POST_URL.replace("/subscribe/post?", "/subscribe/post-json?")
@@ -1194,6 +1224,7 @@
           window[cbName] = function(data){
             var msg = (data && data.msg) ? String(data.msg) : "";
             var ok = !!(data && data.result === "success") || /already subscribed/i.test(msg);
+            if (ok) rememberEmail(email);
             finish(ok, msg);
           };
           script.onerror = function(){ finish(false, ""); };
@@ -1204,7 +1235,9 @@
         return {
           subscribe: subscribe,
           isUnlocked: function(){ return unlocked; },
-          unlock: function(){ unlocked = true; }
+          unlock: function(){ unlocked = true; },
+          rememberEmail: rememberEmail,
+          savedEmail: savedEmail
         };
       })();
 
@@ -1473,6 +1506,32 @@
           ? "or 4 interest-free payments of " + o.amt + " with Afterpay — Klarna & Affirm also available at checkout"
           : "or monthly installments with Afterpay — 6 or 12 months (interest applies) — Klarna & Affirm also available at checkout";
       }
+      /* Stripe prefill: if the visitor already gave this page their
+         email (free-download gate or first-word signup) and it is
+         saved on this device, hand that exact email to the Stripe
+         Payment Link as ?prefilled_email= — Stripe then expands its
+         payment list on load, so Afterpay shows in the main list
+         right away instead of under "More payment methods." No saved
+         email, no parameter: the plain link goes out untouched. */
+      function savedVisitorEmail(){
+        try {
+          if (window.kwbMailchimp && typeof window.kwbMailchimp.savedEmail === "function"){
+            var e = window.kwbMailchimp.savedEmail();
+            if (e) return e;
+          }
+        } catch(e){}
+        try {
+          var v = localStorage.getItem("kwb_visitor_email_v1") || "";
+          return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? v : "";
+        } catch(e){ return ""; }
+      }
+      function stripeUrlFor(beat){
+        if (!beat || !beat.stripeUrl) return "";
+        var em = savedVisitorEmail();
+        if (!em) return beat.stripeUrl;
+        var sep = beat.stripeUrl.indexOf("?") === -1 ? "?" : "&";
+        return beat.stripeUrl + sep + "prefilled_email=" + encodeURIComponent(em);
+      }
       function beatByIdCart(id){ var f = null; BEATS.forEach(function(b){ if (b.id === id) f = b; }); return f; }
       function nextUnpaidBeat(){
         var f = null;
@@ -1484,7 +1543,7 @@
         if (typeof fbq === "function") fbq("track", "InitiateCheckout", { value: 599, currency: "USD", content_ids: [beat.id], content_type: "product" });
         checkoutPendingId = beat.id;
         saveCartState();
-        window.open(beat.stripeUrl, "_blank", "noopener");
+        window.open(stripeUrlFor(beat), "_blank", "noopener");
         renderCart();
       }
       function markPendingPaid(){
@@ -1526,9 +1585,9 @@
             var isPaid = paidIds.indexOf(b.id) !== -1;
             var pay = document.createElement("a");
             pay.className = "ci-pay" + (isPaid ? " paid" : "");
-            pay.href = b.stripeUrl; pay.target = "_blank"; pay.rel = "noopener";
+            pay.href = stripeUrlFor(b); pay.target = "_blank"; pay.rel = "noopener";
             pay.textContent = isPaid ? "Paid ✓ — Stripe" : "Pay " + money(b.price) + " — Stripe";
-            pay.addEventListener("click", function(){ if (typeof fbq === "function") fbq("track", "InitiateCheckout", { value: 599, currency: "USD", content_ids: [b.id], content_type: "product" }); checkoutPendingId = b.id; saveCartState(); setTimeout(renderCart, 0); });
+            pay.addEventListener("click", function(){ pay.href = stripeUrlFor(b); if (typeof fbq === "function") fbq("track", "InitiateCheckout", { value: 599, currency: "USD", content_ids: [b.id], content_type: "product" }); checkoutPendingId = b.id; saveCartState(); setTimeout(renderCart, 0); });
             actions.appendChild(pay);
           }
           item.appendChild(actions);
@@ -1548,9 +1607,9 @@
             if (only.stripeUrl){
               var singleBtn = document.createElement("a");
               singleBtn.className = "checkout-btn";
-              singleBtn.href = only.stripeUrl; singleBtn.target = "_blank"; singleBtn.rel = "noopener";
+              singleBtn.href = stripeUrlFor(only); singleBtn.target = "_blank"; singleBtn.rel = "noopener";
               singleBtn.textContent = "Checkout with Stripe — " + money(only.price);
-              singleBtn.addEventListener("click", function(){ if (typeof fbq === "function") fbq("track", "InitiateCheckout", { value: 599, currency: "USD", content_ids: [only.id], content_type: "product" }); checkoutPendingId = only.id; saveCartState(); setTimeout(renderCart, 0); });
+              singleBtn.addEventListener("click", function(){ singleBtn.href = stripeUrlFor(only); if (typeof fbq === "function") fbq("track", "InitiateCheckout", { value: 599, currency: "USD", content_ids: [only.id], content_type: "product" }); checkoutPendingId = only.id; saveCartState(); setTimeout(renderCart, 0); });
               cartCheckoutActions.appendChild(singleBtn);
               if (checkoutPendingId === only.id && paidIds.indexOf(only.id) === -1){
                 var doneBtn = document.createElement("button");
