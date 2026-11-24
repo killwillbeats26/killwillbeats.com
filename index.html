@@ -296,13 +296,16 @@
          scripts from that beat's OWN price (price / 4) — beats with
          trackouts cost more than the $599 batch, and their split is
          bigger. Static copy here never names a dollar split. */
-      .ap-badge{display:inline-flex;align-items:center;background:#b2fce4;color:#0a0a05;border:2px solid #0a0a05;border-radius:6px;box-shadow:3px 3px 0 #0a0a05;font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;padding:6px 12px;font-size:.85rem;line-height:1;white-space:nowrap}
-      .ap-badge.ka-badge{background:#ffb3c7}
-      .ap-badge.af-badge{background:#f2edd8}
+      /* real brand logos (official artwork, local files in assets/) on a
+         clean white plate — no shadow, no border, no decoration */
+      .pay-logo{display:inline-flex;align-items:center;justify-content:center;background:#fff;border-radius:6px;padding:7px 11px;line-height:0}
+      .pay-logo img{display:block;height:19px;width:auto}
+      .pay-logo img.logo-klarna{height:27px}
+      .pay-logo img.logo-affirm{height:21px}
       .pay-badges{display:inline-flex;align-items:center;gap:7px;flex-wrap:wrap}
-      .ap-badges-col{display:flex;flex-direction:column;gap:8px;flex:none}
-      .ap-badges-col .ap-badge{justify-content:center}
-      @media (max-width:560px){ .ap-badges-col{flex-direction:row;flex-wrap:wrap} }
+      .ap-badges-col{display:flex;flex-direction:column;gap:8px;flex:none;align-items:stretch}
+      .ap-badges-col .pay-logo{width:100%}
+      @media (max-width:560px){ .ap-badges-col{flex-direction:row;flex-wrap:wrap} .ap-badges-col .pay-logo{width:auto} }
       .hero-ap{margin:9px 0 0;display:flex;align-items:center;gap:10px;flex-wrap:wrap;color:#e6e0c6;font-weight:700;font-size:.94rem;text-shadow:2px 2px 0 rgba(0,0,0,.75)}
       .ap-banner{display:flex;gap:16px;align-items:flex-start;background:var(--green-deep);border:2px solid var(--green-bright);border-radius:8px;padding:16px 18px;margin:0 0 20px;box-shadow:5px 5px 0 rgba(0,0,0,.28)}
       .ap-banner p{margin:0;color:var(--ink-dim);font-weight:600;font-size:.98rem;line-height:1.55}
@@ -704,7 +707,7 @@
           <div class="hero-text">
             <h1>Kill <b>Will</b> Beats</h1>
             <p class="hero-line">Beats for sale — hurry up and buy, first come, first served. Sold once and gone for good.</p>
-            <p class="hero-ap"><span class="pay-badges"><span class="ap-badge">Afterpay</span><span class="ap-badge ka-badge">Klarna</span><span class="ap-badge af-badge">Affirm</span></span><span>Pay over time with <b>Afterpay</b>, <b>Klarna</b> or <b>Affirm</b> — 4 interest-free payments with Afterpay on beats up to $2,000. Lock it in today.</span></p>
+            <p class="hero-ap"><span class="pay-badges"><span class="pay-logo"><img src="assets/pay-afterpay.svg" alt="Afterpay" /></span><span class="pay-logo"><img class="logo-klarna" src="assets/pay-klarna.svg" alt="Klarna" /></span><span class="pay-logo"><img class="logo-affirm" src="assets/pay-affirm.svg" alt="Affirm" /></span></span><span>Pay over time with <b>Afterpay</b>, <b>Klarna</b> or <b>Affirm</b> — 4 interest-free payments with Afterpay on beats up to $2,000. Lock it in today.</span></p>
           </div>
           <div class="hero-cta">
             <a class="btn btn-red" href="#vault">Shop Beats</a>
@@ -838,7 +841,7 @@
           </div>
           <div class="forsale-banner" aria-label="Beats for sale">For <span class="red">Sale</span></div>
           <div class="ap-banner" role="note" aria-label="Pay over time — Afterpay, Klarna and Affirm available at checkout">
-            <span class="ap-badges-col"><span class="ap-badge">Afterpay</span><span class="ap-badge ka-badge">Klarna</span><span class="ap-badge af-badge">Affirm</span></span>
+            <span class="ap-badges-col"><span class="pay-logo"><img src="assets/pay-afterpay.svg" alt="Afterpay" /></span><span class="pay-logo"><img class="logo-klarna" src="assets/pay-klarna.svg" alt="Klarna" /></span><span class="pay-logo"><img class="logo-affirm" src="assets/pay-affirm.svg" alt="Affirm" /></span></span>
             <p><b>Pay over time.</b> Every beat's row shows its own Afterpay option, figured from its own price: beats up to <b>$2,000</b> split into <b>4 interest-free payments</b>; bigger beats up to $4,000 go on <b>monthly installments</b> over 6 or 12 months (interest applies). <b>Klarna</b> and <b>Affirm</b> are also available at checkout. First come, first served still rules: once it's yours, it's pulled for good.<span class="ap-fine">US buyers · subject to approval · late fees may apply.</span></p>
           </div>
           <!-- THE LIST : all 31 beats for sale, compact rows.
