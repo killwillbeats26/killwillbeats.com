@@ -518,6 +518,12 @@
       .foot-tag{font-family:var(--marker);color:var(--gold-bright);font-size:clamp(1.1rem,3vw,1.5rem);transform:rotate(-1.5deg);transform-origin:left;margin:0 0 18px}
       footer .f-row{display:flex;flex-wrap:wrap;gap:8px 26px;align-items:center;font-size:.86rem}
       footer a{color:#cfc9ab}
+      .social-row{display:flex;flex-wrap:wrap;gap:12px;margin:20px 0 4px}
+      .social-link{display:inline-flex;align-items:center;gap:9px;background:#0c0c07;color:var(--gold-bright);border:2px solid var(--gold);border-radius:6px;box-shadow:3px 3px 0 #0a0a05;font-family:var(--display);letter-spacing:.04em;font-size:.92rem;padding:10px 16px;text-decoration:none;line-height:1}
+      .social-link svg{width:18px;height:18px;flex:none;display:block}
+      .social-link .social-handle{text-transform:none;letter-spacing:.01em}
+      .social-link:hover{background:var(--gold);color:var(--gold-ink)}
+      .social-link:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #0a0a05}
 
       /* ---------- sticky mini player (mobile) ---------- */
       .mini-bar{position:fixed;left:0;right:0;bottom:0;z-index:55;background:#0c0c07;border-top:2.5px solid var(--gold);padding:10px 14px calc(10px + env(safe-area-inset-bottom));display:none;align-items:center;gap:12px;color:#f2edd8}
@@ -1036,6 +1042,10 @@
           <a href="#papers">Agreement + split sheet included</a>
           <span>Prices in USD. First come, first served — beats sell once.</span>
           <span>Afterpay available — pay over time on beats up to $4,000.</span>
+        </div>
+        <div class="social-row" aria-label="Social media">
+          <a class="social-link" href="https://www.instagram.com/killwillbeats_Tbn/" target="_blank" rel="noopener" aria-label="Instagram — killwillbeats_Tbn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1" fill="currentColor" stroke="none"/></svg><span class="social-handle">killwillbeats_Tbn</span></a>
+          <a class="social-link" href="https://www.facebook.com/profile.php?id=61575604483055" target="_blank" rel="noopener" aria-label="Facebook — killwillbeats inthebuilding"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.6 21.9v-7.4h2.5l.4-2.9h-2.9V9.7c0-.84.23-1.4 1.44-1.4h1.53V5.7c-.27-.04-1.18-.11-2.24-.11-2.22 0-3.74 1.35-3.74 3.84v2.14H8.1v2.9h2.5v7.4a10 10 0 0 0 3 0Z"/></svg><span class="social-handle">killwillbeats inthebuilding</span></a>
         </div>
         <p class="cookie-note">Cookies: this site uses Google Analytics cookies to count visits and see which beats get played. That's the only tracking here.</p>
       </div>
