@@ -297,6 +297,12 @@
          trackouts cost more than the $599 batch, and their split is
          bigger. Static copy here never names a dollar split. */
       .ap-badge{display:inline-flex;align-items:center;background:#b2fce4;color:#0a0a05;border:2px solid #0a0a05;border-radius:6px;box-shadow:3px 3px 0 #0a0a05;font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;padding:6px 12px;font-size:.85rem;line-height:1;white-space:nowrap}
+      .ap-badge.ka-badge{background:#ffb3c7}
+      .ap-badge.af-badge{background:#f2edd8}
+      .pay-badges{display:inline-flex;align-items:center;gap:7px;flex-wrap:wrap}
+      .ap-badges-col{display:flex;flex-direction:column;gap:8px;flex:none}
+      .ap-badges-col .ap-badge{justify-content:center}
+      @media (max-width:560px){ .ap-badges-col{flex-direction:row;flex-wrap:wrap} }
       .hero-ap{margin:9px 0 0;display:flex;align-items:center;gap:10px;flex-wrap:wrap;color:#e6e0c6;font-weight:700;font-size:.94rem;text-shadow:2px 2px 0 rgba(0,0,0,.75)}
       .ap-banner{display:flex;gap:16px;align-items:flex-start;background:var(--green-deep);border:2px solid var(--green-bright);border-radius:8px;padding:16px 18px;margin:0 0 20px;box-shadow:5px 5px 0 rgba(0,0,0,.28)}
       .ap-banner p{margin:0;color:var(--ink-dim);font-weight:600;font-size:.98rem;line-height:1.55}
@@ -698,7 +704,7 @@
           <div class="hero-text">
             <h1>Kill <b>Will</b> Beats</h1>
             <p class="hero-line">Beats for sale — hurry up and buy, first come, first served. Sold once and gone for good.</p>
-            <p class="hero-ap"><span class="ap-badge">Afterpay</span><span>Pay over time with <b>Afterpay</b> — 4 interest-free payments on beats up to $2,000. Lock it in today.</span></p>
+            <p class="hero-ap"><span class="pay-badges"><span class="ap-badge">Afterpay</span><span class="ap-badge ka-badge">Klarna</span><span class="ap-badge af-badge">Affirm</span></span><span>Pay over time with <b>Afterpay</b>, <b>Klarna</b> or <b>Affirm</b> — 4 interest-free payments with Afterpay on beats up to $2,000. Lock it in today.</span></p>
           </div>
           <div class="hero-cta">
             <a class="btn btn-red" href="#vault">Shop Beats</a>
@@ -711,8 +717,8 @@
 
     <div class="marquee" aria-hidden="true">
       <div class="marquee-track">
-        <span>Kill Will Beats in the building</span><span class="mq-star">★</span><span>Hurry up and buy</span><span class="mq-star">★</span><span>No leases</span><span class="mq-star">★</span><span>Afterpay — pay over time</span><span class="mq-star">★</span><span>First come, first served</span><span class="mq-star">★</span>
-        <span>Kill Will Beats in the building</span><span class="mq-star">★</span><span>Hurry up and buy</span><span class="mq-star">★</span><span>No leases</span><span class="mq-star">★</span><span>Afterpay — pay over time</span><span class="mq-star">★</span><span>First come, first served</span><span class="mq-star">★</span>
+        <span>Kill Will Beats in the building</span><span class="mq-star">★</span><span>Hurry up and buy</span><span class="mq-star">★</span><span>No leases</span><span class="mq-star">★</span><span>Afterpay · Klarna · Affirm — pay over time</span><span class="mq-star">★</span><span>First come, first served</span><span class="mq-star">★</span>
+        <span>Kill Will Beats in the building</span><span class="mq-star">★</span><span>Hurry up and buy</span><span class="mq-star">★</span><span>No leases</span><span class="mq-star">★</span><span>Afterpay · Klarna · Affirm — pay over time</span><span class="mq-star">★</span><span>First come, first served</span><span class="mq-star">★</span>
       </div>
     </div>
 
@@ -812,7 +818,7 @@
                 <span class="price-big" id="featPriceBig">$599<small>This beat · No leases</small></span>
                 <span class="you-get">First come, first served — once it sells, it's pulled for good. <b>Agreement + split sheet included.</b></span>
                 <button class="btn btn-gold flat-add" id="flatAdd" type="button" data-beat-id="flatline">Add to cart — $599</button>
-                <span class="ap-line" id="featApLine">or pay over time with <b>Afterpay</b></span>
+                <span class="ap-line" id="featApLine">or pay over time with <b>Afterpay</b>, <b>Klarna</b> or <b>Affirm</b></span>
               </div>
             </div>
             <audio id="flatAudio" src="assets/flatline.mp3" preload="none" style="display:none"></audio>
@@ -831,9 +837,9 @@
             <span class="head-note" style="margin-left:auto">first come, first served ↓</span>
           </div>
           <div class="forsale-banner" aria-label="Beats for sale">For <span class="red">Sale</span></div>
-          <div class="ap-banner" role="note" aria-label="Afterpay — split any beat into 4 interest-free payments">
-            <span class="ap-badge">Afterpay</span>
-            <p><b>Pay over time.</b> Every beat's row shows its own Afterpay option, figured from its own price: beats up to <b>$2,000</b> split into <b>4 interest-free payments</b>; bigger beats up to $4,000 go on <b>monthly installments</b> over 6 or 12 months (interest applies). First come, first served still rules: once it's yours, it's pulled for good.<span class="ap-fine">US buyers · subject to Afterpay approval · late fees may apply.</span></p>
+          <div class="ap-banner" role="note" aria-label="Pay over time — Afterpay, Klarna and Affirm available at checkout">
+            <span class="ap-badges-col"><span class="ap-badge">Afterpay</span><span class="ap-badge ka-badge">Klarna</span><span class="ap-badge af-badge">Affirm</span></span>
+            <p><b>Pay over time.</b> Every beat's row shows its own Afterpay option, figured from its own price: beats up to <b>$2,000</b> split into <b>4 interest-free payments</b>; bigger beats up to $4,000 go on <b>monthly installments</b> over 6 or 12 months (interest applies). <b>Klarna</b> and <b>Affirm</b> are also available at checkout. First come, first served still rules: once it's yours, it's pulled for good.<span class="ap-fine">US buyers · subject to approval · late fees may apply.</span></p>
           </div>
           <!-- THE LIST : all 31 beats for sale, compact rows.
                Rows are rendered from the BEATS catalog by the track-list
@@ -899,7 +905,7 @@
               <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px">
                 <span class="sticker rot-l">From $599</span>
                 <span class="sticker bone rot-r">No leases ✕</span>
-                <span class="sticker black rot-l">Afterpay · pay over time</span>
+                <span class="sticker black rot-l">Afterpay · Klarna · Affirm</span>
                 <span class="sticker black rot-l">First come, first served</span>
               </div>
             </div>
@@ -938,7 +944,7 @@
             <div class="step">
               <span class="big-num">02</span>
               <svg class="step-icon" viewBox="0 0 52 52" aria-hidden="true"><rect x="4" y="12" width="44" height="28" rx="4" fill="#c9a227" stroke="#0a0a05" stroke-width="2.5" transform="rotate(-4 26 26)"/><text x="26" y="34" text-anchor="middle" font-family="Anton,sans-serif" font-size="19" fill="#171200">4×</text></svg>
-              <h3>Pay in full — or in 4</h3><p>Hurry up and buy — first come, first served. The price on its row is the price: pay it all today, or pay over time with Afterpay — 4 interest-free payments on beats up to $2,000, monthly installments on the bigger ones. Every row shows that beat's own option. No leases.</p>
+              <h3>Pay in full — or in 4</h3><p>Hurry up and buy — first come, first served. The price on its row is the price: pay it all today, or pay over time with Afterpay, Klarna or Affirm — 4 interest-free payments with Afterpay on beats up to $2,000, Afterpay monthly installments on the bigger ones. Every row shows that beat's own option. No leases.</p>
             </div>
             <div class="step">
               <span class="big-num">03</span>
@@ -1018,7 +1024,7 @@
             <details><summary>Can I lease a beat?</summary><p>No. No leases, no tiers, no stream caps. Buy it outright or don't.</p></details>
             <details><summary>What files do I get?</summary><p>Exactly what's listed on that beat's own card and row — same list in your order and agreement.</p></details>
             <details><summary>How does first come, first served work?</summary><p>Simple: whoever buys it first gets it. The second it sells, it's pulled from the store for good — never sold to anyone else. Your agreement is the proof.</p></details>
-            <details><summary>Payment plans?</summary><p>Yes — Afterpay. Beats up to $2,000 split into 4 interest-free payments (price ÷ 4 — every Vault row shows its exact number). Bigger beats, up to $4,000, go on Afterpay monthly installments over 6 or 12 months (interest applies). Above $4,000 there's no Afterpay — full price up front. US buyers, subject to Afterpay approval. First come, first served still rules: once your order is confirmed, the beat is pulled for good.</p></details>
+            <details><summary>Payment plans?</summary><p>Yes — Afterpay, Klarna and Affirm. Beats up to $2,000 split into 4 interest-free payments with Afterpay (price ÷ 4 — every Vault row shows its exact number). Bigger beats, up to $4,000, go on Afterpay monthly installments over 6 or 12 months (interest applies). Above $4,000 there's no payment plan — full price up front. US buyers, subject to approval. First come, first served still rules: once your order is confirmed, the beat is pulled for good.</p></details>
             <details><summary>Are beats available now?</summary><p>Yes — beats in the Vault are for sale now. First come, first served — once a beat sells, it's pulled from the store for good. Drop your email in the first-word signup on this page to get first word on what's in the Vault.</p></details>
             <details><summary>Publishing splits?</summary><p>Set per song on the split sheet that comes with your sale — filled in for your record in the documents.</p></details>
           </div>
@@ -1064,7 +1070,7 @@
           <a href="https://youtube.com/@killwillbeats" target="_blank" rel="noopener">YouTube — @killwillbeats</a>
           <a href="#papers">Agreement + split sheet included</a>
           <span>Prices in USD. First come, first served — beats sell once.</span>
-          <span>Afterpay available — pay over time on beats up to $4,000.</span>
+          <span>Afterpay, Klarna &amp; Affirm available — pay over time on beats up to $4,000.</span>
         </div>
         <div class="social-row" aria-label="Social media">
           <a class="social-link" href="https://www.instagram.com/killwillbeats_Tbn/" target="_blank" rel="noopener" aria-label="Instagram — killwillbeats_Tbn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1" fill="currentColor" stroke="none"/></svg><span class="social-handle">killwillbeats_Tbn</span></a>
@@ -1150,7 +1156,7 @@
         <div id="cartCheckout" style="display:none;flex-direction:column;gap:12px">
           <div id="cartCheckoutActions" style="display:flex;flex-direction:column;gap:10px"></div>
           <p class="cart-progress" id="cartCheckoutProgress" hidden></p>
-          <p class="drawer-note">Checkout opens Stripe — Stripe collects your email and payment details itself. Pay in full or over time with Afterpay where Stripe offers it.</p>
+          <p class="drawer-note">Checkout opens Stripe — Stripe collects your email and payment details itself. Pay in full or over time with Afterpay, Klarna or Affirm where Stripe offers it.</p>
         </div>
       </div>
     </aside>
@@ -1455,14 +1461,14 @@
       function apShort(price){
         var o = apOption(price);
         if (!o) return "";
-        return o.kind === "pay4" ? "4 × " + o.amt + " · Afterpay" : "Afterpay monthly · 6/12 mo";
+        return o.kind === "pay4" ? "4 × " + o.amt + " · Afterpay — Klarna & Affirm too" : "Afterpay monthly · 6/12 mo — Klarna & Affirm too";
       }
       function apLong(price){
         var o = apOption(price);
         if (!o) return "";
         return o.kind === "pay4"
-          ? "or 4 interest-free payments of " + o.amt + " with Afterpay"
-          : "or monthly installments with Afterpay — 6 or 12 months (interest applies)";
+          ? "or 4 interest-free payments of " + o.amt + " with Afterpay — Klarna & Affirm also available at checkout"
+          : "or monthly installments with Afterpay — 6 or 12 months (interest applies) — Klarna & Affirm also available at checkout";
       }
       function beatByIdCart(id){ var f = null; BEATS.forEach(function(b){ if (b.id === id) f = b; }); return f; }
       function nextUnpaidBeat(){
@@ -1601,8 +1607,8 @@
           if (apO){
             apRow.style.display = "flex";
             apText.innerHTML = apO.kind === "pay4"
-              ? "or 4 interest-free payments of <b>" + apO.amt + "</b> with <b>Afterpay</b>"
-              : "or <b>monthly installments</b> with <b>Afterpay</b> — 6 or 12 months (interest applies)";
+              ? "or 4 interest-free payments of <b>" + apO.amt + "</b> with <b>Afterpay</b> — <b>Klarna</b> & <b>Affirm</b> also available"
+              : "or <b>monthly installments</b> with <b>Afterpay</b> — 6 or 12 months (interest applies) — <b>Klarna</b> & <b>Affirm</b> also available";
           } else {
             apRow.style.display = "none";
           }
