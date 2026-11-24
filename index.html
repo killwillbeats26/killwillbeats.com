@@ -219,6 +219,15 @@
       .marquee-track{display:inline-flex;align-items:center;animation:marquee 24s linear infinite;padding:9px 0;font-family:var(--display);letter-spacing:.1em;text-transform:uppercase;font-size:.95rem;will-change:transform}
       .marquee-track span{padding:0 16px}
       .marquee-track .mq-star{color:var(--gold-bright)}
+      /* ticker payment logos: white cut-outs directly on the red tape —
+         transparent background, no plate, no box, red shows through */
+      .marquee-track .mq-pay{display:inline-flex;align-items:center;gap:9px;padding:0 16px}
+      .marquee-track .mq-pay span{padding:0}
+      .marquee-track .mq-pay .mq-dot,.marquee-track .mq-pay .mq-dash{opacity:.85}
+      .mq-logo{display:block;width:auto;flex:none}
+      .mq-logo-afterpay{height:15px}
+      .mq-logo-klarna{height:16px}
+      .mq-logo-affirm{height:15px}
       @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
       .marquee.gold-tape{background:var(--gold);color:var(--gold-ink);transform:rotate(.5deg) scale(1.01);border-top:3px solid #0a0a05;border-bottom:3px solid #0a0a05}
       .marquee.gold-tape .mq-star{color:var(--red)}
@@ -734,8 +743,8 @@
 
     <div class="marquee" aria-hidden="true">
       <div class="marquee-track">
-        <span>Kill Will Beats in the building</span><span class="mq-star">★</span><span>Hurry up and buy</span><span class="mq-star">★</span><span>No leases</span><span class="mq-star">★</span><span>Afterpay · Klarna · Affirm — pay over time</span><span class="mq-star">★</span><span>First come, first served</span><span class="mq-star">★</span>
-        <span>Kill Will Beats in the building</span><span class="mq-star">★</span><span>Hurry up and buy</span><span class="mq-star">★</span><span>No leases</span><span class="mq-star">★</span><span>Afterpay · Klarna · Affirm — pay over time</span><span class="mq-star">★</span><span>First come, first served</span><span class="mq-star">★</span>
+        <span>Kill Will Beats in the building</span><span class="mq-star">★</span><span>Hurry up and buy</span><span class="mq-star">★</span><span>No leases</span><span class="mq-star">★</span><span class="mq-pay"><img class="mq-logo mq-logo-afterpay" src="assets/pay-afterpay-cutout.svg" alt="Afterpay" /><span class="mq-dot">·</span><img class="mq-logo mq-logo-klarna" src="assets/pay-klarna-cutout.svg" alt="Klarna" /><span class="mq-dot">·</span><img class="mq-logo mq-logo-affirm" src="assets/pay-affirm-cutout.svg" alt="Affirm" /><span class="mq-dash">—</span><span>Pay over time</span></span><span class="mq-star">★</span><span>First come, first served</span><span class="mq-star">★</span>
+        <span>Kill Will Beats in the building</span><span class="mq-star">★</span><span>Hurry up and buy</span><span class="mq-star">★</span><span>No leases</span><span class="mq-star">★</span><span class="mq-pay"><img class="mq-logo mq-logo-afterpay" src="assets/pay-afterpay-cutout.svg" alt="Afterpay" /><span class="mq-dot">·</span><img class="mq-logo mq-logo-klarna" src="assets/pay-klarna-cutout.svg" alt="Klarna" /><span class="mq-dot">·</span><img class="mq-logo mq-logo-affirm" src="assets/pay-affirm-cutout.svg" alt="Affirm" /><span class="mq-dash">—</span><span>Pay over time</span></span><span class="mq-star">★</span><span>First come, first served</span><span class="mq-star">★</span>
       </div>
     </div>
 
