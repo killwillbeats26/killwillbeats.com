@@ -3942,8 +3942,7 @@
             if (!info) return;
             msTarget = { kind:"yt", player: info.player || null };
             setMedia(info.title, info.cover, info.meta || "KillWillBeats");
-            setPlaybackState("playing");
-          pushPosition(el);
+      setPlaybackState("playing");
             if (info.histType === "free" && info.ytId){
               push({ key:"free:" + info.ytId, type:"free", id:info.ytId, title:info.title, cover:info.cover, label:info.meta || "Free beat · YouTube" });
             } else if (info.histType === "credit" && info.ytId){
