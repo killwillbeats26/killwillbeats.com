@@ -965,7 +965,7 @@
                 <button class="sec-btn" id="featShuffle" type="button">↻ Switch — random beat</button>
                 <span class="feat-switch-note" id="featSwitchNote">Now featuring: Flatline — today's pick from the 30 beats for sale. A new random beat takes this spot tomorrow.</span>
               </div>
-              <p class="feat-sale-note" id="featSaleNote">Featured sale — this beat is <b>$500 off</b> today. If it sells, a new featured beat takes its place at $500 off.</p>
+              <p class="feat-sale-note" id="featSaleNote">Featured sale — this beat is <b>half off or better</b> today. If it sells, a new featured beat takes its place at half off or better.</p>
               <p class="autoplay-hint" id="featAutoplayHint" hidden>▶ Tap play — hear today's featured beat</p>
               <div class="flat-deliver">
                 <span class="fd-row">You get: <b id="featDeliverFiles">MP3 + WAV converted from MP3</b> — that's the full delivery.</span>
@@ -973,7 +973,7 @@
                 <span class="fd-fine" id="featDeliverFine">WAV converted from MP3. If it's not listed here, it's not included.</span>
               </div>
               <div class="player-buy">
-                <span class="price-big" id="featPriceBig">$99 <s class="price-was">$599</s><small>Featured sale · $500 off · This beat</small></span>
+                <span class="price-big" id="featPriceBig">$99 <s class="price-was">$599</s><small>Featured sale · This beat</small></span>
                 <span class="you-get">First come, first served — once it sells, it's pulled for good. <b>Agreement + split sheet included.</b></span>
                 <button class="btn btn-gold flat-add" id="flatAdd" type="button" data-beat-id="flatline">Add to cart — $99 <s class="price-was">$599</s></button>
                 <span class="ap-line" id="featApLine">or pay over time with <b>Afterpay</b>, <b>Klarna</b> or <b>Affirm</b></span>
@@ -1634,7 +1634,7 @@
          new one steps in — the outgoing beat loses the featured
          discount and shows its Next-5 promo price while slots
          remain, else its full price. */
-      var FEATURED = { active:true, discountCents:50000, minCents:9900 };
+      var FEATURED = { active:true, percentOff:50 }; function featuredPriceFor(beat){ if (!beat) return 0; var half = Math.floor(beat.price / 2); var delta = (half % 10 - 7 + 10) % 10; var halfOff = half - delta; if (!promoIsLive()) return halfOff; return Math.min(halfOff, salePriceFor(beat, PROMO)); }
       var SOLD_ENDPOINT = "https://script.google.com/macros/s/AKfycbwnA9FvK2RbQ-wbB1arxBL0PtPR5MX_vROmJGlnEtauqwyAp9hB_1aVyRB5E-m69EjoPw/exec?sold=1";
       var soldTitles = [];
       var soldIdSet = {};
@@ -1664,7 +1664,7 @@
          since the featured beat takes one of those slots */
       function beatPromoKind(beat){
         if (!beat || isSoldBeat(beat)) return null;
-        if (featuredIsLive() && isFeaturedBeat(beat) && promoIsLive()) return "featured";
+        if (featuredIsLive() && isFeaturedBeat(beat)) return "featured";
         if (promoIsLive()) return "next5";
         return null;
       }
@@ -1678,7 +1678,7 @@
       function displayPriceFor(beat){
         if (!beat) return 0;
         if (isSoldBeat(beat)) return beat.price;
-        if (featuredIsLive() && isFeaturedBeat(beat) && promoIsLive()) return salePriceFor(beat, FEATURED);
+        if (featuredIsLive() && isFeaturedBeat(beat)) return featuredPriceFor(beat);
         if (promoIsLive()) return salePriceFor(beat, PROMO);
         return beat.price;
       }
@@ -1691,7 +1691,7 @@
         if (isSoldBeat(beat)) return moneyExact(beat.price) + "<small>This beat · No leases</small>";
         if (priceIsPromo(beat)){
           var label = beatPromoKind(beat) === "featured"
-            ? "Featured sale · $" + (FEATURED.discountCents / 100) + " off · This beat"
+            ? "Featured sale · This beat"
             : "Next-" + PROMO.limit + " sale · This beat · No leases";
           return moneyExact(displayPriceFor(beat)) + ' <s class="price-was">' + moneyExact(beat.price) + "</s><small>" + label + "</small>";
         }
@@ -1715,10 +1715,10 @@
          beats at $500 off in total, featured included. The backend
          applies this same math; this total is what the buyer sees
          in the cart and what InitiateCheckout reports. */
-      function cartPriceFor(beat, idx){
+      function featuredTakesSlotInCart(){ if (!featuredIsLive() || !promoIsLive()) return false; if (typeof cart === "undefined" || !cart || !cart.length) return false; for (var i = 0; i < cart.length; i++){ if (isFeaturedBeat(cart[i])) return true; } return false; } function cartSlotsForOthers(){ var remaining = promoRemaining(); if (featuredTakesSlotInCart() && remaining > 0) return remaining - 1; return remaining; } function cartPromoIndex(idx){ if (typeof cart === "undefined" || !cart || !cart.length) return idx; var n = 0; for (var i = 0; i < idx && i < cart.length; i++){ if (!(featuredIsLive() && isFeaturedBeat(cart[i]))) n++; } return n; } function cartPriceFor(beat, idx){
         if (!beat) return 0;
         if (isSoldBeat(beat)) return beat.price;
-        if (promoIsLive() && idx < promoRemaining()) return displayPriceFor(beat);
+        if (featuredIsLive() && isFeaturedBeat(beat)) return featuredPriceFor(beat); if (promoIsLive() && cartPromoIndex(idx) < cartSlotsForOthers()) return salePriceFor(beat, PROMO);
         return beat.price;
       }
       function cartBeatIsPromo(beat, idx){ return cartPriceFor(beat, idx) < (beat ? beat.price : 0); }
@@ -1728,7 +1728,7 @@
          slot applies, else null */
       function cartBeatPromoKind(beat, idx){
         if (!beat || isSoldBeat(beat)) return null;
-        if (promoIsLive() && idx < promoRemaining()){
+        if (featuredIsLive() && isFeaturedBeat(beat)) return "featured"; if (promoIsLive() && cartPromoIndex(idx) < cartSlotsForOthers()) return "next5"; if (false){
                   if (featuredIsLive() && isFeaturedBeat(beat)) return "featured";
           return "next5";
         }
@@ -2039,7 +2039,7 @@
           var pr = document.createElement("span"); pr.className = "ci-price";
           var lineKind = cartBeatPromoKind(b, idx);
           if (lineKind === "featured"){
-            pr.innerHTML = moneyExact(charged) + ' <s class="ci-was">' + moneyExact(b.price) + '</s><span class="ci-sale">Featured sale — $' + (FEATURED.discountCents / 100) + ' off</span>';
+            pr.innerHTML = moneyExact(charged) + ' <s class="ci-was">' + moneyExact(b.price) + '</s><span class="ci-sale">Featured sale</span>';
           } else if (lineKind === "next5"){
             pr.innerHTML = moneyExact(charged) + ' <s class="ci-was">' + moneyExact(b.price) + '</s><span class="ci-sale">Next-' + PROMO.limit + ' sale — $' + (PROMO.discountCents / 100) + ' off</span>';
           } else {
