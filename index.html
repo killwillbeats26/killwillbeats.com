@@ -483,6 +483,8 @@
       /* ---------- featured : daily random rotation ---------- */
       .feat-switch-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
       .feat-switch-note{font-size:.8rem;color:#bdb99f;font-weight:700}
+      .feat-sale-note{margin:0;font-size:.88rem;font-weight:700;color:#b2fce4}
+      .feat-sale-note b{color:#fff}
       .player-card .player-art img,.player-card .player-title{transition:opacity .18s ease}
       .player-card.feat-fading .player-art img,.player-card.feat-fading .player-title{opacity:.25}
 
@@ -885,6 +887,7 @@
                 <button class="sec-btn" id="featShuffle" type="button">↻ Switch — random beat</button>
                 <span class="feat-switch-note" id="featSwitchNote">Now featuring: Flatline — today's pick from the 30 beats for sale. A new random beat takes this spot tomorrow.</span>
               </div>
+              <p class="feat-sale-note">Featured sale — this beat is <b>$500 off</b> today. If it sells, a new featured beat takes its place at $500 off.</p>
               <p class="autoplay-hint" id="featAutoplayHint" hidden>▶ Tap play — hear today's featured beat</p>
               <div class="transport">
                 <button class="t-btn main" id="flatPlay" type="button" aria-label="Play or pause Flatline">▶</button>
@@ -897,7 +900,7 @@
                 <span class="fd-fine" id="featDeliverFine">WAV converted from MP3. If it's not listed here, it's not included.</span>
               </div>
               <div class="player-buy">
-                <span class="price-big" id="featPriceBig">$99 <s class="price-was">$599</s><small>Next-5 sale · This beat · No leases</small></span>
+                <span class="price-big" id="featPriceBig">$99 <s class="price-was">$599</s><small>Featured sale · $500 off · This beat</small></span>
                 <span class="you-get">First come, first served — once it sells, it's pulled for good. <b>Agreement + split sheet included.</b></span>
                 <button class="btn btn-gold flat-add" id="flatAdd" type="button" data-beat-id="flatline">Add to cart — $99 <s class="price-was">$599</s></button>
                 <span class="ap-line" id="featApLine">or pay over time with <b>Afterpay</b>, <b>Klarna</b> or <b>Affirm</b></span>
@@ -1535,6 +1538,17 @@
          (5 of 5 on first load) — prices and the counter never vanish
          over a failed fetch, and the backend stays the authority. */
       var PROMO = { active:true, limit:5, discountCents:50000, minCents:9900 };
+      /* ============ featured sale : daily $500 off the featured beat ============
+         Runs ALONGSIDE the Next-5 promo above — both stay live. The
+         featured beat (the daily random pick in the Featured slot)
+         gets $500 off its own price, figured with the same formula
+         and the same $99 floor. The discount belongs to the SLOT,
+         not the beat: it applies only while a beat is the current
+         featured beat. When the slot rotates — at midnight ET, or
+         the moment the featured beat sells and a new one steps in —
+         the outgoing beat loses the featured discount and shows its
+         Next-5 promo price while slots remain, else its full price. */
+      var FEATURED = { active:true, discountCents:50000, minCents:9900 };
       var SOLD_ENDPOINT = "https://script.google.com/macros/s/AKfycbwnA9FvK2RbQ-wbB1arxBL0PtPR5MX_vROmJGlnEtauqwyAp9hB_1aVyRB5E-m69EjoPw/exec?sold=1";
       var soldTitles = [];
       var soldIdSet = {};
@@ -1545,17 +1559,56 @@
       function isSoldBeat(beat){ return !!(beat && soldIdSet[beat.id]); }
       function promoRemaining(){ return Math.max(0, PROMO.limit - soldTitles.length); }
       function promoIsLive(){ return PROMO.active && promoRemaining() > 0; }
+      /* featured-sale helpers: a beat is "the featured beat" only
+         while its id is the Featured slot's current pick
+         (currentFeaturedId / featuredBeat are declared by the
+         featured-beat section further down this same script). The
+         featured sale is live while the slot holds an unsold beat. */
+      function isFeaturedBeat(beat){ return !!(beat && typeof currentFeaturedId !== "undefined" && beat.id === currentFeaturedId); }
+      function featuredIsLive(){ return FEATURED.active && typeof featuredBeat === "function" && !!featuredBeat() && !isSoldBeat(featuredBeat()); }
+      /* the one sale formula, shared by both sales: a beat's OWN
+         full price minus the sale's discount, never below its floor */
+      function salePriceFor(beat, cfg){
+        var fullCents = Math.round(beat.price * 100);
+        return Math.max(fullCents - cfg.discountCents, cfg.minCents) / 100;
+      }
+      /* which sale prices this beat right now: the featured label
+         wins when both sales apply to the same beat */
+      function beatPromoKind(beat){
+        if (!beat || isSoldBeat(beat)) return null;
+        if (featuredIsLive() && isFeaturedBeat(beat)) return "featured";
+        if (promoIsLive()) return "next5";
+        return null;
+      }
       /* the price this beat shows right now, before cart slot logic:
-         its promo price while the sale is live, else its full price.
-         A sold beat is out of the store — it shows its full price
-         next to its SOLD tag, never a sale price. */
+         its sale price while either sale covers it, else its full
+         price. The featured discount is checked against
+         currentFeaturedId right here — a beat whose id is not the
+         current featured pick can never receive it. A sold beat is
+         out of the store — it shows its full price next to its SOLD
+         tag, never a sale price. */
       function displayPriceFor(beat){
         if (!beat) return 0;
-        if (!promoIsLive() || isSoldBeat(beat)) return beat.price;
-        var fullCents = Math.round(beat.price * 100);
-        return Math.max(fullCents - PROMO.discountCents, PROMO.minCents) / 100;
+        if (isSoldBeat(beat)) return beat.price;
+        if (featuredIsLive() && isFeaturedBeat(beat)) return salePriceFor(beat, FEATURED);
+        if (promoIsLive()) return salePriceFor(beat, PROMO);
+        return beat.price;
       }
-      function priceIsPromo(beat){ return !!beat && promoIsLive() && !isSoldBeat(beat) && displayPriceFor(beat) < beat.price; }
+      function priceIsPromo(beat){ return !!beat && !isSoldBeat(beat) && displayPriceFor(beat) < beat.price; }
+      /* the Featured card's big price block: sale pair + the label
+         of whichever sale is pricing the beat — featured wording
+         when the featured sale applies, the Next-5 wording when
+         only that sale does */
+      function featuredPriceBigHTML(beat){
+        if (isSoldBeat(beat)) return moneyExact(beat.price) + "<small>This beat · No leases</small>";
+        if (priceIsPromo(beat)){
+          var label = beatPromoKind(beat) === "featured"
+            ? "Featured sale · $" + (FEATURED.discountCents / 100) + " off · This beat"
+            : "Next-" + PROMO.limit + " sale · This beat · No leases";
+          return moneyExact(displayPriceFor(beat)) + ' <s class="price-was">' + moneyExact(beat.price) + "</s><small>" + label + "</small>";
+        }
+        return moneyExact(beat.price) + "<small>This beat · No leases</small>";
+      }
       function moneyExact(n){
         return "$" + Number(n).toLocaleString("en-US", { minimumFractionDigits: (Math.round(Number(n) * 100) % 100 === 0) ? 0 : 2, maximumFractionDigits: 2 });
       }
@@ -1569,14 +1622,35 @@
       /* cart slot logic: the cart's beats take the remaining promo
          slots in cart order — the first `remaining` beats ring up at
          their promo price, anything past that is full price. The
-         backend applies this same math; this total is what the buyer
-         sees in the cart and what InitiateCheckout reports. */
+         featured beat is the exception: while the featured sale is
+         live it rings up at its featured price and does NOT consume
+         a Next-5 slot, so the other beats' slots are counted over
+         the non-featured beats only. The backend applies this same
+         math; this total is what the buyer sees in the cart and
+         what InitiateCheckout reports. */
+      function cartSlotIndex(idx){
+        if (typeof cart === "undefined" || !cart || !cart.length) return idx;
+        var n = 0;
+        for (var i = 0; i < idx && i < cart.length; i++){ if (!isFeaturedBeat(cart[i])) n++; }
+        return n;
+      }
       function cartPriceFor(beat, idx){
         if (!beat) return 0;
-        if (promoIsLive() && !isSoldBeat(beat) && idx < promoRemaining()) return displayPriceFor(beat);
+        if (isSoldBeat(beat)) return beat.price;
+        if (featuredIsLive() && isFeaturedBeat(beat)) return displayPriceFor(beat);
+        if (promoIsLive() && cartSlotIndex(idx) < promoRemaining()) return displayPriceFor(beat);
         return beat.price;
       }
       function cartBeatIsPromo(beat, idx){ return cartPriceFor(beat, idx) < (beat ? beat.price : 0); }
+      /* which sale prices this cart line: 'featured' for the
+         featured beat while the featured sale is live, else 'next5'
+         when its Next-5 slot applies, else null */
+      function cartBeatPromoKind(beat, idx){
+        if (!beat || isSoldBeat(beat)) return null;
+        if (featuredIsLive() && isFeaturedBeat(beat)) return "featured";
+        if (promoIsLive() && cartSlotIndex(idx) < promoRemaining()) return "next5";
+        return null;
+      }
       /* re-read the sold list, then re-paint everything the sale
          touches. A failed fetch changes nothing — the last known
          state stands. Runs on load, again when the cart opens, and
@@ -1754,8 +1828,11 @@
         /* re-read the sold list first: the promo slots left decide
            what this cart actually rings up at, and a beat that sold
            while it sat in the cart drops out before any total is
-           figured. The POST itself is unchanged (beats + email) —
-           the backend re-checks and stays the authority on price. */
+           figured. The POST carries the cart's beat titles, the
+           buyer's email and the current featured beat's title —
+           the backend verifies the featured claim server-side (an
+           unverified claim is charged full price there) and stays
+           the authority on price. */
         refreshSoldState().then(function(){
           if (!cart.length){
             checkoutBusy = false;
@@ -1770,7 +1847,7 @@
           fetch(CHECKOUT_ENDPOINT, {
             method: "POST",
             headers: { "Content-Type": "text/plain" },
-            body: JSON.stringify({ action: "create_checkout_session", beats: titles, email: savedVisitorEmail() })
+            body: JSON.stringify({ action: "create_checkout_session", beats: titles, email: savedVisitorEmail(), featuredBeat: (typeof featuredBeat === "function" && featuredBeat()) ? featuredBeat().title : "" })
           }).then(function(res){ return res.json(); }).then(function(data){
             if (data && data.ok && data.url){
               try {
@@ -1859,7 +1936,10 @@
           var top = document.createElement("div"); top.className = "ci-top";
           var name = document.createElement("b"); name.textContent = b.title;
           var pr = document.createElement("span"); pr.className = "ci-price";
-          if (cartBeatIsPromo(b, idx)){
+          var lineKind = cartBeatPromoKind(b, idx);
+          if (lineKind === "featured"){
+            pr.innerHTML = moneyExact(charged) + ' <s class="ci-was">' + moneyExact(b.price) + '</s><span class="ci-sale">Featured sale — $' + (FEATURED.discountCents / 100) + ' off</span>';
+          } else if (lineKind === "next5"){
             pr.innerHTML = moneyExact(charged) + ' <s class="ci-was">' + moneyExact(b.price) + '</s><span class="ci-sale">Next-' + PROMO.limit + ' sale — $' + (PROMO.discountCents / 100) + ' off</span>';
           } else {
             pr.textContent = money(b.price);
@@ -2226,11 +2306,7 @@
         var beat = featuredBeat();
         if (!beat) return;
         var priceBig = document.getElementById("featPriceBig");
-        if (priceBig){
-          if (isSoldBeat(beat)) priceBig.innerHTML = moneyExact(beat.price) + "<small>This beat · No leases</small>";
-          else if (priceIsPromo(beat)) priceBig.innerHTML = moneyExact(displayPriceFor(beat)) + ' <s class="price-was">' + moneyExact(beat.price) + '</s><small>Next-' + PROMO.limit + ' sale · This beat · No leases</small>';
-          else priceBig.innerHTML = moneyExact(beat.price) + "<small>This beat · No leases</small>";
-        }
+        if (priceBig) priceBig.innerHTML = featuredPriceBigHTML(beat);
         paintFeatPriceTag(beat);
         var apLine = document.getElementById("featApLine");
         if (apLine){
@@ -2257,10 +2333,7 @@
         var pills = document.getElementById("featPills");
         if (pills) pills.innerHTML = extra.pills;
         var priceBig = document.getElementById("featPriceBig");
-        if (priceBig){
-          if (priceIsPromo(beat)) priceBig.innerHTML = moneyExact(displayPriceFor(beat)) + ' <s class="price-was">' + moneyExact(beat.price) + '</s><small>Next-' + PROMO.limit + ' sale · This beat · No leases</small>';
-          else priceBig.innerHTML = moneyExact(beat.price) + "<small>This beat · No leases</small>";
-        }
+        if (priceBig) priceBig.innerHTML = featuredPriceBigHTML(beat);
         paintFeatPriceTag(beat);
         var apLine = document.getElementById("featApLine");
         if (apLine){
@@ -2293,6 +2366,19 @@
         syncFeaturedAddBtn();
         if (typeof window.markFeaturedRow === "function") window.markFeaturedRow(id);
         if (typeof window.__barFollowFeatured === "function") window.__barFollowFeatured(id);
+        /* ROTATION RULE: the featured discount moved with the slot.
+           Repaint every price surface so the OUTGOING featured beat
+           loses it everywhere at once — its Vault row, the player
+           bar if it is showing there, and the cart if it sits in it
+           (its Next-5 slot position is re-counted too, since the
+           featured beat never consumed one) — while the incoming
+           beat picks the discount up. __applySoldPromoToRows
+           repaints all Vault rows plus the bar's current track;
+           renderCart repaints the cart lines and total. On the
+           first load neither exists yet and the initial renders
+           below paint everything fresh. */
+        if (typeof window.__applySoldPromoToRows === "function") window.__applySoldPromoToRows();
+        if (typeof renderCart === "function") renderCart();
         if (card) setTimeout(function(){ card.classList.remove("feat-fading"); }, 200);
       }
       function randomFeaturedId(excludeId){
