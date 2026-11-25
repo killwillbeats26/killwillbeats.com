@@ -2174,8 +2174,10 @@
          title and meta — whether it was started from a row, the
          Featured Beat card, or a YouTube video (Credits / Free Beats,
          via __barShowYouTube) — with prev / next, seek and
-         add-to-cart for the Vault beats and auto-advance through the
-         list when a beat ends. Same one-song-at-a-time rule as the
+         add-to-cart for the Vault beats. When a beat ends on its own
+         the next one is a random Vault beat (never the same beat
+         twice in a row); the bar's prev / next buttons still move
+         through the list in its fixed order. Same one-song-at-a-time rule as the
          rest of the page: starting a row pauses every other audio
          element and every YouTube embed, and anything else starting
          pauses the row (every button re-syncs off the audio element's
@@ -2273,7 +2275,7 @@
             }
           });
           rec.audio.addEventListener("pause", syncBtn);
-          rec.audio.addEventListener("ended", function(){ syncBtn(); step(1); });
+          rec.audio.addEventListener("ended", function(){ syncBtn(); playRandomNext(beat.id); });
           rec.audio.addEventListener("loadedmetadata", function(){ if (isFinite(rec.audio.duration)) rec.seek.max = rec.audio.duration; });
           rec.audio.addEventListener("timeupdate", function(){
             rec.seek.value = rec.audio.currentTime;
@@ -2368,6 +2370,31 @@
           setCurrent(nextId);
           playAudio(rec.audio);
         }
+        /* natural end = shuffle: when a Vault beat plays to its own
+           end (nobody pressed skip), the next beat is a RANDOM pick
+           from the whole for-sale list, never the beat that just
+           ended — so Vault playback keeps surprising instead of
+           marching down the list. This is ONLY for natural ends:
+           the bottom bar's prev / next buttons (and the lock-screen
+           next / previous controls, which click those same buttons)
+           still call step() and move in the fixed list order. The
+           featured beat, when picked, plays from the Featured card's
+           player, exactly like step() routes it. */
+        function playRandomNext(excludeId){
+          if (!order.length) return;
+          var pool = order.filter(function(oid){ return oid !== excludeId; });
+          if (!pool.length) pool = order;
+          var nextId = pool[Math.floor(Math.random() * pool.length)];
+          var rec = rows[nextId];
+          if (!rec) return;
+          if (nextId === currentFeaturedId){
+            var fa = document.getElementById("flatAudio");
+            if (fa){ try { fa.currentTime = 0; } catch(e){} setCurrent(nextId); playAudio(fa); return; }
+          }
+          try { rec.audio.currentTime = 0; } catch(e){}
+          setCurrent(nextId);
+          playAudio(rec.audio);
+        }
         if (bar){
           pbPlay.addEventListener("click", function(){
             /* when the bar is showing a YouTube track, its play button
@@ -2444,15 +2471,20 @@
             }
           }
         };
-        window.__listStepFromFeatured = function(){ step(1); };
+        /* the Featured card's beat ended on its own: shuffle to a
+           random Vault beat (never the featured beat that just
+           ended) — same natural-end rule as the Vault rows. Only a
+           press of the bar's next button steps in fixed order. */
+        window.__listStepFromFeatured = function(){ playRandomNext(typeof currentFeaturedId !== "undefined" ? currentFeaturedId : currentId); };
 
         /* free-beat handoff: when a Free Beats YouTube video ends, the
            music does not stop — a random Vault beat starts playing
            next. The pick is fresh every time, drawn from the whole
            for-sale list (the featured beat plays from the Featured
            card's player, like everywhere else). Once it starts, the
-           Vault's own end-of-track advance (step, above) carries the
-           chain from there, same as any other Vault playback. */
+           Vault's own natural-end shuffle (playRandomNext, above)
+           carries the chain from there, same as any other Vault
+           playback that ends on its own. */
         window.__playRandomVaultBeat = function(){
           if (!order.length) return;
           var id = order[Math.floor(Math.random() * order.length)];
