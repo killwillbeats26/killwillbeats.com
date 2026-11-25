@@ -485,6 +485,7 @@
       .feat-switch-note{font-size:.8rem;color:#bdb99f;font-weight:700}
       .feat-sale-note{margin:0;font-size:.88rem;font-weight:700;color:#b2fce4}
       .feat-sale-note b{color:#fff}
+      .feat-sale-note[hidden]{display:none}
       .player-card .player-art img,.player-card .player-title{transition:opacity .18s ease}
       .player-card.feat-fading .player-art img,.player-card.feat-fading .player-title{opacity:.25}
 
@@ -522,7 +523,11 @@
       .pb-add{background:var(--gold);color:var(--gold-ink);border:2px solid #0a0a05;border-radius:6px;box-shadow:3px 3px 0 rgba(0,0,0,.55);font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;font-size:.85rem;padding:10px 15px}
       .pb-add:active{transform:translate(2px,2px);box-shadow:1px 1px 0 rgba(0,0,0,.55)}
       .pb-add.added{background:var(--green-bright);color:#fff}
-      @media (max-width:620px){ .pb-seekwrap{order:5;flex-basis:100%} .pb-info{flex:1 1 110px} .pb-price{display:none} }
+      .pb-download{background:var(--green-bright);color:#fff;border:2px solid #0a0a05;border-radius:6px;box-shadow:3px 3px 0 rgba(0,0,0,.55);font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;font-size:.85rem;padding:10px 15px;white-space:nowrap}
+      .pb-download:active{transform:translate(2px,2px);box-shadow:1px 1px 0 rgba(0,0,0,.55)}
+      .pb-download[hidden]{display:none}
+      .pb-price.is-free{color:var(--green-bright)}
+      @media (max-width:620px){ .pb-seekwrap{order:5;flex-basis:100%} .pb-info{flex:1 1 110px} .pb-price{font-size:1.05rem} .pb-was{font-size:.78rem} }
 
       /* ---------- recently played : history panel over the player bar ---------- */
       .hist-panel{position:fixed;left:0;right:0;bottom:76px;z-index:59;background:#0c0c07;border-top:2.5px solid var(--gold);color:#f2edd8;box-shadow:0 -12px 34px rgba(0,0,0,.55);max-height:64vh;display:flex;flex-direction:column}
@@ -887,7 +892,7 @@
                 <button class="sec-btn" id="featShuffle" type="button">↻ Switch — random beat</button>
                 <span class="feat-switch-note" id="featSwitchNote">Now featuring: Flatline — today's pick from the 30 beats for sale. A new random beat takes this spot tomorrow.</span>
               </div>
-              <p class="feat-sale-note">Featured sale — this beat is <b>$500 off</b> today. If it sells, a new featured beat takes its place at $500 off.</p>
+              <p class="feat-sale-note" id="featSaleNote">Featured sale — this beat is <b>$500 off</b> today. If it sells, a new featured beat takes its place at $500 off.</p>
               <p class="autoplay-hint" id="featAutoplayHint" hidden>▶ Tap play — hear today's featured beat</p>
               <div class="transport">
                 <button class="t-btn main" id="flatPlay" type="button" aria-label="Play or pause Flatline">▶</button>
@@ -1196,6 +1201,7 @@
       <div class="pb-buy">
         <span class="pb-price-stack"><span class="pb-price" id="pbPrice">$599</span><span class="pb-ap" id="pbAp"></span></span>
         <button class="pb-add" id="pbAdd" type="button">Add to cart</button>
+        <button class="pb-download" id="pbDownload" type="button" hidden>⬇ Download MP3</button>
       </div>
     </div>
 
@@ -1539,15 +1545,20 @@
          over a failed fetch, and the backend stays the authority. */
       var PROMO = { active:true, limit:5, discountCents:50000, minCents:9900 };
       /* ============ featured sale : daily $500 off the featured beat ============
-         Runs ALONGSIDE the Next-5 promo above — both stay live. The
-         featured beat (the daily random pick in the Featured slot)
-         gets $500 off its own price, figured with the same formula
-         and the same $99 floor. The discount belongs to the SLOT,
-         not the beat: it applies only while a beat is the current
-         featured beat. When the slot rotates — at midnight ET, or
-         the moment the featured beat sells and a new one steps in —
-         the outgoing beat loses the featured discount and shows its
-         Next-5 promo price while slots remain, else its full price. */
+         Runs INSIDE the Next-5 promo above: the featured beat (the
+         daily random pick in the Featured slot) takes one of the
+         Next-5 slots — there are never more than 5 beats at $500
+         off in total, featured included. The featured beat gets
+         $500 off its own price, figured with the same formula and
+         the same $99 floor, but ONLY while Next-5 slots remain:
+         when the 5 are gone, the featured sale ends with the Next 5
+         and the featured beat is full price. The discount belongs
+         to the SLOT, not the beat: it applies only while a beat is
+         the current featured beat. When the slot rotates — at
+         midnight ET, or the moment the featured beat sells and a
+         new one steps in — the outgoing beat loses the featured
+         discount and shows its Next-5 promo price while slots
+         remain, else its full price. */
       var FEATURED = { active:true, discountCents:50000, minCents:9900 };
       var SOLD_ENDPOINT = "https://script.google.com/macros/s/AKfycbwnA9FvK2RbQ-wbB1arxBL0PtPR5MX_vROmJGlnEtauqwyAp9hB_1aVyRB5E-m69EjoPw/exec?sold=1";
       var soldTitles = [];
@@ -1573,10 +1584,12 @@
         return Math.max(fullCents - cfg.discountCents, cfg.minCents) / 100;
       }
       /* which sale prices this beat right now: the featured label
-         wins when both sales apply to the same beat */
+         wins when both sales apply to the same beat — and the
+         featured label only applies while Next-5 slots remain,
+         since the featured beat takes one of those slots */
       function beatPromoKind(beat){
         if (!beat || isSoldBeat(beat)) return null;
-        if (featuredIsLive() && isFeaturedBeat(beat)) return "featured";
+        if (featuredIsLive() && isFeaturedBeat(beat) && promoIsLive()) return "featured";
         if (promoIsLive()) return "next5";
         return null;
       }
@@ -1590,7 +1603,7 @@
       function displayPriceFor(beat){
         if (!beat) return 0;
         if (isSoldBeat(beat)) return beat.price;
-        if (featuredIsLive() && isFeaturedBeat(beat)) return salePriceFor(beat, FEATURED);
+        if (featuredIsLive() && isFeaturedBeat(beat) && promoIsLive()) return salePriceFor(beat, FEATURED);
         if (promoIsLive()) return salePriceFor(beat, PROMO);
         return beat.price;
       }
@@ -1622,33 +1635,28 @@
       /* cart slot logic: the cart's beats take the remaining promo
          slots in cart order — the first `remaining` beats ring up at
          their promo price, anything past that is full price. The
-         featured beat is the exception: while the featured sale is
-         live it rings up at its featured price and does NOT consume
-         a Next-5 slot, so the other beats' slots are counted over
-         the non-featured beats only. The backend applies this same
-         math; this total is what the buyer sees in the cart and
-         what InitiateCheckout reports. */
-      function cartSlotIndex(idx){
-        if (typeof cart === "undefined" || !cart || !cart.length) return idx;
-        var n = 0;
-        for (var i = 0; i < idx && i < cart.length; i++){ if (!isFeaturedBeat(cart[i])) n++; }
-        return n;
-      }
+         featured beat counts like every other beat: it CONSUMES one
+         of the slots, so a cart never rings up more than `remaining`
+         beats at $500 off in total, featured included. The backend
+         applies this same math; this total is what the buyer sees
+         in the cart and what InitiateCheckout reports. */
       function cartPriceFor(beat, idx){
         if (!beat) return 0;
         if (isSoldBeat(beat)) return beat.price;
-        if (featuredIsLive() && isFeaturedBeat(beat)) return displayPriceFor(beat);
-        if (promoIsLive() && cartSlotIndex(idx) < promoRemaining()) return displayPriceFor(beat);
+        if (promoIsLive() && idx < promoRemaining()) return displayPriceFor(beat);
         return beat.price;
       }
       function cartBeatIsPromo(beat, idx){ return cartPriceFor(beat, idx) < (beat ? beat.price : 0); }
       /* which sale prices this cart line: 'featured' for the
-         featured beat while the featured sale is live, else 'next5'
-         when its Next-5 slot applies, else null */
+         featured beat when its slot applies (the featured label
+         still wins on its own line), else 'next5' when its Next-5
+         slot applies, else null */
       function cartBeatPromoKind(beat, idx){
         if (!beat || isSoldBeat(beat)) return null;
-        if (featuredIsLive() && isFeaturedBeat(beat)) return "featured";
-        if (promoIsLive() && cartSlotIndex(idx) < promoRemaining()) return "next5";
+        if (promoIsLive() && idx < promoRemaining()){
+                  if (featuredIsLive() && isFeaturedBeat(beat)) return "featured";
+          return "next5";
+        }
         return null;
       }
       /* re-read the sold list, then re-paint everything the sale
@@ -2298,6 +2306,16 @@
         else if (priceIsPromo(beat)) priceTag.innerHTML = moneyExact(displayPriceFor(beat)) + ' <s class="price-was">' + moneyExact(beat.price) + "</s>";
         else priceTag.textContent = moneyExact(beat.price);
       }
+      /* the featured-sale note under the tagline: it shows only
+         while the featured discount is actually live — the featured
+         beat is priced by the featured sale, which needs Next-5
+         slots remaining. When the 5 are gone the featured sale is
+         over and the note hides with it. */
+      function paintFeatSaleNote(beat){
+        var note = document.getElementById("featSaleNote");
+        if (!note) return;
+        note.hidden = beatPromoKind(beat) !== "featured";
+      }
       /* price-only refresh for the Featured card, run when the sale
          state changes after the sold list loads: prices, the price
          tag, the Afterpay line (figured from the promo price) and the
@@ -2307,6 +2325,7 @@
         if (!beat) return;
         var priceBig = document.getElementById("featPriceBig");
         if (priceBig) priceBig.innerHTML = featuredPriceBigHTML(beat);
+        paintFeatSaleNote(beat);
         paintFeatPriceTag(beat);
         var apLine = document.getElementById("featApLine");
         if (apLine){
@@ -2335,6 +2354,7 @@
         var priceBig = document.getElementById("featPriceBig");
         if (priceBig) priceBig.innerHTML = featuredPriceBigHTML(beat);
         paintFeatPriceTag(beat);
+        paintFeatSaleNote(beat);
         var apLine = document.getElementById("featApLine");
         if (apLine){
           var apTxt = apLong(displayPriceFor(beat));
@@ -2370,9 +2390,9 @@
            Repaint every price surface so the OUTGOING featured beat
            loses it everywhere at once — its Vault row, the player
            bar if it is showing there, and the cart if it sits in it
-           (its Next-5 slot position is re-counted too, since the
-           featured beat never consumed one) — while the incoming
-           beat picks the discount up. __applySoldPromoToRows
+           (its Next-5 slot position is re-counted too — the featured
+           beat consumes a slot like any other beat) — while the
+           incoming beat picks the discount up. __applySoldPromoToRows
            repaints all Vault rows plus the bar's current track;
            renderCart repaints the cart lines and total. On the
            first load neither exists yet and the initial renders
@@ -2544,6 +2564,7 @@
         var pbPrice = document.getElementById("pbPrice");
         var pbAp = document.getElementById("pbAp");
         var pbAdd = document.getElementById("pbAdd");
+        var pbDownload = document.getElementById("pbDownload");
         var rows = {};
         var order = [];
         var currentId = null;
@@ -2672,7 +2693,7 @@
               rec.addBtn.textContent = inCart ? "In your cart ✓" : "Add to cart";
             }
           });
-          if (currentId && rows[currentId]){
+          if (currentId && rows[currentId] && !ytNow){
             var b = rows[currentId].beat;
             if (pbPrice) pbPrice.innerHTML = pricePairHTML(b, "", "pb-was");
             if (pbAp){ var s = isSoldBeat(b) ? "" : apShort(displayPriceFor(b)); pbAp.textContent = s ? "or " + s : ""; }
@@ -2707,6 +2728,8 @@
              now-playing state and restore the buy + seek controls */
           ytNow = null;
           if (pbAdd) pbAdd.style.display = "";
+          if (pbDownload) pbDownload.hidden = true;
+          if (pbPrice) pbPrice.classList.remove("is-free");
           if (pbSeekWrap) pbSeekWrap.style.display = "";
           order.forEach(function(oid){ rows[oid].row.classList.toggle("active", oid === id); });
           if (!bar) return;
@@ -2768,10 +2791,38 @@
            player, exactly like step() routes it. */
         function playRandomNext(excludeId){
           if (!order.length) return;
-          /* the shuffle pool never holds a sold beat */
-          var pool = order.filter(function(oid){ return oid !== excludeId && !isSoldBeat(beatById(oid)); });
-          if (!pool.length) return;
-          var nextId = pool[Math.floor(Math.random() * pool.length)];
+          /* Combined rotation pool: the 30 Vault beats PLUS only
+             today's 10 free beats — the exact daily-10 list the Free
+             Beats section displays (via __getTodayFreeBeats, which
+             reuses that section's own date-seeded picks — never the
+             full 97-beat catalog and never a second random set).
+             Never the same track twice in a row: the Vault beat that
+             just ended is excluded from the Vault side, and free
+             beats are a different track by definition. The bar's
+             prev / next buttons still use step() in fixed Vault
+             order — this shuffle is for natural ends only. */
+          var vaultPool = order.filter(function(oid){ return oid !== excludeId && !isSoldBeat(beatById(oid)); });
+          var freePool = [];
+          try {
+            if (typeof window.__getTodayFreeBeats === "function"){
+              var todaysFree = window.__getTodayFreeBeats() || [];
+              todaysFree.forEach(function(fb){ if (fb && fb.id) freePool.push(fb.id); });
+            }
+          } catch(e){ freePool = []; }
+          var combined = vaultPool.map(function(oid){ return { type:"vault", id:oid }; })
+            .concat(freePool.map(function(ytId){ return { type:"free", ytId:ytId }; }));
+          if (!combined.length) return;
+          var pick = combined[Math.floor(Math.random() * combined.length)];
+          if (pick.type === "free"){
+            if (typeof window.__playFreeBeat === "function"){
+              var played = window.__playFreeBeat(pick.ytId);
+              if (played) return;
+            }
+            /* free playback could not start — fall back to a Vault pick */
+            if (!vaultPool.length) return;
+            pick = { type:"vault", id: vaultPool[Math.floor(Math.random() * vaultPool.length)] };
+          }
+          var nextId = pick.id;
           var rec = rows[nextId];
           if (!rec) return;
           if (nextId === currentFeaturedId){
@@ -2816,6 +2867,18 @@
               renderCart();
             }
             openCart();
+          });
+          if (pbDownload) pbDownload.addEventListener("click", function(){
+            /* Only a free beat showing in the bar has this control
+               visible. The download itself goes through the EXISTING
+               free-download email gate (the same one the Free Beats
+               cards use — one signup unlocks downloads for the
+               visit) via the free-beats script's helper; no second
+               gate, no bypass. */
+            if (!ytNow || !ytNow.isFree || !ytNow.ytId) return;
+            if (typeof window.__downloadFreeById === "function"){
+              window.__downloadFreeById(ytNow.ytId, pbDownload);
+            }
           });
           window.addEventListener("resize", function(){ if (!bar.hidden) document.body.style.paddingBottom = bar.offsetHeight + "px"; });
         }
@@ -2921,13 +2984,32 @@
            setCurrent. */
         window.__barShowYouTube = function(info){
           if (!bar || !info) return;
-          ytNow = { player: info.player || null, playing: true };
+          var isFree = info.histType === "free" || info.priceLabel === "Free";
+          ytNow = { player: info.player || null, playing: true, isFree: !!isFree, ytId: info.ytId || "", beat: info.beat || null, title: info.title || "" };
           order.forEach(function(oid){ rows[oid].row.classList.remove("active"); });
           pbCover.src = info.cover || "assets/crown-emblem.webp";
           pbCover.alt = "";
           pbTitle.textContent = info.title || "Now playing";
           pbMeta.textContent = info.meta || "YouTube";
-          pbPrice.textContent = info.priceLabel || "Video";
+          if (isFree){
+            /* FREE BEATS: the bar's price area reads "Free" (not the
+               blank the bar used to show for YouTube tracks) and the
+               download control beside it downloads this beat's MP3
+               through the existing free-download email gate — see
+               the pbDownload handler below. No Add to cart: a free
+               beat is not for sale. */
+            pbPrice.textContent = "Free";
+            pbPrice.classList.add("is-free");
+            if (pbDownload) pbDownload.hidden = false;
+          } else {
+            /* Credits videos are not beats for sale or free beats —
+               no price, no download, no cart button. Vault beats
+               restore their price (sale pair included) and their
+               Add button through setCurrent. */
+            pbPrice.textContent = "";
+            pbPrice.classList.remove("is-free");
+            if (pbDownload) pbDownload.hidden = true;
+          }
           if (pbAp) pbAp.textContent = "";
           if (pbAdd) pbAdd.style.display = "none";
           if (pbSeekWrap) pbSeekWrap.style.display = "none";
@@ -3148,6 +3230,14 @@
           if (setKey(picks) === setKey(permFor(y).slice(0, 10))) picks = perm.slice(10, 20);
           return picks;
         }
+        /* The rotation's free-beat pool: today's exact daily 10 —
+           the same date-seeded picks this section renders, returned
+           from the same dailyPicks() so the Vault's natural-end
+           shuffle draws from the displaying 10 only, never the full
+           97 and never a second random set. */
+        window.__getTodayFreeBeats = function(){
+          return dailyPicks(new Date()).map(function(idx){ return FREE_BEATS[idx]; });
+        };
         var freePlaying = false;
         var freePlayersById = {};
         function registerPlayer(iframe, beat){
@@ -3162,7 +3252,7 @@
                     pauseAllYouTubeExcept(player);
                     /* the bottom bar shows whatever is playing — this free beat included */
                     if (typeof window.__barShowYouTube === "function"){
-                      window.__barShowYouTube({ player: player, title: beat.a + " Type Beat \u201C" + beat.t + "\u201D", meta: "Free beat · " + beat.d + " · YouTube", cover: "assets/free-thumbs/" + beat.s + ".jpg", priceLabel: "Free", ytId: beat.id, histType: "free" });
+                      window.__barShowYouTube({ player: player, title: beat.a + " Type Beat \u201C" + beat.t + "\u201D", meta: "Free beat · " + beat.d + " · YouTube", cover: "assets/free-thumbs/" + beat.s + ".jpg", priceLabel: "Free", ytId: beat.id, histType: "free", beat: beat });
                     }
                   } else if (ev.data === YT.PlayerState.PAUSED){
                     freePlaying = false;
@@ -3226,6 +3316,28 @@
             return "mount";
           }
           return null;
+        };
+        /* Player-bar download entry point: the bottom bar's download
+           control for the free beat currently playing calls this with
+           that beat's YouTube id. It runs the exact same flow as a
+           card's Download MP3 button — the existing email gate when
+           the visit is not unlocked yet (email mandatory, one signup
+           unlocks every free download for the visit), and the direct
+           MP3 download once unlocked. No second gate. */
+        window.__downloadFreeById = function(ytId, el){
+          var beat = null;
+          FREE_BEATS.forEach(function(b){ if (b.id === ytId) beat = b; });
+          if (!beat) return;
+          var target = el || document.createElement("a");
+          if (window.kwbMailchimp && window.kwbMailchimp.isUnlocked()){
+            forceDownload(target, beat);
+            return;
+          }
+          if (window.kwbGate){
+            window.kwbGate.open(beat.a + " Type Beat \u201C" + beat.t + "\u201D", function(){ forceDownload(target, beat); });
+          } else {
+            forceDownload(target, beat);
+          }
         };
         function forceDownload(a, beat){
           if (typeof fbq === "function") fbq("trackCustom", "FreeDownload", { beat_name: beat.t });
