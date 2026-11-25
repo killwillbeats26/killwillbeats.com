@@ -621,13 +621,18 @@
       .checkout-btn{background:var(--red);color:#fff;border:2px solid #0a0a05;border-radius:6px;box-shadow:4px 4px 0 #0a0a05;font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;font-size:1.05rem;padding:15px;width:100%;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;text-align:center;min-height:3.2rem}
       .checkout-btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 #0a0a05}
       .checkout-btn.secondary{background:var(--gold);color:var(--gold-ink)}
-      .ci-pay{display:inline-flex;align-items:center;justify-content:center;margin-top:10px;background:var(--red);color:#fff;border:2px solid #0a0a05;border-radius:6px;box-shadow:3px 3px 0 #0a0a05;font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;font-size:.84rem;padding:9px 14px;text-decoration:none;line-height:1}
-      .ci-pay:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #0a0a05}
-      .ci-pay.paid{background:var(--green-bright)}
+      .checkout-btn:disabled{opacity:.6;cursor:wait}
+      .checkout-btn:disabled:active{transform:none;box-shadow:4px 4px 0 #0a0a05}
       .ci-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
       .cart-hold-note{border:1.5px dashed var(--red);border-radius:8px;padding:10px 13px;background:rgba(224,49,30,.08);color:var(--ink);font-size:.86rem;font-weight:700;line-height:1.5;margin:0}
-      .cart-progress{border:1.5px solid var(--green-bright);border-radius:8px;padding:10px 13px;background:var(--green-deep);color:var(--ink);font-size:.9rem;font-weight:800;line-height:1.5;margin:0}
-      .cart-progress[hidden]{display:none}
+      .cart-checkout-msg{border:1.5px solid var(--red);border-radius:8px;padding:10px 13px;background:rgba(224,49,30,.1);color:var(--ink);font-size:.9rem;font-weight:700;line-height:1.5;margin:0}
+      .cart-checkout-msg[hidden]{display:none}
+      .cart-thanks{border:2px solid var(--green-bright);border-radius:8px;padding:18px;background:var(--green-deep)}
+      .cart-thanks[hidden]{display:none}
+      .cart-thanks h4{margin:0 0 8px;color:var(--green-bright);font-family:var(--display);text-transform:uppercase;letter-spacing:.04em;font-size:1.2rem}
+      .cart-thanks p{font-size:.95rem;color:var(--ink);margin:0;line-height:1.55;font-weight:600}
+      #cartMain{display:flex;flex-direction:column;gap:14px}
+      #cartMain[hidden]{display:none}
       .drawer-note{font-size:.8rem;color:var(--ink-faint)}
       .order-done{border:2px solid var(--green-bright);border-radius:8px;padding:16px;background:var(--panel);display:none}
       .order-done h4{margin:0 0 8px;color:var(--green-bright)}
@@ -978,7 +983,7 @@
             <div class="step">
               <span class="big-num">02</span>
               <svg class="step-icon" viewBox="0 0 52 52" aria-hidden="true"><rect x="4" y="12" width="44" height="28" rx="4" fill="#c9a227" stroke="#0a0a05" stroke-width="2.5" transform="rotate(-4 26 26)"/><text x="26" y="34" text-anchor="middle" font-family="Anton,sans-serif" font-size="19" fill="#171200">4×</text></svg>
-              <h3>Pay in full — or in 4</h3><p>Hurry up and buy — first come, first served. The price on its row is the price: pay it all today, or pay over time with Afterpay, Klarna or Affirm — 4 interest-free payments with Afterpay on beats up to $2,000. Every row shows that beat's own option. No leases.</p><p class="step-ap-tip"><b>Finding Afterpay:</b> on Stripe, type your email first — Afterpay jumps into the main payment list. See “More payment methods”? Tap it, Afterpay's in there too.</p>
+              <h3>Pay in full — or in 4</h3><p>Hurry up and buy — first come, first served. The price on its row is the price: pay it all today, or pay over time with Afterpay, Klarna or Affirm — 4 interest-free payments with Afterpay on beats up to $2,000. Every row shows that beat's own option. No leases.</p><p class="step-ap-tip"><b>Finding Afterpay:</b> Afterpay, Klarna &amp; Affirm are at checkout — if you don't see one in the main list, check “More payment methods.”</p>
             </div>
             <div class="step">
               <span class="big-num">03</span>
@@ -1181,19 +1186,25 @@
         <button class="drawer-close" id="cartClose" type="button" aria-label="Close cart">✕</button>
       </div>
       <div class="drawer-body">
-        <div id="cartItems"></div>
-        <p class="drawer-note" id="cartEmpty">Your cart is empty. First come, first served — every beat sells once, then it's gone for good.</p>
-        <p class="cart-hold-note">Adding to cart doesn't hold a beat — the first buyer to pay takes it.</p>
-        <div class="cart-total" id="cartTotalRow" style="display:none"><span>Total</span><span id="cartTotal">$0</span></div>
-        <div class="cart-ap" id="cartApRow" style="display:none"><span id="cartApText"></span></div>
-        <div id="cartCheckout" style="display:none;flex-direction:column;gap:12px">
-          <div class="cart-ap-note" role="note" aria-label="Afterpay at checkout — enter your email on Stripe and it shows in the payment list">
-            <span class="pay-logo"><img src="assets/pay-afterpay.svg" alt="Afterpay" /></span>
-            <p><b>Afterpay is at checkout.</b> Enter your email on Stripe and Afterpay shows in the payment list — no digging under “More payment methods.” Klarna &amp; Affirm are there too.</p>
+        <div class="cart-thanks" id="cartThanks" hidden>
+          <h4>Payment received ✓</h4>
+          <p>Payment received — your files and agreement are on their way to your email. Check your inbox (and spam).</p>
+        </div>
+        <div id="cartMain">
+          <div id="cartItems"></div>
+          <p class="drawer-note" id="cartEmpty">Your cart is empty. First come, first served — every beat sells once, then it's gone for good.</p>
+          <p class="cart-hold-note">Adding to cart doesn't hold a beat — the first buyer to pay takes it.</p>
+          <div class="cart-total" id="cartTotalRow" style="display:none"><span>Total</span><span id="cartTotal">$0</span></div>
+          <div class="cart-ap" id="cartApRow" style="display:none"><span id="cartApText"></span></div>
+          <div id="cartCheckout" style="display:none;flex-direction:column;gap:12px">
+            <div class="cart-ap-note" role="note" aria-label="Afterpay, Klarna and Affirm at checkout">
+              <span class="pay-logo"><img src="assets/pay-afterpay.svg" alt="Afterpay" /></span>
+              <p>Afterpay, Klarna &amp; Affirm are at checkout — if you don't see one in the main list, check “More payment methods.”</p>
+            </div>
+            <p class="cart-checkout-msg" id="cartCheckoutMsg" role="alert" hidden></p>
+            <button class="checkout-btn" id="cartCheckoutBtn" type="button">Checkout — $0</button>
+            <p class="drawer-note">One payment on Stripe for everything in your cart. After you pay, your files and agreement come by email.</p>
           </div>
-          <div id="cartCheckoutActions" style="display:flex;flex-direction:column;gap:10px"></div>
-          <p class="cart-progress" id="cartCheckoutProgress" hidden></p>
-          <p class="drawer-note">Checkout opens Stripe — Stripe collects your email and payment details itself. Pay in full or over time with Afterpay, Klarna or Affirm where Stripe offers it.</p>
         </div>
       </div>
     </aside>
@@ -1208,10 +1219,9 @@
          email itself — only an email the visitor actually gave this
          page, and only after a successful signup — is remembered on
          their device (localStorage, key kwb_visitor_email_v1) for one
-         job: pre-filling that same email on the Stripe checkout link
-         (?prefilled_email=) so Stripe expands its payment list and
-         Afterpay shows in the main list right away instead of hiding
-         under "More payment methods." No email is ever invented. */
+         job: riding along in the cart's checkout request so Stripe
+         can pre-fill that same email on its checkout page. No email
+         is ever invented. */
       window.kwbMailchimp = (function(){
         var POST_URL = "https://killwillbeats.us2.list-manage.com/subscribe/post?u=1af0d6f4f945036255d6f09ce&id=fd63560db7&f_id=009867e0f0";
         var TRAP_FIELD = "b_1af0d6f4f945036255d6f09ce_fd63560db7";
@@ -1455,43 +1465,44 @@
       ];
 
       /* ============ payments ============
-         Payment is taken on Stripe via each beat's own Payment Link
-         (see the cart code below) — Stripe is the checkout and the
-         payment record. This static page has no server, so it cannot
-         silently email the owner on a free-beat download: silent
-         download alerts need a server-backed endpoint or an email
-         relay in the owner's own account. No download or buyer data
-         is posted to any third-party relay from this page. */
+         One checkout for the whole cart: the cart's single Checkout
+         button asks the store backend for one Stripe Checkout
+         Session covering every beat in the cart (see startCheckout
+         below), and the buyer pays once on Stripe. Files and the
+         agreement are delivered by email after payment. This static
+         page has no server of its own, so it cannot silently email
+         the owner on a free-beat download: silent download alerts
+         need a server-backed endpoint or an email relay in the
+         owner's own account. No download or buyer data is posted to
+         any third-party relay from this page. */
 
       /* ============ cart ============
-         Checkout is Stripe Payment Links — one link per beat, each
-         beat's own stripeUrl in the catalog above. No name/email form
-         on this page: Stripe collects the buyer's email and payment
-         details itself. The cart persists in localStorage so it
-         survives the trip to Stripe and back. */
+         ONE pay path only: a single Checkout button for the whole
+         cart total. No per-beat pay links and no self-reported
+         payment steps — the backend creates the Stripe session and
+         Stripe is the payment record. The cart persists in
+         localStorage so it survives page reloads. */
       var CART_KEY = "kwb_cart_ids_v1";
-      var PAID_KEY = "kwb_checkout_paid_ids_v1";
-      var PENDING_KEY = "kwb_checkout_pending_id_v1";
+      var PENDING_PURCHASE_KEY = "kwb_pending_purchase_v1";
+      var PURCHASE_FIRED_KEY = "kwb_purchase_fired_v1";
+      var CHECKOUT_ENDPOINT = "https://script.google.com/macros/s/AKfycbwnA9FvK2RbQ-wbB1arxBL0PtPR5MX_vROmJGlnEtauqwyAp9hB_1aVyRB5E-m69EjoPw/exec";
       var cart = [];
-      var paidIds = [];
-      var checkoutPendingId = null;
+      var checkoutBusy = false;
+      var checkoutMsg = "";
       try {
-        var savedPaid = JSON.parse(localStorage.getItem(PAID_KEY) || "[]");
-        if (Array.isArray(savedPaid)) paidIds = savedPaid.filter(function(x){ return typeof x === "string"; });
-        checkoutPendingId = localStorage.getItem(PENDING_KEY) || null;
+        /* drop the old walk-through's leftover flags, if any */
+        localStorage.removeItem("kwb_checkout_paid_ids_v1");
+        localStorage.removeItem("kwb_checkout_pending_id_v1");
         var savedIds = JSON.parse(localStorage.getItem(CART_KEY) || "[]");
         if (Array.isArray(savedIds)) {
           savedIds.forEach(function(id){
             BEATS.forEach(function(b){ if (b.id === id && !cart.some(function(x){ return x.id === id; })) cart.push(b); });
           });
         }
-      } catch(e){ cart = []; paidIds = []; checkoutPendingId = null; }
+      } catch(e){ cart = []; }
       function saveCartState(){
         try {
           localStorage.setItem(CART_KEY, JSON.stringify(cart.map(function(b){ return b.id; })));
-          localStorage.setItem(PAID_KEY, JSON.stringify(paidIds));
-          if (checkoutPendingId) localStorage.setItem(PENDING_KEY, checkoutPendingId);
-          else localStorage.removeItem(PENDING_KEY);
         } catch(e){}
       }
       var cartCount = document.getElementById("cartCount");
@@ -1500,8 +1511,10 @@
       var cartTotalRow = document.getElementById("cartTotalRow");
       var cartTotal = document.getElementById("cartTotal");
       var cartCheckout = document.getElementById("cartCheckout");
-      var cartCheckoutActions = document.getElementById("cartCheckoutActions");
-      var cartCheckoutProgress = document.getElementById("cartCheckoutProgress");
+      var cartCheckoutBtn = document.getElementById("cartCheckoutBtn");
+      var cartCheckoutMsg = document.getElementById("cartCheckoutMsg");
+      var cartThanks = document.getElementById("cartThanks");
+      var cartMain = document.getElementById("cartMain");
       function money(n){ return "$" + n.toLocaleString("en-US"); }
       /* Afterpay, figured from the beat's OWN price every time —
          never a hardcoded split. Pay in 4 (interest-free) only works
@@ -1521,13 +1534,13 @@
         if (!o) return "";
         return "or 4 interest-free payments of " + o.amt + " with Afterpay — Klarna & Affirm also available at checkout";
       }
-      /* Stripe prefill: if the visitor already gave this page their
-         email (free-download gate or first-word signup) and it is
-         saved on this device, hand that exact email to the Stripe
-         Payment Link as ?prefilled_email= — Stripe then expands its
-         payment list on load, so Afterpay shows in the main list
-         right away instead of under "More payment methods." No saved
-         email, no parameter: the plain link goes out untouched. */
+      /* The buyer's email for the checkout request: if the visitor
+         already gave this page their email (free-download gate or
+         first-word signup) and it is saved on this device, that exact
+         email rides along in the checkout request so Stripe can
+         pre-fill it. No saved email, an empty string goes out —
+         Stripe collects the email on its own page. No email is ever
+         invented. */
       function savedVisitorEmail(){
         try {
           if (window.kwbMailchimp && typeof window.kwbMailchimp.savedEmail === "function"){
@@ -1540,41 +1553,121 @@
           return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? v : "";
         } catch(e){ return ""; }
       }
-      function stripeUrlFor(beat){
-        if (!beat || !beat.stripeUrl) return "";
-        var em = savedVisitorEmail();
-        if (!em) return beat.stripeUrl;
-        var sep = beat.stripeUrl.indexOf("?") === -1 ? "?" : "&";
-        return beat.stripeUrl + sep + "prefilled_email=" + encodeURIComponent(em);
+      function beatByTitleCart(title){ var f = null; BEATS.forEach(function(b){ if (b.title === title) f = b; }); return f; }
+      function cartTotalDollars(){
+        var t = 0;
+        cart.forEach(function(b){ t += b.price; });
+        return t;
       }
-      function beatByIdCart(id){ var f = null; BEATS.forEach(function(b){ if (b.id === id) f = b; }); return f; }
-      function nextUnpaidBeat(){
-        var f = null;
-        cart.forEach(function(b){ if (!f && paidIds.indexOf(b.id) === -1) f = b; });
-        return f;
+      function setCheckoutMsg(msg){
+        checkoutMsg = msg || "";
+        if (cartCheckoutMsg){
+          cartCheckoutMsg.textContent = checkoutMsg;
+          cartCheckoutMsg.hidden = !checkoutMsg;
+        }
       }
-      function openStripeFor(beat){
-        if (!beat || !beat.stripeUrl) return;
-        if (typeof fbq === "function") fbq("track", "InitiateCheckout", { value: 599, currency: "USD", content_ids: [beat.id], content_type: "product" });
-        checkoutPendingId = beat.id;
-        saveCartState();
-        window.open(stripeUrlFor(beat), "_blank", "noopener");
+      /* One real checkout for the whole cart: POST the cart's beat
+         titles to the backend, which creates a single Stripe
+         Checkout Session for the full total. On success the pending
+         purchase is saved on this device (so the return trip can
+         fire the Purchase event exactly once) and the buyer goes to
+         Stripe. A beat that sold while it sat in the cart comes
+         back as a "sold" error and is removed; anything else shows
+         one plain try-again message and leaves the cart intact.
+         There is no fallback pay path — this is the only one. */
+      function startCheckout(){
+        if (checkoutBusy || !cart.length) return;
+        var titles = cart.map(function(b){ return b.title; });
+        var total = cartTotalDollars();
+        var ids = cart.map(function(b){ return b.id; });
+        checkoutBusy = true;
+        setCheckoutMsg("");
         renderCart();
+        if (typeof fbq === "function") fbq("track", "InitiateCheckout", { value: total, currency: "USD", content_ids: ids, content_type: "product" });
+        fetch(CHECKOUT_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain" },
+          body: JSON.stringify({ action: "create_checkout_session", beats: titles, email: savedVisitorEmail() })
+        }).then(function(res){ return res.json(); }).then(function(data){
+          if (data && data.ok && data.url){
+            try {
+              localStorage.setItem(PENDING_PURCHASE_KEY, JSON.stringify({ sessionId: data.id || "", value: total, beats: titles, ts: Date.now() }));
+            } catch(e){}
+            window.location = data.url;
+            return;
+          }
+          checkoutBusy = false;
+          if (data && data.error === "sold" && data.beat){
+            var soldBeat = beatByTitleCart(data.beat);
+            if (soldBeat){
+              cart = cart.filter(function(x){ return x.id !== soldBeat.id; });
+              document.querySelectorAll('.vault-add[data-beat-id="' + soldBeat.id + '"]').forEach(function(gb){ gb.classList.remove("added"); gb.textContent = "Add to cart"; });
+              if (typeof syncFeaturedAddBtn === "function") syncFeaturedAddBtn();
+            }
+            setCheckoutMsg("Sorry — " + data.beat + " just sold. It's been removed from your cart.");
+          } else {
+            setCheckoutMsg("Checkout isn't available right now — please try again in a minute.");
+          }
+          renderCart();
+        }).catch(function(){
+          checkoutBusy = false;
+          setCheckoutMsg("Checkout isn't available right now — please try again in a minute.");
+          renderCart();
+        });
       }
-      function markPendingPaid(){
-        if (checkoutPendingId && paidIds.indexOf(checkoutPendingId) === -1) paidIds.push(checkoutPendingId);
-        checkoutPendingId = null;
+      if (cartCheckoutBtn) cartCheckoutBtn.addEventListener("click", startCheckout);
+      /* Return from Stripe: paid=1 + session_id in the URL means the
+         buyer finished paying. If the pending purchase saved before
+         redirecting matches this session and its Purchase event has
+         not fired yet, fire it exactly once (guarded by the fired
+         list), then clear the cart. Either way — matching pending
+         purchase or not — the thank-you panel replaces the cart
+         content, and the payment params come off the URL. Runs
+         deferred so the drawer helpers further down this script
+         exist by the time it opens the cart. */
+      function showThankYou(){
+        if (cartThanks) cartThanks.hidden = false;
+        if (cartMain) cartMain.hidden = true;
+        if (typeof openCart === "function") openCart();
+      }
+      function handleStripeReturn(){
+        var params = null;
+        try { params = new URLSearchParams(window.location.search); } catch(e){ return; }
+        if (!params || params.get("paid") !== "1") return;
+        var sessionId = params.get("session_id") || "";
+        if (!sessionId) return;
+        var pending = null;
+        try { pending = JSON.parse(localStorage.getItem(PENDING_PURCHASE_KEY) || "null"); } catch(e){ pending = null; }
+        if (pending && pending.sessionId === sessionId){
+          var fired = [];
+          try {
+            var savedFired = JSON.parse(localStorage.getItem(PURCHASE_FIRED_KEY) || "[]");
+            if (Array.isArray(savedFired)) fired = savedFired.filter(function(x){ return typeof x === "string"; });
+          } catch(e){ fired = []; }
+          if (fired.indexOf(sessionId) === -1){
+            if (typeof fbq === "function") fbq("track", "Purchase", { value: pending.value, currency: "USD", content_ids: pending.beats });
+            fired.push(sessionId);
+            try { localStorage.setItem(PURCHASE_FIRED_KEY, JSON.stringify(fired)); } catch(e){}
+          }
+          try { localStorage.removeItem(PENDING_PURCHASE_KEY); } catch(e){}
+        }
+        cart = [];
         saveCartState();
-        var next = nextUnpaidBeat();
-        if (next) openStripeFor(next);
-        else renderCart();
+        renderCart();
+        showThankYou();
+        try {
+          params.delete("paid");
+          params.delete("session_id");
+          var qs = params.toString();
+          history.replaceState(null, "", window.location.pathname + (qs ? "?" + qs : "") + window.location.hash);
+        } catch(e){}
       }
+      setTimeout(handleStripeReturn, 60);
       function renderCart(){
         saveCartState();
         cartCount.textContent = cart.length;
         cartItems.innerHTML = "";
         var total = 0;
-        var multi = cart.length > 1;
         cart.forEach(function(b){
           total += b.price;
           var item = document.createElement("div"); item.className = "cart-item";
@@ -1589,22 +1682,12 @@
           var rm = document.createElement("button"); rm.type = "button"; rm.className = "ci-remove"; rm.textContent = "Remove";
           rm.addEventListener("click", function(){
             cart = cart.filter(function(x){ return x.id !== b.id; });
-            paidIds = paidIds.filter(function(x){ return x !== b.id; });
-            if (checkoutPendingId === b.id) checkoutPendingId = null;
+            setCheckoutMsg("");
             document.querySelectorAll('.vault-add[data-beat-id="' + b.id + '"]').forEach(function(gb){ gb.classList.remove("added"); gb.textContent = "Add to cart"; });
             if (typeof syncFeaturedAddBtn === "function") syncFeaturedAddBtn();
             renderCart();
           });
           actions.appendChild(rm);
-          if (multi && b.stripeUrl){
-            var isPaid = paidIds.indexOf(b.id) !== -1;
-            var pay = document.createElement("a");
-            pay.className = "ci-pay" + (isPaid ? " paid" : "");
-            pay.href = stripeUrlFor(b); pay.target = "_blank"; pay.rel = "noopener";
-            pay.textContent = isPaid ? "Paid ✓ — Stripe" : "Pay " + money(b.price) + " — Stripe";
-            pay.addEventListener("click", function(){ pay.href = stripeUrlFor(b); if (typeof fbq === "function") fbq("track", "InitiateCheckout", { value: 599, currency: "USD", content_ids: [b.id], content_type: "product" }); checkoutPendingId = b.id; saveCartState(); setTimeout(renderCart, 0); });
-            actions.appendChild(pay);
-          }
           item.appendChild(actions);
           cartItems.appendChild(item);
         });
@@ -1613,69 +1696,14 @@
         cartTotalRow.style.display = has ? "flex" : "none";
         if (cartCheckout) cartCheckout.style.display = has ? "flex" : "none";
         cartTotal.textContent = money(total);
-        /* checkout actions: single beat = one Stripe button for that
-           beat's own price + link; 2+ beats = Checkout all walk-through */
-        if (cartCheckoutActions){
-          cartCheckoutActions.innerHTML = "";
-          if (has && cart.length === 1){
-            var only = cart[0];
-            if (only.stripeUrl){
-              var singleBtn = document.createElement("a");
-              singleBtn.className = "checkout-btn";
-              singleBtn.href = stripeUrlFor(only); singleBtn.target = "_blank"; singleBtn.rel = "noopener";
-              singleBtn.textContent = "Checkout with Stripe — " + money(only.price);
-              singleBtn.addEventListener("click", function(){ singleBtn.href = stripeUrlFor(only); if (typeof fbq === "function") fbq("track", "InitiateCheckout", { value: 599, currency: "USD", content_ids: [only.id], content_type: "product" }); checkoutPendingId = only.id; saveCartState(); setTimeout(renderCart, 0); });
-              cartCheckoutActions.appendChild(singleBtn);
-              if (checkoutPendingId === only.id && paidIds.indexOf(only.id) === -1){
-                var doneBtn = document.createElement("button");
-                doneBtn.type = "button"; doneBtn.className = "checkout-btn secondary";
-                doneBtn.textContent = "I paid on Stripe ✓";
-                doneBtn.addEventListener("click", markPendingPaid);
-                cartCheckoutActions.appendChild(doneBtn);
-              }
-            }
-          } else if (has && multi){
-            var paidInCart = cart.filter(function(b){ return paidIds.indexOf(b.id) !== -1; }).length;
-            var allBtn = document.createElement("button");
-            allBtn.type = "button"; allBtn.className = "checkout-btn";
-            allBtn.textContent = paidInCart >= cart.length ? "All beats paid ✓" : "Checkout all — " + money(total);
-            allBtn.addEventListener("click", function(){
-              var next = nextUnpaidBeat();
-              if (next) openStripeFor(next);
-            });
-            cartCheckoutActions.appendChild(allBtn);
-            if (checkoutPendingId && paidIds.indexOf(checkoutPendingId) === -1){
-              var pendingBeat = beatByIdCart(checkoutPendingId);
-              var markBtn = document.createElement("button");
-              markBtn.type = "button"; markBtn.className = "checkout-btn secondary";
-              markBtn.textContent = "I paid for " + (pendingBeat ? pendingBeat.title : "that beat") + " — next";
-              markBtn.addEventListener("click", markPendingPaid);
-              cartCheckoutActions.appendChild(markBtn);
-            }
-          }
+        /* the ONE pay path: a single button for the whole cart total */
+        if (cartCheckoutBtn){
+          cartCheckoutBtn.disabled = checkoutBusy;
+          cartCheckoutBtn.textContent = checkoutBusy ? "Opening Stripe…" : "Checkout — " + money(total);
         }
-        if (cartCheckoutProgress){
-          if (has && multi){
-            var paidCount = cart.filter(function(b){ return paidIds.indexOf(b.id) !== -1; }).length;
-            var pending = checkoutPendingId ? beatByIdCart(checkoutPendingId) : null;
-            cartCheckoutProgress.hidden = false;
-            if (paidCount >= cart.length){
-              cartCheckoutProgress.textContent = paidCount + " of " + cart.length + " paid — all beats checked out on Stripe.";
-            } else if (pending){
-              cartCheckoutProgress.textContent = paidCount + " of " + cart.length + " paid — paying for " + pending.title + " on Stripe now. Finish there, come back here, then tap “I paid for " + pending.title + " — next.”";
-            } else {
-              cartCheckoutProgress.textContent = paidCount + " of " + cart.length + " paid — tap Checkout all and pay for each beat on Stripe in turn, or use a beat's own Pay button above.";
-            }
-          } else if (has && cart.length === 1 && paidIds.indexOf(cart[0].id) !== -1){
-            cartCheckoutProgress.hidden = false;
-            cartCheckoutProgress.textContent = "1 of 1 paid — " + cart[0].title + " checked out on Stripe.";
-          } else if (has && cart.length === 1 && checkoutPendingId === cart[0].id){
-            cartCheckoutProgress.hidden = false;
-            cartCheckoutProgress.textContent = "Paying for " + cart[0].title + " on Stripe — finish there, then come back and tap “I paid on Stripe.”";
-          } else {
-            cartCheckoutProgress.hidden = true;
-            cartCheckoutProgress.textContent = "";
-          }
+        if (cartCheckoutMsg){
+          cartCheckoutMsg.textContent = checkoutMsg;
+          cartCheckoutMsg.hidden = !checkoutMsg;
         }
         var apRow = document.getElementById("cartApRow");
         var apText = document.getElementById("cartApText");
@@ -2586,10 +2614,10 @@
           btn.disabled = false;
           if (ok){
             /* Save the email this visitor just entered — the same save
-               the free-download gate makes — so their Stripe checkout
-               links carry ?prefilled_email= and Afterpay shows in
-               Stripe's main payment list right away. Only the email
-               actually typed into this form is saved; nothing invented. */
+               the free-download gate makes — so it rides along in the
+               cart's checkout request and Stripe can pre-fill it.
+               Only the email actually typed into this form is saved;
+               nothing invented. */
             window.kwbMailchimp.rememberEmail(email);
             window.kwbMailchimp.unlock();
             status.textContent = "";
