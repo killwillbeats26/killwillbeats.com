@@ -844,9 +844,9 @@
                 <span class="time-lab"><span id="flatCur">0:00</span> / <span id="flatDur">3:28</span></span>
               </div>
               <div class="flat-deliver">
-                <span class="fd-row">You get: <b id="featDeliverFiles">MP3 + WAV master</b> — that's the full delivery.</span>
+                <span class="fd-row">You get: <b id="featDeliverFiles">MP3 + WAV converted from MP3</b> — that's the full delivery.</span>
                 <span class="fd-no">No stems · No trackouts.</span>
-                <span class="fd-fine" id="featDeliverFine">WAV converted from the MP3 master. If it's not listed here, it's not included.</span>
+                <span class="fd-fine" id="featDeliverFine">WAV converted from MP3. If it's not listed here, it's not included.</span>
               </div>
               <div class="player-buy">
                 <span class="price-big" id="featPriceBig">$599<small>This beat · No leases</small></span>
@@ -1329,8 +1329,8 @@
          price — see apOption below. */
       var BEATS = [
         { id:"flatline", title:"Flatline", price:599, stripeUrl:"https://buy.stripe.com/8x214ncMadUr7nq2SwfrW00", bpm:"129 BPM", key:"B♭ minor", len:"3:28",
-          files:["MP3","WAV master"], noStems:true,
-          deliverNote:"MP3 + WAV master only — no stems, no trackouts. WAV converted from the MP3 master.",
+          files:["MP3","WAV converted from MP3"], noStems:true,
+          deliverNote:"MP3 + WAV only — no stems, no trackouts. WAV converted from MP3.",
           audio:"assets/flatline.mp3", cover:"assets/flatline-cover.jpg" },
         { id:"dripcheck", title:"Drip Check", price:599, stripeUrl:"https://buy.stripe.com/cNi7sL27w03BfTWdxafrW01", bpm:"150 BPM", key:"A major", len:"2:50",
           files:["WAV master","MP3"], noStems:true,
@@ -1425,32 +1425,32 @@
           deliverNote:"WAV master + MP3 only — no stems, no trackouts. Original WAV master.",
           audio:"assets/last-call.mp3", cover:"assets/last-call-cover.jpg" },
         { id:"night-vision", title:"Night Vision", price:599, stripeUrl:"https://buy.stripe.com/4gMbJ18vU9EbcHKeBefrW0m", bpm:"129 BPM", key:"D minor", len:"3:09",
-          files:["WAV master","MP3"], noStems:true,
-          deliverNote:"WAV master + MP3 only — no stems, no trackouts. WAV converted from the MP3 master.",
+          files:["MP3","WAV converted from MP3"], noStems:true,
+          deliverNote:"MP3 + WAV only — no stems, no trackouts. WAV converted from MP3.",
           audio:"assets/night-vision.mp3", cover:"assets/night-vision-cover.jpg" },
         { id:"sixth-sense", title:"Sixth Sense", price:599, stripeUrl:"https://buy.stripe.com/eVq9ATeUi4jR4be2SwfrW0n", bpm:"129 BPM", key:"F minor", len:"3:13",
-          files:["WAV master","MP3"], noStems:true,
-          deliverNote:"WAV master + MP3 only — no stems, no trackouts. WAV converted from the MP3 master.",
+          files:["MP3","WAV converted from MP3"], noStems:true,
+          deliverNote:"MP3 + WAV only — no stems, no trackouts. WAV converted from MP3.",
           audio:"assets/sixth-sense.mp3", cover:"assets/sixth-sense-cover.jpg" },
         { id:"next-up", title:"Next Up", price:599, stripeUrl:"https://buy.stripe.com/4gMaEX5jI6rZ37a8cQfrW0t", bpm:"129 BPM", key:"D minor", len:"3:14",
-          files:["WAV master","MP3"], noStems:true,
-          deliverNote:"WAV master + MP3 only — no stems, no trackouts. WAV converted from the MP3 master.",
+          files:["MP3","WAV converted from MP3"], noStems:true,
+          deliverNote:"MP3 + WAV only — no stems, no trackouts. WAV converted from MP3.",
           audio:"assets/next-up.mp3", cover:"assets/next-up-cover.jpg" },
         { id:"triple-threat", title:"Triple Threat", price:599, stripeUrl:"https://buy.stripe.com/7sY00jfYm17F5fi50EfrW0q", bpm:"123 BPM", key:"C♯ major", len:"3:28",
-          files:["WAV master","MP3"], noStems:true,
-          deliverNote:"WAV master + MP3 only — no stems, no trackouts. WAV converted from the MP3 master.",
+          files:["MP3","WAV converted from MP3"], noStems:true,
+          deliverNote:"MP3 + WAV only — no stems, no trackouts. WAV converted from MP3.",
           audio:"assets/triple-threat.mp3", cover:"assets/triple-threat-cover.jpg" },
         { id:"rare-breed", title:"Rare Breed", price:599, stripeUrl:"https://buy.stripe.com/8x2aEX13sg2z5fict6frW0p", bpm:"129 BPM", key:"D♯ minor", len:"3:32",
-          files:["WAV master","MP3"], noStems:true,
-          deliverNote:"WAV master + MP3 only — no stems, no trackouts. WAV converted from the MP3 master.",
+          files:["MP3","WAV converted from MP3"], noStems:true,
+          deliverNote:"MP3 + WAV only — no stems, no trackouts. WAV converted from MP3.",
           audio:"assets/rare-breed.mp3", cover:"assets/rare-breed-cover.jpg" },
         { id:"getaway", title:"Getaway", price:599, stripeUrl:"https://buy.stripe.com/5kQ7sLbI6bMj2362SwfrW0s", bpm:"129 BPM", key:"F♯ major", len:"3:15",
-          files:["WAV master","MP3"], noStems:true,
-          deliverNote:"WAV master + MP3 only — no stems, no trackouts. WAV converted from the MP3 master.",
+          files:["MP3","WAV converted from MP3"], noStems:true,
+          deliverNote:"MP3 + WAV only — no stems, no trackouts. WAV converted from MP3.",
           audio:"assets/getaway.mp3", cover:"assets/getaway-cover.jpg" },
         { id:"lucky-eleven", title:"Lucky Eleven", price:599, stripeUrl:"https://buy.stripe.com/bJebJ18vU03BdLO0KofrW0r", bpm:"136 BPM", key:"E minor", len:"3:21",
-          files:["WAV master","MP3"], noStems:true,
-          deliverNote:"WAV master + MP3 only — no stems, no trackouts. WAV converted from the MP3 master.",
+          files:["MP3","WAV converted from MP3"], noStems:true,
+          deliverNote:"MP3 + WAV only — no stems, no trackouts. WAV converted from MP3.",
           audio:"assets/lucky-eleven.mp3", cover:"assets/lucky-eleven-cover.jpg" }
       ];
 
@@ -1913,8 +1913,8 @@
         flatline: { seconds:208,
           coverAlt:"Flatline cover art — gold crown over a vinyl record with a red label, FLATLINE in bold white letters",
           pills:'<span class="pill gold"><b>129</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>B♭ minor</b></span><span class="pill"><b>3:28</b></span><span class="pill">Prod. Kill Will</span>',
-          deliverFiles:"MP3 + WAV master",
-          deliverFine:"WAV converted from the MP3 master. If it's not listed here, it's not included." },
+          deliverFiles:"MP3 + WAV converted from MP3",
+          deliverFine:"WAV converted from MP3. If it's not listed here, it's not included." },
         dripcheck: { seconds:170,
           coverAlt:"Drip Check cover art — dripping gold crown over graffiti lettering, gold chains and stacks of cash in smoke, DRIP CHECK in bold white letters",
           pills:'<span class="pill gold"><b>150</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>A major</b></span><span class="pill"><b>2:50</b></span><span class="pill">Prod. Kill Will</span>',
@@ -1950,13 +1950,13 @@
         "frostbite": { seconds:179, coverAlt:"Frostbite cover art — ice-shard letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>144</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>C♯ major</b></span><span class="pill"><b>2:59</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"Original WAV master. If it's not listed here, it's not included." },
         "short-fuse": { seconds:127, coverAlt:"Short Fuse cover art — flaming orange letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>200</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>D minor</b></span><span class="pill"><b>2:07</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"Original WAV master. If it's not listed here, it's not included." },
         "last-call": { seconds:132, coverAlt:"Last Call cover art — red neon script letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>192</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>A minor</b></span><span class="pill"><b>2:12</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"Original WAV master. If it's not listed here, it's not included." },
-        "night-vision": { seconds:189, coverAlt:"Night Vision cover art — green stencil letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>129</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>D minor</b></span><span class="pill"><b>3:09</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"WAV converted from the MP3 master. If it's not listed here, it's not included." },
-        "sixth-sense": { seconds:193, coverAlt:"Sixth Sense cover art — wispy smoke letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>129</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>F minor</b></span><span class="pill"><b>3:13</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"WAV converted from the MP3 master. If it's not listed here, it's not included." },
-        "next-up": { seconds:194, coverAlt:"Next Up cover art — white angular stencil letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>129</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>D minor</b></span><span class="pill"><b>3:14</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"WAV converted from the MP3 master. If it's not listed here, it's not included." },
-        "triple-threat": { seconds:208, coverAlt:"Triple Threat cover art — red and white sketch outline letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>123</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>C♯ major</b></span><span class="pill"><b>3:28</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"WAV converted from the MP3 master. If it's not listed here, it's not included." },
-        "rare-breed": { seconds:212, coverAlt:"Rare Breed cover art — white dry-brush stroke letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>129</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>D♯ minor</b></span><span class="pill"><b>3:32</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"WAV converted from the MP3 master. If it's not listed here, it's not included." },
-        "getaway": { seconds:195, coverAlt:"Getaway cover art — white slash graffiti letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>129</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>F♯ major</b></span><span class="pill"><b>3:15</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"WAV converted from the MP3 master. If it's not listed here, it's not included." },
-        "lucky-eleven": { seconds:201, coverAlt:"Lucky Eleven cover art — gold embroidered varsity letters, gold crown, chains and stacks of cash in smoke", pills:'<span class="pill gold"><b>136</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>E minor</b></span><span class="pill"><b>3:21</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"WAV master + MP3", deliverFine:"WAV converted from the MP3 master. If it's not listed here, it's not included." }
+        "night-vision": { seconds:189, coverAlt:"Night Vision cover art — green stencil letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>129</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>D minor</b></span><span class="pill"><b>3:09</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"MP3 + WAV converted from MP3", deliverFine:"WAV converted from MP3. If it's not listed here, it's not included." },
+        "sixth-sense": { seconds:193, coverAlt:"Sixth Sense cover art — wispy smoke letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>129</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>F minor</b></span><span class="pill"><b>3:13</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"MP3 + WAV converted from MP3", deliverFine:"WAV converted from MP3. If it's not listed here, it's not included." },
+        "next-up": { seconds:194, coverAlt:"Next Up cover art — white angular stencil letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>129</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>D minor</b></span><span class="pill"><b>3:14</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"MP3 + WAV converted from MP3", deliverFine:"WAV converted from MP3. If it's not listed here, it's not included." },
+        "triple-threat": { seconds:208, coverAlt:"Triple Threat cover art — red and white sketch outline letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>123</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>C♯ major</b></span><span class="pill"><b>3:28</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"MP3 + WAV converted from MP3", deliverFine:"WAV converted from MP3. If it's not listed here, it's not included." },
+        "rare-breed": { seconds:212, coverAlt:"Rare Breed cover art — white dry-brush stroke letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>129</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>D♯ minor</b></span><span class="pill"><b>3:32</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"MP3 + WAV converted from MP3", deliverFine:"WAV converted from MP3. If it's not listed here, it's not included." },
+        "getaway": { seconds:195, coverAlt:"Getaway cover art — white slash graffiti letters, gold crown, chains and cash", pills:'<span class="pill gold"><b>129</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>F♯ major</b></span><span class="pill"><b>3:15</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"MP3 + WAV converted from MP3", deliverFine:"WAV converted from MP3. If it's not listed here, it's not included." },
+        "lucky-eleven": { seconds:201, coverAlt:"Lucky Eleven cover art — gold embroidered varsity letters, gold crown, chains and stacks of cash in smoke", pills:'<span class="pill gold"><b>136</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>E minor</b></span><span class="pill"><b>3:21</b></span><span class="pill">Prod. Kill Will</span>', deliverFiles:"MP3 + WAV converted from MP3", deliverFine:"WAV converted from MP3. If it's not listed here, it's not included." }
       };
       var currentFeaturedId = "flatline";
       function featuredBeat(){
