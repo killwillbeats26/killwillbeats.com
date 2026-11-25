@@ -2282,44 +2282,7 @@
         BEATS.forEach(function(b){ if (b.id === currentFeaturedId) found = b; });
         return found;
         }
-        /* background catch-up: when the page comes back into view,
-           make the player tell the truth about what the phone
-           actually did while it was hidden — retry a refused
-           hand-off, advance past a beat that ended while the chain
-           was stalled, and re-point the bar at whichever audio is
-           really playing */
-        document.addEventListener("visibilitychange", function(){
-          if (document.hidden){ bgWasPlaying = !!anyAudioPlaying(); return; }
-          var live = anyAudioPlaying();
-          if (live){
-            pendingEntry = null;
-            var lid = live.id === "flatAudio" ? currentFeaturedId : (live.id && live.id.indexOf("audio-") === 0 ? live.id.slice(6) : null);
-            if (lid && rows[lid]){ setCurrent(lid); if (pbPlay) pbPlay.textContent = "❚❚"; }
-            bgWasPlaying = false;
-            return;
-          }
-          if (pendingEntry){
-            var en = pendingEntry;
-            pendingEntry = null;
-            playEntry(en);
-            bgWasPlaying = false;
-            return;
-          }
-          if (bgWasPlaying && currentId && rows[currentId] && !ytNow){
-            var cur = currentId === currentFeaturedId ? document.getElementById("flatAudio") : rows[currentId].audio;
-            if (cur && (cur.ended || (isFinite(cur.duration) && cur.duration > 0 && cur.currentTime >= cur.duration - 0.3))) advanceFresh(false);
-          }
-          bgWasPlaying = false;
-        });
-        document.addEventListener("pointerdown", function(){
-          if (pendingEntry && !anyAudioPlaying()){
-            var en = pendingEntry;
-            pendingEntry = null;
-            playEntry(en);
-          }
-        });
-      }
-      function syncFeaturedAddBtn(){
+        function syncFeaturedAddBtn(){
         var btn = document.getElementById("flatAdd");
         if (!btn) return;
         var fb = featuredBeat();
