@@ -515,6 +515,8 @@
       .pb-btn svg{width:18px;height:18px;display:block}
       .pb-btn.pb-main{width:52px;height:52px;background:var(--gold);border-color:#0a0a05;color:var(--gold-ink);font-size:1.15rem;box-shadow:3px 3px 0 rgba(0,0,0,.55)}
       .pb-btn:active{transform:translate(1px,1px)}
+      .pb-btn.pb-random{width:auto;border-radius:21px;padding:0 13px;display:inline-flex;align-items:center;gap:7px;font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;font-size:.72rem;white-space:nowrap}
+      .pb-btn.pb-random svg{width:16px;height:16px;flex:none}
       .pb-seekwrap{flex:1 1 200px;display:flex;align-items:center;gap:10px;min-width:150px}
       .pb-seek{flex:1;min-width:0;accent-color:var(--gold);height:30px;cursor:pointer}
       .pb-time{font-size:.78rem;font-weight:800;color:#bdb99f;font-variant-numeric:tabular-nums;white-space:nowrap}
@@ -1191,6 +1193,7 @@
         <button class="pb-btn" id="pbPrev" type="button" aria-label="Previous beat"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h2.6v14H6zM19.5 5v14L10 12z" fill="currentColor"/></svg></button>
         <button class="pb-btn pb-main" id="pbPlay" type="button" aria-label="Play or pause the current beat">▶</button>
         <button class="pb-btn" id="pbNext" type="button" aria-label="Next beat"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.4 5H18v14h-2.6zM4.5 5v14L14 12z" fill="currentColor"/></svg></button>
+        <button class="pb-btn pb-random" id="pbRandom" type="button" aria-label="Play a random beat — free or for sale"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.59 9.17 5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z" fill="currentColor"/></svg><span>Random</span></button>
         <button class="pb-btn" id="pbHist" type="button" aria-label="Recently played — your last 10" aria-expanded="false" aria-controls="histPanel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.5 4.2a8 8 0 1 1-7.4 5" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/><path d="M4.6 3.8v5.4h5.4" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.5 8v4.4l3 1.8" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       </div>
       <div class="pb-seekwrap" id="pbSeekWrap">
@@ -2278,6 +2281,43 @@
         var found = null;
         BEATS.forEach(function(b){ if (b.id === currentFeaturedId) found = b; });
         return found;
+        }
+        /* background catch-up: when the page comes back into view,
+           make the player tell the truth about what the phone
+           actually did while it was hidden — retry a refused
+           hand-off, advance past a beat that ended while the chain
+           was stalled, and re-point the bar at whichever audio is
+           really playing */
+        document.addEventListener("visibilitychange", function(){
+          if (document.hidden){ bgWasPlaying = !!anyAudioPlaying(); return; }
+          var live = anyAudioPlaying();
+          if (live){
+            pendingEntry = null;
+            var lid = live.id === "flatAudio" ? currentFeaturedId : (live.id && live.id.indexOf("audio-") === 0 ? live.id.slice(6) : null);
+            if (lid && rows[lid]){ setCurrent(lid); if (pbPlay) pbPlay.textContent = "❚❚"; }
+            bgWasPlaying = false;
+            return;
+          }
+          if (pendingEntry){
+            var en = pendingEntry;
+            pendingEntry = null;
+            playEntry(en);
+            bgWasPlaying = false;
+            return;
+          }
+          if (bgWasPlaying && currentId && rows[currentId] && !ytNow){
+            var cur = currentId === currentFeaturedId ? document.getElementById("flatAudio") : rows[currentId].audio;
+            if (cur && (cur.ended || (isFinite(cur.duration) && cur.duration > 0 && cur.currentTime >= cur.duration - 0.3))) advanceFresh(false);
+          }
+          bgWasPlaying = false;
+        });
+        document.addEventListener("pointerdown", function(){
+          if (pendingEntry && !anyAudioPlaying()){
+            var en = pendingEntry;
+            pendingEntry = null;
+            playEntry(en);
+          }
+        });
       }
       function syncFeaturedAddBtn(){
         var btn = document.getElementById("flatAdd");
@@ -2533,10 +2573,12 @@
          title and meta — whether it was started from a row, the
          Featured Beat card, or a YouTube video (Credits / Free Beats,
          via __barShowYouTube) — with prev / next, seek and
-         add-to-cart for the Vault beats. When a beat ends on its own
-         the next one is a random Vault beat (never the same beat
-         twice in a row); the bar's prev / next buttons still move
-         through the list in its fixed order. Same one-song-at-a-time rule as the
+         add-to-cart for the Vault beats. Playback runs as a session
+         queue: when a beat ends on its own the next one is a fresh
+         random pick that has not played yet this session, the bar's
+         Next button moves forward the same way, and Previous walks
+         back through what actually played (see the session queue
+         block below). Same one-song-at-a-time rule as the
          rest of the page: starting a row pauses every other audio
          element and every YouTube embed, and anything else starting
          pauses the row (every button re-syncs off the audio element's
@@ -2557,6 +2599,7 @@
         var pbPlay = document.getElementById("pbPlay");
         var pbPrev = document.getElementById("pbPrev");
         var pbNext = document.getElementById("pbNext");
+        var pbRandom = document.getElementById("pbRandom");
         var pbSeek = document.getElementById("pbSeek");
         var pbSeekWrap = document.getElementById("pbSeekWrap");
         var pbCur = document.getElementById("pbCur");
@@ -2622,6 +2665,7 @@
           });
           rec.audio.addEventListener("play", function(){
             setCurrent(beat.id);
+            notePlay({ type:"vault", id: beat.id });
             extId = null;
             syncBtn();
             pauseAllVaultExcept(rec.audio);
@@ -2637,7 +2681,7 @@
             }
           });
           rec.audio.addEventListener("pause", syncBtn);
-          rec.audio.addEventListener("ended", function(){ syncBtn(); playRandomNext(beat.id); });
+          rec.audio.addEventListener("ended", function(){ syncBtn(); playRandomNext(); });
           rec.audio.addEventListener("loadedmetadata", function(){ if (isFinite(rec.audio.duration)) rec.seek.max = rec.audio.duration; });
           rec.audio.addEventListener("timeupdate", function(){
             rec.seek.value = rec.audio.currentTime;
@@ -2765,7 +2809,10 @@
           if (rec.audio.paused){ setCurrent(id); playAudio(rec.audio); }
           else rec.audio.pause();
         }
-        function step(dir){
+        /* catalog step: one slot up / down the fixed Vault list.
+           Only the session queue's Previous fallback uses it (when
+           nothing played earlier this session); Next never does. */
+        function catalogStep(dir){
           if (!order.length) return;
           var idx = currentId ? order.indexOf(currentId) : -1;
           var nextId = order[(idx + dir + order.length) % order.length];
@@ -2779,59 +2826,230 @@
           setCurrent(nextId);
           playAudio(rec.audio);
         }
-        /* natural end = shuffle: when a Vault beat plays to its own
-           end (nobody pressed skip), the next beat is a RANDOM pick
-           from the whole for-sale list, never the beat that just
-           ended — so Vault playback keeps surprising instead of
-           marching down the list. This is ONLY for natural ends:
-           the bottom bar's prev / next buttons (and the lock-screen
-           next / previous controls, which click those same buttons)
-           still call step() and move in the fixed list order. The
-           featured beat, when picked, plays from the Featured card's
-           player, exactly like step() routes it. */
-        function playRandomNext(excludeId){
-          if (!order.length) return;
-          /* Combined rotation pool: the 30 Vault beats PLUS only
-             today's 10 free beats — the exact daily-10 list the Free
-             Beats section displays (via __getTodayFreeBeats, which
-             reuses that section's own date-seeded picks — never the
-             full 97-beat catalog and never a second random set).
-             Never the same track twice in a row: the Vault beat that
-             just ended is excluded from the Vault side, and free
-             beats are a different track by definition. The bar's
-             prev / next buttons still use step() in fixed Vault
-             order — this shuffle is for natural ends only. */
-          var vaultPool = order.filter(function(oid){ return oid !== excludeId && !isSoldBeat(beatById(oid)); });
-          var freePool = [];
+        /* ============ session play queue : no repeats, skip moves forward ============
+           Everything that plays this session — Vault rows, the
+           Featured card's player, free beats in the rotation — is
+           noted in play order (notePlay, fed from the same play
+           events that light the rows and the bar). The queue fixes
+           two phone complaints at once:
+
+           · BACKTRACKING SKIP. The rotation used to draw each next
+           beat purely at random (only the beat that just ended was
+           excluded), and the bar's Next button stepped through the
+           catalog in fixed order — two systems that knew nothing of
+           each other, so after several shuffled plays Next happily
+           landed on a beat that had already played. Now every
+           advance draws from the tracks NOT yet played this session
+           (a shuffle-bag: no repeats until the whole rotation — the
+           unsold Vault beats plus today's 10 free beats — has
+           played, then a fresh cycle starts), and Next / Previous
+           walk the session stack itself: Previous goes back through
+           what actually played, Next re-walks forward through it,
+           and only at the head of the stack does Next draw the next
+           fresh, unplayed pick. Skip can no longer backtrack onto
+           an already-played beat.
+
+           · BACKGROUND KEEP-UP. Each Vault beat is its own <audio>
+           element starting cold (preload="none"), and a phone in
+           the background will often refuse or stall the hand-off to
+           a different, unloaded element when a track ends — the
+           chain silently stopped and the bar / lock screen stayed
+           on the finished beat. So the moment a track starts, the
+           queue pre-picks the next fresh track and preloads its
+           audio (armNext), making the background hand-off a play()
+           on an already-buffered element; an advance the phone
+           still refuses is remembered (pendingEntry) and retried
+           when the page is seen or tapped again, and returning to
+           the page re-syncs the bar to whichever audio is actually
+           playing (see the visibilitychange handler below). While
+           the page is hidden the rotation also draws Vault beats
+           only: free beats are YouTube videos, which no phone plays
+           in the background, so a free pick mid-background would
+           stall the chain — free beats rejoin the draw as soon as
+           the page is visible again. */
+        var playStack = [];
+        var stackPos = -1;
+        var playedKeys = {};
+        var queuedNext = null;
+        var armedFor = "";
+        var pendingEntry = null;
+        var bgWasPlaying = false;
+        function entryKey(en){ return en ? (en.type === "free" ? "f:" + en.ytId : "v:" + en.id) : ""; }
+        function currentEntry(){
+          if (ytNow && ytNow.isFree && ytNow.ytId) return { type:"free", ytId: ytNow.ytId };
+          if (ytNow) return null; /* a Credits video holds the bar — not a rotation track */
+          return currentId ? { type:"vault", id: currentId } : null;
+        }
+        function notePlay(en){
+          if (!en) return;
+          var key = entryKey(en);
+          if (!key) return;
+          playedKeys[key] = true;
+          if (stackPos >= 0 && entryKey(playStack[stackPos]) === key){ armNext(); return; }
+          if (stackPos + 1 < playStack.length && entryKey(playStack[stackPos + 1]) === key){ stackPos++; armNext(); return; }
+          playStack = playStack.slice(0, stackPos + 1);
+          playStack.push(en);
+          stackPos = playStack.length - 1;
+          armNext();
+        }
+        function rotationPool(vaultOnly){
+          var vault = order.filter(function(oid){ return !isSoldBeat(beatById(oid)); })
+            .map(function(oid){ return { type:"vault", id:oid }; });
+          if (vaultOnly || document.hidden) return vault;
+          var free = [];
           try {
             if (typeof window.__getTodayFreeBeats === "function"){
-              var todaysFree = window.__getTodayFreeBeats() || [];
-              todaysFree.forEach(function(fb){ if (fb && fb.id) freePool.push(fb.id); });
+              (window.__getTodayFreeBeats() || []).forEach(function(fb){ if (fb && fb.id) free.push({ type:"free", ytId: fb.id }); });
             }
-          } catch(e){ freePool = []; }
-          var combined = vaultPool.map(function(oid){ return { type:"vault", id:oid }; })
-            .concat(freePool.map(function(ytId){ return { type:"free", ytId:ytId }; }));
-          if (!combined.length) return;
-          var pick = combined[Math.floor(Math.random() * combined.length)];
-          if (pick.type === "free"){
-            if (typeof window.__playFreeBeat === "function"){
-              var played = window.__playFreeBeat(pick.ytId);
-              if (played) return;
+          } catch(e){ free = []; }
+          return vault.concat(free);
+        }
+        function drawFresh(vaultOnly){
+          var curKey = entryKey(currentEntry());
+          var pool = rotationPool(vaultOnly).filter(function(en){ return !playedKeys[entryKey(en)] && entryKey(en) !== curKey; });
+          if (!pool.length){
+            /* the whole rotation has played this session: open a
+               fresh cycle, keeping only the track on the bar out of
+               the first draw so it still never repeats back-to-back */
+            playedKeys = {};
+            if (curKey) playedKeys[curKey] = true;
+            pool = rotationPool(vaultOnly).filter(function(en){ return entryKey(en) !== curKey; });
+          }
+          if (!pool.length) return null;
+          return pool[Math.floor(Math.random() * pool.length)];
+        }
+        function audioForEntry(en){
+          if (!en || en.type !== "vault") return null;
+          if (en.id === currentFeaturedId) return document.getElementById("flatAudio");
+          var rec = rows[en.id];
+          return rec ? rec.audio : null;
+        }
+        /* pre-pick the next fresh track and buffer its audio NOW,
+           while the page is awake — a background hand-off to an
+           already-loaded element is the one a phone lets through */
+        function armNext(){
+          var ck = entryKey(currentEntry());
+          if (armedFor === ck && queuedNext) return;
+          armedFor = ck;
+          queuedNext = drawFresh(false);
+          var a = audioForEntry(queuedNext);
+          if (a && a.readyState === 0 && a.networkState !== 2){
+            try { a.preload = "auto"; a.load(); } catch(e){}
+          }
+        }
+        function playEntry(en){
+          if (!en) return;
+          if (en.type === "free"){
+            var where = (typeof window.__playFreeBeat === "function") ? window.__playFreeBeat(en.ytId) : null;
+            if (where) return;
+            /* the free beat could not start — swap the stack's head
+               entry for a fresh Vault pick so prev / next stay true */
+            var alt = drawFresh(true);
+            if (!alt) return;
+            if (stackPos >= 0 && entryKey(playStack[stackPos]) === entryKey(en)){
+              playStack[stackPos] = alt;
+              delete playedKeys[entryKey(en)];
+              playedKeys[entryKey(alt)] = true;
             }
-            /* free playback could not start — fall back to a Vault pick */
-            if (!vaultPool.length) return;
-            pick = { type:"vault", id: vaultPool[Math.floor(Math.random() * vaultPool.length)] };
+            en = alt;
           }
-          var nextId = pick.id;
-          var rec = rows[nextId];
-          if (!rec) return;
-          if (nextId === currentFeaturedId){
-            var fa = document.getElementById("flatAudio");
-            if (fa){ try { fa.currentTime = 0; } catch(e){} setCurrent(nextId); playAudio(fa); return; }
+          var a = audioForEntry(en);
+          if (!a) return;
+          try { a.currentTime = 0; } catch(e){}
+          setCurrent(en.id);
+          var pr = null;
+          try { pr = a.play(); } catch(e){}
+          if (pr && pr.catch) pr.catch(function(){
+            /* the phone refused to start this element (the classic
+               background hand-off refusal): hold the pick and retry
+               it when the page is seen or tapped again instead of
+               losing the advance altogether */
+            pendingEntry = en;
+          });
+        }
+        function pushEntry(en){
+          playStack = playStack.slice(0, stackPos + 1);
+          playStack.push(en);
+          stackPos = playStack.length - 1;
+          playedKeys[entryKey(en)] = true;
+        }
+        function advanceFresh(vaultOnly){
+          var en = null;
+          if (!vaultOnly && queuedNext){
+            en = queuedNext;
+            if (playedKeys[entryKey(en)] || entryKey(en) === entryKey(currentEntry()) || (en.type === "free" && document.hidden)) en = null;
           }
-          try { rec.audio.currentTime = 0; } catch(e){}
-          setCurrent(nextId);
-          playAudio(rec.audio);
+          queuedNext = null;
+          armedFor = "";
+          if (!en) en = drawFresh(!!vaultOnly);
+          if (!en) return;
+          pushEntry(en);
+          playEntry(en);
+        }
+        /* natural end = fresh draw: a Vault beat that plays to its
+           own end hands off to the next unplayed pick from the
+           combined rotation (Vault + today's free 10), exactly the
+           draw Next makes at the head of the stack */
+        function playRandomNext(){ advanceFresh(false); }
+        function queueNext(){
+          if (ytNow && !ytNow.isFree){ advanceFresh(false); return; }
+          if (stackPos + 1 < playStack.length){
+            stackPos++;
+            playEntry(playStack[stackPos]);
+            return;
+          }
+          advanceFresh(false);
+        }
+        function queuePrev(){
+          if (ytNow && !ytNow.isFree && stackPos >= 0){ playEntry(playStack[stackPos]); return; }
+          if (stackPos > 0){
+            stackPos--;
+            playEntry(playStack[stackPos]);
+            return;
+          }
+          catalogStep(-1);
+        }
+        function anyAudioPlaying(){
+          var found = null;
+          document.querySelectorAll("audio").forEach(function(a){ if (!a.paused && !a.ended) found = a; });
+          return found;
+        }
+        /* background catch-up: when the page comes back into view,
+           make the player tell the truth about what the phone
+           actually did while it was hidden — retry a refused
+           hand-off, advance past a beat that ended while the chain
+           was stalled, and re-point the bar at whichever audio is
+           really playing */
+        document.addEventListener("visibilitychange", function(){
+          if (document.hidden){ bgWasPlaying = !!anyAudioPlaying(); return; }
+          var live = anyAudioPlaying();
+          if (live){
+            pendingEntry = null;
+            var lid = live.id === "flatAudio" ? currentFeaturedId : (live.id && live.id.indexOf("audio-") === 0 ? live.id.slice(6) : null);
+            if (lid && rows[lid]){ setCurrent(lid); if (pbPlay) pbPlay.textContent = "❚❚"; }
+            bgWasPlaying = false;
+            return;
+          }
+          if (pendingEntry){
+            var en = pendingEntry;
+            pendingEntry = null;
+            playEntry(en);
+            bgWasPlaying = false;
+            return;
+          }
+          if (bgWasPlaying && currentId && rows[currentId] && !ytNow){
+            var cur = currentId === currentFeaturedId ? document.getElementById("flatAudio") : rows[currentId].audio;
+            if (cur && (cur.ended || (isFinite(cur.duration) && cur.duration > 0 && cur.currentTime >= cur.duration - 0.3))) advanceFresh(false);
+          }
+          bgWasPlaying = false;
+        });
+        document.addEventListener("pointerdown", function(){
+          if (pendingEntry && !anyAudioPlaying()){
+            var en = pendingEntry;
+            pendingEntry = null;
+            playEntry(en);
+          }
+        });
         }
         if (bar){
           pbPlay.addEventListener("click", function(){
@@ -2843,8 +3061,20 @@
             }
             if (currentId) toggleRow(currentId);
           });
-          pbPrev.addEventListener("click", function(){ step(-1); });
-          pbNext.addEventListener("click", function(){ step(1); });
+          pbPrev.addEventListener("click", function(){ queuePrev(); });
+          pbNext.addEventListener("click", function(){ queueNext(); });
+          /* Random button: a fresh pick on every tap from the SAME
+             session queue draw the natural-end rotation uses (unsold
+             Vault beats + today's 10 free beats, none of them played
+             yet this session) — playRandomNext does the picking and
+             the playing (Vault picks through setCurrent, free picks
+             through __playFreeBeat, so the bar shows the price / Add
+             to cart or "Free" / Download MP3 to match), and the pick
+             joins the session stack, so Next / Previous stay in step
+             with it afterwards. Starting the pick pauses whatever is
+             playing now — playRandomNext's play paths already
+             enforce the one-song-at-a-time rule. */
+          if (pbRandom) pbRandom.addEventListener("click", function(){ playRandomNext(); });
           pbSeek.addEventListener("input", function(){
             if (ytNow) return;
             if (currentId === currentFeaturedId){
@@ -2894,6 +3124,7 @@
           if (!rec) return;
           if (playing){
             if (ytNow || extId !== id || currentId !== id) setCurrent(id);
+            notePlay({ type:"vault", id: id });
             extId = id;
             rec.playBtn.textContent = "❚❚";
             if (pbPlay) pbPlay.textContent = "❚❚";
@@ -2922,35 +3153,20 @@
             }
           }
         };
-        /* the Featured card's beat ended on its own: shuffle to a
-           random Vault beat (never the featured beat that just
-           ended) — same natural-end rule as the Vault rows. Only a
-           press of the bar's next button steps in fixed order. */
-        window.__listStepFromFeatured = function(){ playRandomNext(typeof currentFeaturedId !== "undefined" ? currentFeaturedId : currentId); };
+        /* the Featured card's beat ended on its own: hand off to the
+           session queue's next fresh, unplayed pick — same
+           natural-end rule as the Vault rows. */
+        window.__listStepFromFeatured = function(){ playRandomNext(); };
 
         /* free-beat handoff: when a Free Beats YouTube video ends, the
-           music does not stop — a random Vault beat starts playing
-           next. The pick is fresh every time, drawn from the whole
-           for-sale list (the featured beat plays from the Featured
+           music does not stop — the session queue's next fresh,
+           unplayed Vault beat starts playing (advanceFresh(true):
+           Vault-only draw, the featured beat plays from the Featured
            card's player, like everywhere else). Once it starts, the
-           Vault's own natural-end shuffle (playRandomNext, above)
-           carries the chain from there, same as any other Vault
-           playback that ends on its own. */
-        window.__playRandomVaultBeat = function(){
-          if (!order.length) return;
-          var pool = order.filter(function(oid){ return !isSoldBeat(beatById(oid)); });
-          if (!pool.length) return;
-          var id = pool[Math.floor(Math.random() * pool.length)];
-          var rec = rows[id];
-          if (!rec) return;
-          if (id === currentFeaturedId){
-            var fa = document.getElementById("flatAudio");
-            if (fa){ try { fa.currentTime = 0; } catch(e){} setCurrent(id); playAudio(fa); return; }
-          }
-          try { rec.audio.currentTime = 0; } catch(e){}
-          setCurrent(id);
-          playAudio(rec.audio);
-        };
+           queue's natural-end draw (playRandomNext, above) carries
+           the chain from there, same as any other Vault playback
+           that ends on its own. */
+        window.__playRandomVaultBeat = function(){ advanceFresh(true); };
 
         /* credits handoff: when Slow Grind ends, today's featured
            beat starts next — the date-seeded daily pick
@@ -2986,6 +3202,10 @@
           if (!bar || !info) return;
           var isFree = info.histType === "free" || info.priceLabel === "Free";
           ytNow = { player: info.player || null, playing: true, isFree: !!isFree, ytId: info.ytId || "", beat: info.beat || null, title: info.title || "" };
+          /* a free beat joins the session queue (Credits videos do
+             not — their chain is fixed: Fire Flame into Slow Grind
+             into the featured beat) */
+          if (isFree && info.ytId) notePlay({ type:"free", ytId: info.ytId });
           order.forEach(function(oid){ rows[oid].row.classList.remove("active"); });
           pbCover.src = info.cover || "assets/crown-emblem.webp";
           pbCover.alt = "";
@@ -3675,6 +3895,7 @@
             if (interacted) push({ key:"vault:" + beat.id, type:"vault", id:beat.id, title:beat.title, cover:beat.cover, label:"Vault · " + beat.bpm + " · Key " + beat.key });
           }
           setPlaybackState("playing");
+          pushPosition(el);
         }, true);
         document.addEventListener("pause", function(e){
           var el = e.target;
@@ -3684,6 +3905,31 @@
         document.addEventListener("ended", function(e){
           var el = e.target;
           if (el && el.tagName === "AUDIO" && msTarget && msTarget.kind === "audio" && msTarget.el === el) setPlaybackState("paused");
+        }, true);
+
+        /* lock-screen position: feed the phone the playing beat's
+           real position as it plays (timeupdate keeps firing for
+           background audio), so the lock-screen scrubber keeps up
+           with the music instead of sitting frozen on the position
+           the track had when the screen locked */
+        function pushPosition(el){
+          if (!("mediaSession" in navigator) || !navigator.mediaSession.setPositionState) return;
+          if (!el || !isFinite(el.duration) || el.duration <= 0) return;
+          try {
+            navigator.mediaSession.setPositionState({
+              duration: el.duration,
+              playbackRate: el.playbackRate || 1,
+              position: Math.min(Math.max(el.currentTime || 0, 0), el.duration)
+            });
+          } catch(e){}
+        }
+        document.addEventListener("timeupdate", function(e){
+          var el = e.target;
+          if (el && el.tagName === "AUDIO" && msTarget && msTarget.kind === "audio" && msTarget.el === el) pushPosition(el);
+        }, true);
+        document.addEventListener("durationchange", function(e){
+          var el = e.target;
+          if (el && el.tagName === "AUDIO" && msTarget && msTarget.kind === "audio" && msTarget.el === el) pushPosition(el);
         }, true);
 
         /* YouTube tracks (Free Beats + Credits): the bottom bar's
@@ -3697,6 +3943,7 @@
             msTarget = { kind:"yt", player: info.player || null };
             setMedia(info.title, info.cover, info.meta || "KillWillBeats");
             setPlaybackState("playing");
+          pushPosition(el);
             if (info.histType === "free" && info.ytId){
               push({ key:"free:" + info.ytId, type:"free", id:info.ytId, title:info.title, cover:info.cover, label:info.meta || "Free beat · YouTube" });
             } else if (info.histType === "credit" && info.ytId){
