@@ -422,26 +422,26 @@
       .promo-banner .promo-sub{flex:1 1 250px;font-size:.9rem;font-weight:700;line-height:1.45;margin:0}
       .promo-banner .promo-sub b{color:#ffe9a8}
       .promo-count{flex:none;background:#0c0c07;color:var(--gold-bright);border:2px solid var(--gold);border-radius:999px;font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;font-size:1rem;padding:9px 16px;white-space:nowrap}
-      .price-was{text-decoration:line-through;color:var(--ink-faint);font-weight:800}
-      .row-price-line{display:inline-flex;align-items:baseline;gap:7px}
-      .row-price-line .price-was{font-size:.82rem;font-family:var(--font)}
+      /* diagonal slash, never a flat line-through: a horizontal strike slices the loops of the 9s in $599 shut so it reads as "500". The strike is a bar rotated -26deg laid over the digits — steep enough to cross corner to corner while leaving every digit's shape readable — in red, everywhere the old price shows next to a sale price */ .price-was,.ci-was{position:relative;display:inline-block;text-decoration:none!important;color:#ff5a43;font-weight:800;white-space:nowrap} .price-was::after,.ci-was::after{content:"";position:absolute;left:-7%;top:50%;width:114%;height:max(2px,.11em);background:#ff2d1a;border-radius:2px;transform:translateY(-50%) rotate(-26deg);transform-origin:center;pointer-events:none}
+      .row-price-line{display:inline-flex;align-items:baseline;gap:8px}
+      /* Vault rows: the struck old price is red and BIGGER than the gold sale price beside it (1.3rem) so the size drop-off plus the red slash reads as a reduction at a glance */ .row-price-line .price-was{font-size:1.52rem;font-family:var(--display);font-weight:400;letter-spacing:.02em;line-height:1.1}
       .row-sold{font-family:var(--display);font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;background:var(--red);color:#fff;border:1.5px solid #0a0a05;border-radius:4px;padding:3px 7px;box-shadow:2px 2px 0 #0a0a05;line-height:1}
       .row-sold[hidden]{display:none}
       .track-row.is-sold{opacity:.6}
       .track-row.is-sold .row-thumb img{filter:grayscale(.75)}
       .add-btn:disabled,.pb-add:disabled,.flat-add:disabled{opacity:.55;cursor:not-allowed}
-      .pb-was{font-size:.8rem}
-      .price-big .price-was{font-size:1.45rem;color:#e8e2c2;text-decoration-thickness:3px;text-decoration-color:var(--red);margin-left:8px}
+      .pb-was{font-size:.85rem}
+      .price-big .price-was{font-size:1.45rem;margin-left:8px}
       /* featured price tag (on the cover) and Add button: the struck
          full price must read clearly on the red sticker and the gold
          button too — not the faint ink-faint used on dark panels */
       .player-art .price-tag{gap:8px}
-      .player-art .price-tag .price-was{color:rgba(255,255,255,.95);font-size:.88em;text-decoration-thickness:2px;text-decoration-color:#fff}
-      .flat-add .price-was{color:#4a3e08;text-decoration-thickness:2px;text-decoration-color:var(--red)}
+      .player-art .price-tag .price-was{color:rgba(255,255,255,.97);font-size:.92em} .player-art .price-tag .price-was::after{background:#7c0d02;height:max(2px,.14em)}
+      .flat-add .price-was{color:#b01405}
       /* top sale banner: same red/gold promo styling, at the very top */
       .promo-top-wrap{padding-top:14px}
       .promo-banner-top{margin:0}
-      .ci-was{color:var(--ink-faint);font-weight:700}
+      .ci-was{font-weight:700}
       .ci-sale{color:#ff8d7d;font-weight:800;font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;display:block;text-align:right}
       .track-list{display:flex;flex-direction:column;background:var(--panel);border:2px solid var(--line);border-radius:10px;overflow:hidden;box-shadow:6px 6px 0 rgba(0,0,0,.28)}
       .track-row{display:flex;align-items:center;gap:14px;padding:10px 14px;border-bottom:1.5px solid var(--line-soft);cursor:pointer}
@@ -476,7 +476,7 @@
         .row-thumb,.row-thumb img{width:50px;height:50px}
         .row-play{width:36px;height:36px;min-height:36px}
         .row-meta{white-space:normal}
-        .row-price{font-size:1.15rem}
+        .row-price{font-size:1.15rem} .row-price-line .price-was{font-size:1.34rem}
         .row-add{padding:9px 12px;font-size:.8rem}
       }
 
@@ -2805,7 +2805,7 @@
           bar.hidden = false;
           document.body.style.paddingBottom = bar.offsetHeight + "px";
         }
-        function syncBarAdd(){
+        /* the bar's loading state: on from the moment a pick is made            until its audio is actually running — the bar always shows            the NEW track right away, with the spinner up, instead of            sitting on the old track paused */         function barLoading(on){ if (bar) bar.classList.toggle("is-loading", !!on); }         function syncBarAdd(){
           var beat = beatById(currentId);
           if (!beat || !pbAdd) return;
           if (isSoldBeat(beat)){
@@ -3885,7 +3885,7 @@
         }
         window.__histPush = push;
 
-        function replayVault(id){
+        function replayVault(id){ var isFeat = (typeof currentFeaturedId !== "undefined" && id === currentFeaturedId);
           var audio = document.getElementById("audio-" + id);
           if (audio && !audio.paused){
             /* already playing: a history tap restarts it from the top */
