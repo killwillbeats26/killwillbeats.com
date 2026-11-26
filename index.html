@@ -965,7 +965,7 @@
                 <button class="sec-btn" id="featShuffle" type="button">↻ Switch — random beat</button>
                 <span class="feat-switch-note" id="featSwitchNote">Now featuring: Flatline — today's pick from the 30 beats for sale. A new random beat takes this spot tomorrow.</span>
               </div>
-              <p class="feat-sale-note" id="featSaleNote">Featured sale — this beat is <b>half off or better</b> today. If it sells, a new featured beat takes its place at half off or better.</p>
+              <p class="feat-sale-note" id="featSaleNote">Featured sale — this beat is <b>on sale</b> today. If it sells, a new featured beat takes its place on sale today.</p>
               <p class="autoplay-hint" id="featAutoplayHint" hidden>▶ Tap play — hear today's featured beat</p>
               <div class="flat-deliver">
                 <span class="fd-row">You get: <b id="featDeliverFiles">MP3 + WAV converted from MP3</b> — that's the full delivery.</span>
@@ -2387,14 +2387,22 @@
         else priceTag.textContent = moneyExact(beat.price);
       }
       /* the featured-sale note under the tagline: it shows only
-         while the featured discount is actually live — the featured
-         beat is priced by the featured sale, which needs Next-5
-         slots remaining. When the 5 are gone the featured sale is
-         over and the note hides with it. */
+         while the featured discount is actually live. The words
+         follow the price: while the Next-5 flash sale is live the
+         featured beat rings up at the lower sale price, so the note    
+         just says it is on sale — "half off" is only said once the
+         flash sale is over and the featured beat is half off on its
+         own. */
       function paintFeatSaleNote(beat){
         var note = document.getElementById("featSaleNote");
         if (!note) return;
         note.hidden = beatPromoKind(beat) !== "featured";
+        if (note.hidden) return;
+        if (promoIsLive()){
+          note.innerHTML = "Featured sale — this beat is <b>on sale</b> today. If it sells, a new featured beat takes its place on sale today.";
+        } else {
+          note.innerHTML = "Featured sale — this beat is <b>half off</b> today. If it sells, a new featured beat takes its place at half off.";
+        }
       }
       /* price-only refresh for the Featured card, run when the sale
          state changes after the sold list loads: prices, the price
