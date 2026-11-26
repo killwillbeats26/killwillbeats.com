@@ -1453,9 +1453,7 @@
             if (ok){
               window.kwbMailchimp.unlock();
               if (!subAsked){ subAsked = true; statusEl.textContent = "You're in — one more thing before your download starts."; statusEl.className = "gate-status ok"; form.hidden = true; document.getElementById("subAsk").hidden = false; } else { statusEl.textContent = "You're in — your download is starting."; statusEl.className = "gate-status ok"; var cb = pending; setTimeout(function(){ close(); if (cb) cb(); }, 450); }
-              statusEl.className = "gate-status ok";
-              var cb = pending;
-              else {
+              } else {
               statusEl.textContent = "That didn't go through — check the email and try again.";
               statusEl.className = "gate-status err";
             }
@@ -1621,7 +1619,7 @@
          over a failed fetch, and the backend stays the authority. */
       var PROMO = { active:true, limit:5, discountCents:50000, minCents:9900 };
       /* ============ featured sale : half off the featured beat ============ The featured beat (the daily pick in the Featured slot) is HALF OFF its own price, rounded down to a price ending in 7 (599 -> 297, 999 -> 497, 1499 -> 747, 2500 -> 1247) — and it takes one of the Next-5 promo slots, exactly like any other beat: while Next-5 slots remain, the featured beat rings up at the LOWER of its half-off price and its Next-5 price (a 599 beat rings up 99), so no cart ever has more than 5 beats at sale prices. Once the 5 are gone, the featured beat is half off on its own. The discount belongs to the SLOT, not the beat: it applies only while a beat is the current featured beat. When the slot rotates — at midnight ET, or the moment the featured beat sells and a new one steps in — the outgoing beat loses the featured discount and shows its Next-5 promo price while slots remain, else its full price. */
-          FEATURED = { active:true, percentOff:50 }; function featuredPriceFor(beat){ if (!beat) return 0; var half = Math.floor(beat.price / 2); var delta = (half % 10 - 7 + 10) % 10; var halfOff = half - delta; if (!promoIsLive()) return halfOff; return Math.min(halfOff, salePriceFor(beat, PROMO)); }
+          var FEATURED = { active:true, percentOff:50 }; function featuredPriceFor(beat){ if (!beat) return 0; var half = Math.floor(beat.price / 2); var delta = (half % 10 - 7 + 10) % 10; var halfOff = half - delta; if (!promoIsLive()) return halfOff; return Math.min(halfOff, salePriceFor(beat, PROMO)); }
       var SOLD_ENDPOINT = "https://script.google.com/macros/s/AKfycbwnA9FvK2RbQ-wbB1arxBL0PtPR5MX_vROmJGlnEtauqwyAp9hB_1aVyRB5E-m69EjoPw/exec?sold=1";
       var soldTitles = [];
       var soldIdSet = {};
@@ -1716,7 +1714,7 @@
       function cartBeatPromoKind(beat, idx){
         if (!beat || isSoldBeat(beat)) return null;
         if (featuredIsLive() && isFeaturedBeat(beat)) return "featured";
-                  sLive() && cartPromoIndex(idx) < cartSlotsForOthers()) return "next5";
+        if (promoIsLive() && cartPromoIndex(idx) < cartSlotsForOthers()) return "next5";
         return null;
       }
       /* re-read the sold list, then re-paint everything the sale
