@@ -1240,6 +1240,7 @@
         <div class="social-row" aria-label="Social media">
           <a class="social-link" href="https://www.instagram.com/killwillbeats_Tbn/" target="_blank" rel="noopener" aria-label="Instagram — killwillbeats_Tbn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1" fill="currentColor" stroke="none"/></svg><span class="social-handle">killwillbeats_Tbn</span></a>
           <a class="social-link" href="https://www.facebook.com/profile.php?id=61575604483055" target="_blank" rel="noopener" aria-label="Facebook — killwillbeats inthebuilding"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.6 21.9v-7.4h2.5l.4-2.9h-2.9V9.7c0-.84.23-1.4 1.44-1.4h1.53V5.7c-.27-.04-1.18-.11-2.24-.11-2.22 0-3.74 1.35-3.74 3.84v2.14H8.1v2.9h2.5v7.4a10 10 0 0 0 3 0Z"/></svg><span class="social-handle">killwillbeats inthebuilding</span></a>
+          <a class="social-link" href="https://www.youtube.com/@killwillbeats?sub_confirmation=1" target="_blank" rel="noopener" aria-label="YouTube — @killwillbeats"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg><span class="social-handle">@killwillbeats</span></a>
         </div>
         <p class="cookie-note">Cookies: this site uses Google Analytics cookies to count visits and see which beats get played. That's the only tracking here.</p>
       </div>
@@ -1306,6 +1307,7 @@
         <button class="btn btn-red" type="submit" id="gateSubmit" style="width:100%;justify-content:center">Unlock my download</button>
         <p class="gate-status" id="gateStatus" role="status"></p>
       </form>
+      <div id="subAsk" hidden><p class="gate-copy">One more tap — subscribe to Kill Will on YouTube so you never miss a new beat. Your download starts either way.</p><a class="btn btn-red" id="subYes" href="https://www.youtube.com/@killwillbeats?sub_confirmation=1" target="_blank" rel="noopener" style="width:100%;justify-content:center">Subscribe on YouTube</a><button class="btn" id="subNo" type="button" style="width:100%;justify-content:center;margin-top:10px">Just download</button></div>
     </div>
 
     <div class="scrim" id="scrim"></div>
@@ -1416,18 +1418,18 @@
             statusEl = document.getElementById("gateStatus"),
             beatEl = document.getElementById("gateBeat"),
             submitBtn = document.getElementById("gateSubmit");
-        var pending = null, busy = false;
+        var pending = null, busy = false, subAsked = false;
         function open(beatTitle, onUnlock){
           pending = onUnlock;
           beatEl.textContent = beatTitle || "";
           statusEl.textContent = ""; statusEl.className = "gate-status";
-          modal.hidden = false; scrim.hidden = false;
+          modal.hidden = false; scrim.hidden = false; var ask0 = document.getElementById("subAsk"); if (ask0) ask0.hidden = true; form.hidden = false;
           setTimeout(function(){ emailEl.focus(); }, 40);
         }
         function close(){
-          modal.hidden = true; scrim.hidden = true; pending = null;
+          var ask = document.getElementById("subAsk"); var askVisible = ask && !ask.hidden; modal.hidden = true; scrim.hidden = true; if (ask) ask.hidden = true; form.hidden = false; var cb = pending; pending = null; if (askVisible && cb) cb();
         }
-        document.getElementById("gateClose").addEventListener("click", close);
+        function finish(){ var cb = pending; pending = null; close(); if (cb) cb(); } document.getElementById("gateClose").addEventListener("click", close);
         scrim.addEventListener("click", close);
         document.addEventListener("keydown", function(e){ if (e.key === "Escape" && !modal.hidden) close(); });
         form.addEventListener("submit", function(e){
@@ -1450,17 +1452,16 @@
             submitBtn.textContent = "Unlock my download";
             if (ok){
               window.kwbMailchimp.unlock();
-              statusEl.textContent = "You're in — your download is starting.";
+              if (!subAsked){ subAsked = true; statusEl.textContent = "You're in — one more thing before your download starts."; statusEl.className = "gate-status ok"; form.hidden = true; document.getElementById("subAsk").hidden = false; } else { statusEl.textContent = "You're in — your download is starting."; statusEl.className = "gate-status ok"; var cb = pending; setTimeout(function(){ close(); if (cb) cb(); }, 450); }
               statusEl.className = "gate-status ok";
               var cb = pending;
-              setTimeout(function(){ close(); if (cb) cb(); }, 450);
-            } else {
+              else {
               statusEl.textContent = "That didn't go through — check the email and try again.";
               statusEl.className = "gate-status err";
             }
           });
         });
-        return { open: open, close: close };
+        var subYes = document.getElementById("subYes"), subNo = document.getElementById("subNo"); if (subYes) subYes.addEventListener("click", function(){ finish(); }); if (subNo) subNo.addEventListener("click", function(){ finish(); }); return { open: open, close: close };
       })();
     </script>
     <script>
@@ -1619,22 +1620,8 @@
          (5 of 5 on first load) — prices and the counter never vanish
          over a failed fetch, and the backend stays the authority. */
       var PROMO = { active:true, limit:5, discountCents:50000, minCents:9900 };
-      /* ============ featured sale : daily $500 off the featured beat ============
-         Runs INSIDE the Next-5 promo above: the featured beat (the
-         daily random pick in the Featured slot) takes one of the
-         Next-5 slots — there are never more than 5 beats at $500
-         off in total, featured included. The featured beat gets
-         $500 off its own price, figured with the same formula and
-         the same $99 floor, but ONLY while Next-5 slots remain:
-         when the 5 are gone, the featured sale ends with the Next 5
-         and the featured beat is full price. The discount belongs
-         to the SLOT, not the beat: it applies only while a beat is
-         the current featured beat. When the slot rotates — at
-         midnight ET, or the moment the featured beat sells and a
-         new one steps in — the outgoing beat loses the featured
-         discount and shows its Next-5 promo price while slots
-         remain, else its full price. */
-      var FEATURED = { active:true, percentOff:50 }; function featuredPriceFor(beat){ if (!beat) return 0; var half = Math.floor(beat.price / 2); var delta = (half % 10 - 7 + 10) % 10; var halfOff = half - delta; if (!promoIsLive()) return halfOff; return Math.min(halfOff, salePriceFor(beat, PROMO)); }
+      /* ============ featured sale : half off the featured beat ============ The featured beat (the daily pick in the Featured slot) is HALF OFF its own price, rounded down to a price ending in 7 (599 -> 297, 999 -> 497, 1499 -> 747, 2500 -> 1247) — and it takes one of the Next-5 promo slots, exactly like any other beat: while Next-5 slots remain, the featured beat rings up at the LOWER of its half-off price and its Next-5 price (a 599 beat rings up 99), so no cart ever has more than 5 beats at sale prices. Once the 5 are gone, the featured beat is half off on its own. The discount belongs to the SLOT, not the beat: it applies only while a beat is the current featured beat. When the slot rotates — at midnight ET, or the moment the featured beat sells and a new one steps in — the outgoing beat loses the featured discount and shows its Next-5 promo price while slots remain, else its full price. */
+          FEATURED = { active:true, percentOff:50 }; function featuredPriceFor(beat){ if (!beat) return 0; var half = Math.floor(beat.price / 2); var delta = (half % 10 - 7 + 10) % 10; var halfOff = half - delta; if (!promoIsLive()) return halfOff; return Math.min(halfOff, salePriceFor(beat, PROMO)); }
       var SOLD_ENDPOINT = "https://script.google.com/macros/s/AKfycbwnA9FvK2RbQ-wbB1arxBL0PtPR5MX_vROmJGlnEtauqwyAp9hB_1aVyRB5E-m69EjoPw/exec?sold=1";
       var soldTitles = [];
       var soldIdSet = {};
@@ -1728,10 +1715,8 @@
          slot applies, else null */
       function cartBeatPromoKind(beat, idx){
         if (!beat || isSoldBeat(beat)) return null;
-        if (featuredIsLive() && isFeaturedBeat(beat)) return "featured"; if (promoIsLive() && cartPromoIndex(idx) < cartSlotsForOthers()) return "next5"; if (false){
-                  if (featuredIsLive() && isFeaturedBeat(beat)) return "featured";
-          return "next5";
-        }
+        if (featuredIsLive() && isFeaturedBeat(beat)) return "featured";
+                  sLive() && cartPromoIndex(idx) < cartSlotsForOthers()) return "next5";
         return null;
       }
       /* re-read the sold list, then re-paint everything the sale
