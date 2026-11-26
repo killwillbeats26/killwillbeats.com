@@ -516,7 +516,8 @@
       .pb-btn.pb-main{width:44px;height:44px;min-height:44px;background:var(--gold);border-color:#0a0a05;color:var(--gold-ink);font-size:1.15rem;box-shadow:3px 3px 0 rgba(0,0,0,.55)}
       .pb-btn:active{transform:translate(1px,1px)}
       .pb-btn.pb-random{width:auto;height:40px;min-height:40px;border-radius:20px;padding:0 13px;display:inline-flex;align-items:center;gap:7px;font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;font-size:.72rem;white-space:nowrap}
-      .pb-btn.pb-random svg{width:16px;height:16px;flex:none}
+            .pb-btn.pb-random.on{background:var(--gold);border-color:#0a0a05;color:var(--gold-ink)}
+.pb-btn.pb-random svg{width:16px;height:16px;flex:none}
       .pb-seekwrap{display:contents}
             /* slim one-line bar: the seek wrap is display:contents, so the
          show/hide toggle the scripts put on it still governs both of its
@@ -1259,7 +1260,7 @@
         <button class="pb-btn" id="pbPrev" type="button" aria-label="Previous beat"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h2.6v14H6zM19.5 5v14L10 12z" fill="currentColor"/></svg></button>
         <button class="pb-btn pb-main" id="pbPlay" type="button" aria-label="Play or pause the current beat">▶</button>
         <button class="pb-btn" id="pbNext" type="button" aria-label="Next beat"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.4 5H18v14h-2.6zM4.5 5v14L14 12z" fill="currentColor"/></svg></button>
-        <button class="pb-btn pb-random" id="pbRandom" type="button" aria-label="Play a random beat — free or for sale"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.59 9.17 5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z" fill="currentColor"/></svg><span>Random</span></button>
+        <button class="pb-btn pb-random" id="pbRandom" type="button" aria-label="Shuffle off — tap to turn shuffle on" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.59 9.17 5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z" fill="currentColor"/></svg><span>Random</span></button>
         <button class="pb-btn" id="pbHist" type="button" aria-label="Recently played — your last 10" aria-expanded="false" aria-controls="histPanel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.5 4.2a8 8 0 1 1-7.4 5" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/><path d="M4.6 3.8v5.4h5.4" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.5 8v4.4l3 1.8" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       </div>
       <div class="pb-seekwrap" id="pbSeekWrap">
@@ -3081,7 +3082,31 @@
            combined rotation (Vault + today's free 10), exactly the
            draw Next makes at the head of the stack */
         function playRandomNext(){ advanceFresh(false); }
-        function queueNext(){
+                /* shuffle toggle: the Random button is a switch, not a
+           one-shot. ON — Next draws a fresh random pick (the same
+           draw the natural-end rotation uses) and the button shows
+           gold. OFF — Next steps to the next beat in the fixed
+           Vault catalog order. The choice sticks across visits.
+           Natural end stays random either way (the Nov 25 rule),
+           and Previous still walks back through what actually
+           played. */
+        var SHUFFLE_KEY = "kwb_shuffle_v1";
+        var shuffleOn = false;
+        try { shuffleOn = localStorage.getItem(SHUFFLE_KEY) === "1"; } catch(e){}
+        function paintShuffle(){
+          if (!pbRandom) return;
+          pbRandom.classList.toggle("on", shuffleOn);
+          pbRandom.setAttribute("aria-pressed", shuffleOn ? "true" : "false");
+          pbRandom.setAttribute("aria-label", shuffleOn ? "Shuffle on — tap to turn shuffle off" : "Shuffle off — tap to turn shuffle on");
+        }
+        function setShuffle(on, playNow){
+          shuffleOn = !!on;
+          try { localStorage.setItem(SHUFFLE_KEY, shuffleOn ? "1" : "0"); } catch(e){}
+          paintShuffle();
+          if (playNow) playRandomNext();
+        }
+function queueNext(){
+          if (!shuffleOn){ catalogStep(1); return; }
           if (ytNow && !ytNow.isFree){ advanceFresh(false); return; }
           if (stackPos + 1 < playStack.length){
             stackPos++;
@@ -3153,18 +3178,13 @@
           });
           pbPrev.addEventListener("click", function(){ queuePrev(); });
           pbNext.addEventListener("click", function(){ queueNext(); });
-          /* Random button: a fresh pick on every tap from the SAME
-             session queue draw the natural-end rotation uses (unsold
-             Vault beats + today's 10 free beats, none of them played
-             yet this session) — playRandomNext does the picking and
-             the playing (Vault picks through setCurrent, free picks
-             through __playFreeBeat, so the bar shows the price / Add
-             to cart or "Free" / Download MP3 to match), and the pick
-             joins the session stack, so Next / Previous stay in step
-             with it afterwards. Starting the pick pauses whatever is
-             playing now — playRandomNext's play paths already
-             enforce the one-song-at-a-time rule. */
-          if (pbRandom) pbRandom.addEventListener("click", function(){ playRandomNext(); });
+          /* Random button is now a toggle: tap ON and shuffle turns
+             on with a fresh random pick right away; tap OFF and
+             shuffle turns off while the current track keeps playing.
+             Next follows the toggle (see queueNext). The saved state
+             paints on load so the button never lies about the mode. */
+          if (pbRandom) pbRandom.addEventListener("click", function(){ if (shuffleOn) setShuffle(false, false); else setShuffle(true, true); });
+          paintShuffle();
           pbSeek.addEventListener("input", function(){
             if (ytNow){
               /* a free beat scrubs its YouTube player; one still
