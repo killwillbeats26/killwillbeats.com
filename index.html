@@ -963,7 +963,6 @@
               <h3 class="player-title" id="featTitle">Flatline</h3>
               <div class="pills" id="featPills"><span class="pill gold"><b>129</b>&nbsp;BPM</span><span class="pill">Key&nbsp;<b>B♭ minor</b></span><span class="pill"><b>3:28</b></span><span class="pill">Prod. Kill Will</span></div>
               <div class="feat-switch-row">
-                <button class="sec-btn" id="featShuffle" type="button">↻ Switch — random beat</button>
                 <span class="feat-switch-note" id="featSwitchNote">Now featuring: Flatline — today's pick from the 30 beats for sale. A new random beat takes this spot tomorrow.</span>
               </div>
               <p class="feat-sale-note" id="featSaleNote">Featured sale — this beat is <b>on sale</b> today. If it sells, a new featured beat takes its place on sale today.</p>
@@ -2541,20 +2540,6 @@
               renderCart();
             }
             openCart();
-          });
-        }
-        var shuffleBtn = document.getElementById("featShuffle");
-        if (shuffleBtn){
-          shuffleBtn.addEventListener("click", function(){
-            /* if the outgoing pick is the track playing in the bar,
-               the switch hands playback straight to the new pick —
-               the music changes beat, it never stops, and every
-               play / pause icon and slider re-syncs off the new
-               pick's row audio in the bar */
-            var oldAudio = document.getElementById("audio-" + currentFeaturedId);
-            var wasPlaying = !!(oldAudio && !oldAudio.paused);
-            setFeaturedBeat(randomFeaturedId(currentFeaturedId));
-            if (wasPlaying && typeof window.__playFeaturedBeat === "function") window.__playFeaturedBeat();
           });
         }
         /* daily pick: same featured beat all day, new random beat tomorrow */
